@@ -1,0 +1,37 @@
+<div id="durationInfo{{id}}" class="pure-g">
+    <div class="pure-u-1">
+        <label>披露类型</label>
+        <select name="durationInfo[{{id}}][publishType]" class="pure-input-1-4 ">
+            {{#each publishTypes}}
+            {{#eq @index ../publishType}}
+            <option value="{{@index}}" selected>{{this}}</option>
+            {{else}}
+            <option value="{{@index}}" >{{this}}</option>
+            {{/eq}}
+            {{/each}}
+        </select>
+    </div>
+    <div class="pure-u-1">
+        <label>披露时间</label>
+        <input type="text" id="publishTime{{id}}" name="durationInfo[{{id}}][publishTime]" value="{{publishTime}}" datepicker="datepicker" class="pure-input-1-4 ">*
+    </div>
+    <div class="pure-u-1">
+        <label>披露内容</label>
+        <div class="pure-u-3-4">
+            <input type="text" id="content{{id}}" name="durationInfo[{{id}}][content]" value="{{content}}" maxlength="16" placeholder="最多16字" class="pure-input-1">
+        </div>
+    </div>
+    <div class="pure-u-1" id="durationInfoBar{{id}}">
+        <label>上传附件</label>
+        <div class="pure-u-2-3">
+            <ul class="upimg_mod uppdf_mod">
+                <div id="attachmentUrl{{id}}" outside-id="{{id}}" ></div>
+            </ul>
+        </div>
+    </div>
+    <div class="pure-u-1">
+        <label>&nbsp;</label>
+        {{#if id}}<button type="button" class="j_durationDel pure-button" data-id="{{id}}">删除</button>{{/if}}
+        <button type="button" class="j_durationAdd pure-button pure-button-primary">新增</button>
+    </div>
+</div>

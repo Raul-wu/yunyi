@@ -1,0 +1,60 @@
+<div class="pure-g prj" id="pePro{{id}}">
+
+    <div class="pure-u-md-1-2"><label>icon</label>
+        <select class="pure-input-1-2 submit" name="pePro[{{id}}][icon]">
+
+            {{#each icon}}
+            <option value="{{key}}" icons="{{this}}" >{{value}}</option>
+            {{/each}}
+
+
+        </select>*
+    </div>
+
+    <div class="pure-u-1"><label>标题</label>
+        <input type="text" class="pure-input-2-3 submit" name="pePro[{{id}}][title]"  value="{{title}}" placeholder="10个字以内,例如投资说明">*
+    </div>
+    <div class="pure-u-1"><label>副标题</label>
+        <input type="text" class="pure-input-2-3 submit" name="pePro[{{id}}][subTitle]" value="{{subTitle}}" placeholder="20个字以内">
+    </div>
+
+    <div class="pure-u-1"><label>内容</label>
+        <button type="button" class="pure-button pure-button-primary addText"  id="addText{{id}}">+文本</button>
+        <button type="button" class="pure-button pure-button-primary addImg" id="addImg{{id}}">+图片</button>
+
+        {{#if peContent}}
+
+        {{#each  peContent}}
+
+        {{#each this}}
+
+        <textarea id="proText{{@key}}" name="pePro[{{@key}}][peContent][content][]" rows="4" class="pure-input-1 proText " style="margin-left:140px;width:800px;margin-top:20px">{{this}}</textarea>
+        {{/each}}
+        {{/each}}
+
+        {{else}}
+        <textarea id="proText{{id}}" name="pePro[{{id}}][peContent][content][]" rows="4" class="pure-input-1 proText " style="margin-left:140px;width:800px;margin-top:20px">{{peContent}}</textarea>
+        {{/if}}
+
+
+        {{#if projectImg}}
+        {{#each projectImg}}
+        {{#each this}}
+        <div class="pure-u-2-3" style="margin-left:140px;margin-top:20px">
+            <div id="projectImg{{@key}}{{@index}}" inputName="pePro[{{@key}}][peContent][img][]" url="{{this}}"></div>
+            {{#if this}} <span style="padding-left:10px;font-size: 12px">265×265像素，上传格式：gif、jpg、png</span>{{/if}}
+        </div>
+        {{/each}}
+        {{/each}}
+
+        {{else}}
+        <div class="pure-u-2-3" style="margin-left:140px;margin-top:20px">
+            <div id="projectImg{{id}}" inputName="pePro[{{id}}][peContent][img][]" url="{{projectImg}}"></div>
+            <span style="padding-left:10px;font-size: 12px">265×265像素，上传格式：gif、jpg、png</span>
+        </div>
+        {{/if}}
+
+    </div>
+    {{#if id}}<button type="button" class="j_peDel pure-button" data-id="{{id}}" style="margin-left:140px;margin-top:20px">删除</button>{{/if}}
+    <button type="button" class="j_peAdd pure-button pure-button-primary" style="margin-left:140px;margin-top:20px">新增</button>
+</div>

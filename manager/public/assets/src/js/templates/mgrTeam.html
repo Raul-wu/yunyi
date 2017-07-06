@@ -1,0 +1,13 @@
+<div id="mbr{{id}}" class="pure-g pure-g-group">
+	<div class="pure-u-1"><label>成员名称</label><input name="managerTeam[{{id}}][teamMemberName]" type="text" class="pure-input-1-6 " value="{{teamMemberName}}"></div>
+	<div class="pure-u-1"><label>职位描述</label><input name="managerTeam[{{id}}][teamMemberTitle]" type="text" class="pure-input-2-3 " value="{{teamMemberTitle}}"></div>
+	<div class="pure-u-1">
+		<label>上传照片</label><div class="pure-u-2-3">
+		<div id="mbrImg{{id}}" inputName="managerTeam[{{id}}][teamMemberPic]" url="{{teamMemberPic}}"></div>
+	</div></div>
+	<div class="pure-u-1"><label>成员简述</label><textarea name="managerTeam[{{id}}][teamMemberIntro]" rows="2" class="pure-input-2-3">{{teamMemberIntro}}</textarea></div>
+	<div class="pure-u-1"><label>&nbsp;</label>
+		{{#if id}}<button type="button" class="j_mbrDel pure-button" data-id="{{id}}">删除</button>{{/if}}
+		<button type="button" class="j_mbrAdd pure-button pure-button-primary">新增</button>
+	</div>
+</div>

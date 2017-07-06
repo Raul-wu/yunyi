@@ -1,0 +1,82 @@
+@import url(base.css);
+body{
+	background:url(../img/bg.jpg) top center;
+}
+.login_mod{
+	margin: auto;  
+	position: absolute;  
+	top: 0; left: 0; bottom: 0; right: 0;
+	width: 450px;
+	height:380px;
+	background-color: rgba(255,255,255,0.2);
+	border-radius: 6px;
+	box-shadow: 0 2px 2px rgba(0,0,0,0.1);
+}
+.login_mod .title{
+	width: 340px;
+	height: 83px;
+	margin: 0 auto;
+	padding: 30px 0;
+	background: url(../img/log_logo.png) no-repeat center;
+}
+.login_form{
+	width: 240px;
+	margin: 0 auto;
+}
+.login_form .val_group{
+	position: relative;
+	width:262px;
+	overflow: hidden;
+	margin-bottom: 18px;
+}
+.login_form .val_action{
+	padding-top: 20px;
+}
+.login_form .val_label{
+	width: 36px;
+	height: 36px;
+	position: absolute;
+	left: 2px;
+	top: 0;
+	text-indent: -999em;
+	background-image: url(../img/log_icon.png);
+	background-repeat: no-repeat;
+}
+.login_form .account{background-position: 0 0}
+.login_form .pwd{background-position: 0 -36px}
+.login_form input{
+	width: 257px;
+	height: 28px;
+	line-height: 28px;
+	padding: 4px 10px 4px 40px;
+	border:0 none;
+	border-radius: 3px;
+	color: #fff;
+	font-size: 14px;
+	background-color: rgba(255,255,255,0.3);
+}
+.login_form input:focus{
+	background-color: rgba(255,255,255,0.4);
+}
+.login_form .input_verifycode{
+	width: 130px;
+	padding-left:10px;
+	margin-right:10px;
+	float: left;
+}
+.login_form .img_verifycode{
+	width: 80px;
+	height: 36px;
+	float: left;
+}
+.login_form .btn{
+	width: 240px;
+	height: 36px;
+	background-color: #ff9946;
+	padding: 0;
+	font-size: 16px;
+	color: #fff;
+}
+.login_form .btn:hover{
+	opacity: 0.9;
+}

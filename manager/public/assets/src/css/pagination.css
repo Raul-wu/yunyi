@@ -1,0 +1,99 @@
+.pagination {
+
+    font-size: 12px;
+    margin: 21px;
+    padding: 0;
+    text-align: center;
+}
+
+.pagination a {
+    text-decoration: none;
+    border: solid 1px #F48306;
+    color: #F48306;
+}
+
+.pagination a, .pagination span {
+    /*display: block;
+    float: left;*/
+    padding: 4px 11px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+.pagination .current {
+    background: #F0AD4E;
+    color: #fff;
+    border: solid 1px #F48306;
+}
+
+.pagination .current.prev, .pagination .current.next{
+    color:#999;
+    border-color:#999;
+    background:#fff;
+}
+#pager {
+
+    font-size: 12px;
+    margin: 21px;
+    padding: 0;
+    text-align: center;
+}
+
+#pager a {
+    text-decoration: none;
+    border: solid 1px #AAE;
+    color: #15B;
+}
+
+#pager a, #pager span {
+    /*display: block;
+    float: left;*/
+    padding: 0.3em 0.5em;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+#pager .current {
+    background: #26B;
+    color: #fff;
+    border: solid 1px #AAE;
+}
+
+#pager .current.prev, #pager .current.next{
+    color:#999;
+    border-color:#999;
+    background:#fff;
+}
+#page {
+
+    font-size: 12px;
+    margin: 21px;
+    padding: 0;
+    text-align: center;
+}
+
+#page a {
+    text-decoration: none;
+    border: solid 1px #AAE;
+    color: #15B;
+}
+
+#page a, #page span {
+    /*display: block;
+    float: left;*/
+    padding: 0.3em 0.5em;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+#page .current {
+    background: #26B;
+    color: #fff;
+    border: solid 1px #AAE;
+}
+
+#page .current.prev, #page .current.next{
+    color:#999;
+    border-color:#999;
+    background:#fff;
+}
