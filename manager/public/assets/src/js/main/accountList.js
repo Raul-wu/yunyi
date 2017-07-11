@@ -19,26 +19,6 @@ require([
             }
         },
         ],
-        commonBtns: [
-            {
-                name: "启用",
-                click: function(ids) {
-                    changeState(ids,window.stateNoraml);
-                },
-                canShowFunc: function() {
-                    return changeStateSpvPermission;
-                }
-            },
-            {
-                name: "禁用",
-                click: function(ids) {
-                    changeState(ids,window.stateDelete);
-                },
-                canShowFunc: function() {
-                    return changeStateSpvPermission;
-                }
-            },
-        ]
     });
 
     widget.listen();
@@ -60,43 +40,8 @@ require([
     });
 
     $('#reset').on("click",function(){
-        $("#showName").val("");
-        $("#spvName").val("");
-        $("#account").val("");
+        $("#name").val("");
     });
-
-    function changeState(ids,state)
-    {
-        var token = $("input[tkname=g_tk]").val();
-        if(ids.length<=0){
-            msgDialog('请选择要操作的数据');
-        }
-
-        return art.dialog({
-            id: 'Confirm',
-            icon: 'question',
-            fixed: true,
-            lock: true,
-            opacity: .8,
-            content: '共' + ids.length + '条记录,确定要更新状态吗？',
-            ok: function(){
-                $.ajax({
-                    'url': "/product/spv/ChangeState" ,
-                    'data': {'spvIDs':ids.join(','), 'isBeneAccount':state, g_tk: token },
-                    'dataType': 'json',
-                    'type': 'POST',
-                    'success': function(data) {
-                        if(!data.retCode){
-                            msgDialog(data.retMsg, 'reload');
-                        }else{
-                            msgDialog(data.retMsg);
-                        }
-                    }
-                });
-            },
-            cancel: true
-        });
-    }
 
     //消息提示框
     function msgDialog(content,url)

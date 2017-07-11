@@ -10,8 +10,6 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
 Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/js/lib/art_dialog/skins/black.css?v=" . STATIC_VER);
 Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/js/lib/art_dialog/jquery.artDialog.source.js?v=" . STATIC_VER);
 
-Yii::app()->clientScript->registerScript("stateNoraml", 'window.stateNoraml="'.LMerchantInfoModel::IS_BENEACCOUNT.'";', CClientScript::POS_END);
-Yii::app()->clientScript->registerScript("stateDelete", 'window.stateDelete="'.LMerchantInfoModel::NOT_BENEACCOUNT.'";', CClientScript::POS_END);
 Yii::app()->clientScript->registerScript("url", 'window.url='.json_encode($url).';', CClientScript::POS_END);
 
 Yii::app()->clientScript->registerScript("addSpvPermission", 'window.addSpvPermission="'.LAPermissionService::selectMenuPermission($this->menuId, 2006102).'";', CClientScript::POS_END);
@@ -83,12 +81,12 @@ Yii::app()->clientScript->registerScript("listSpvPermission", 'window.listSpvPer
                         ?>
                         <tr class="<?= $key % 2 ? "" : "pure-table-odd" ?> pure-table-tr">
                             <td><input type="checkbox" value="<?= $account['id'] ?>" class="check" data-id="<?= $account['id'] ?>"/></td>
-                            <td class="tc"><?= $account['type'] ?></td>
+                            <td class="tl"><?= $account['type'] ?></td>
                             <td class="tl"><?= $account['name'] ?></td>
                             <td class="tl"><?= $account['bank_account'] ?></td>
-                            <td class="tc"><?= $account['bank_address'] ?></td>
+                            <td class="tl"><?= $account['bank_address'] ?></td>
                             <td class="tl"><?= $account['handler'] ?></td>
-                            <td class="tl"><?= $account['status'] ?></td>
+                            <td class="tc"><?= $account['status'] == LAAccountModel::STATUS_OPEN ? '正常' : '停用' ?></td>
                             <td class="tc">
                                 <a href="<?= Yii::app()->createUrl('account/edit/', array('id' => $account['id'])) ?>">编辑</a>
                             </td>

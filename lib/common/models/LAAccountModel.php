@@ -8,6 +8,12 @@
  */
 class LAAccountModel extends LActiveRecord
 {
+    const STATUS_OPEN = 1; //启用
+    const STATUS_STOP = 2; //停用
+
+    const OP_TYPE_ADD = 'add';  //添加
+    const OP_TYPE_MODIFY = 'modify'; //修改
+
 
     public function tableName()
     {

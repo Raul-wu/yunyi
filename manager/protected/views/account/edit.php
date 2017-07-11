@@ -48,8 +48,8 @@ Yii::app()->clientScript->registerScript("saveUrl", 'window.saveUrl="/account/sa
 
 
                     <div class="pure-u-1"><label>状态</label>
-                        <input type="radio" name="status" value="<?= LMerchantInfoModel::IS_BENEACCOUNT ?>" <?= isset($chk_state) ? $chk_state : ''; ?> <?= isset($status) && ($status == LMerchantInfoModel::IS_BENEACCOUNT) ? "checked" : "" ?>/>启用
-                        <input type="radio" name="status" value="<?= LMerchantInfoModel::NOT_BENEACCOUNT ?>" <?= isset($isBeneAccount) && ($status == LMerchantInfoModel::NOT_BENEACCOUNT)  ? "checked" : "" ?>/>禁用
+                        <input type="radio" name="status" value="<?= LAAccountModel::STATUS_OPEN ?>" <?= isset($chk_state) ? $chk_state : ''; ?> <?= isset($status) && ($status == LAAccountModel::STATUS_OPEN) ? "checked" : "" ?>/>正常
+                        <input type="radio" name="status" value="<?= LAAccountModel::STATUS_STOP ?>" <?= isset($status) && ($status == LAAccountModel::STATUS_STOP)  ? "checked" : "" ?>/>停用
                     </div>
 
                 </div>
@@ -58,7 +58,7 @@ Yii::app()->clientScript->registerScript("saveUrl", 'window.saveUrl="/account/sa
 
         <div class="form_action">
             <?php
-            if($opType == 'add')
+            if($opType == LAAccountModel::OP_TYPE_ADD)
             {
                 if(LAPermissionService::selectMenuPermission($this->menuId, 2006102))
                 {

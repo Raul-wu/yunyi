@@ -37,8 +37,74 @@ class LAAccountService
         return array('accountAll' => $arrAccount,'pageBar' => $pageBar,'count' => $count);
     }
 
-    public static function add()
+    public static function getByID($id)
     {
+        return LAAccountModel::model()->findByPk($id);
+    }
 
+    public static function Create($data)
+    {
+        if(empty($data))
+        {
+            Yii::log(sprintf("Create account Fail, Create Params Empty"), CLogger::LEVEL_ERROR, self::LOG_PREFIX . __FUNCTION__);
+            return false;
+        }
+
+        if(!isset($data['create_time']))
+        {
+            $data['create_time'] = time();
+        }
+
+        if(!isset($data['update_time']))
+        {
+            $data['update_time'] = time();
+        }
+
+        $objAccount = new LAAccountModel();
+        $objAccount->setAttributes($data, false);
+        if ($objAccount->save())
+        {
+            Yii::log(sprintf("Create Account success, ID[%s]", $objAccount->id),CLogger::LEVEL_TRACE, self::LOG_PREFIX . __FUNCTION__);
+            return  $objAccount;
+        }
+        else
+        {
+            Yii::log(sprintf("Create Account Fail, Params:[%s]",serialize($data)), CLogger::LEVEL_ERROR, self::LOG_PREFIX . __FUNCTION__);
+            return  false;
+        }
+    }
+
+    public static function Update($id, $data)
+    {
+        if(empty($id))
+        {
+            Yii::log(sprintf("Update account Fail, Update id Empty"),CLogger::LEVEL_ERROR, self::LOG_PREFIX . __FUNCTION__);
+            return false;
+        }
+
+        $objAccount = self::getByID($id);
+
+        if(!$objAccount)
+        {
+            Yii::log(sprintf("Update account Fail, Get Empty accountInfo, id:[%s]", $id),CLogger::LEVEL_ERROR, self::LOG_PREFIX . __FUNCTION__);
+            return false;
+        }
+
+        if(!isset($data['update_time']))
+        {
+            $data['update_time'] = time();
+        }
+
+        $objAccount->setAttributes($data, false);
+        if ($objAccount->save())
+        {
+            Yii::log(sprintf("Update account success, id[%s]", $objAccount->id),CLogger::LEVEL_TRACE, self::LOG_PREFIX . __FUNCTION__);
+            return  $objAccount;
+        }
+        else
+        {
+            Yii::log(sprintf("Update account Fail, ID:[%s] Params:[%s]", array($id, serialize($data))), CLogger::LEVEL_ERROR, self::LOG_PREFIX . __FUNCTION__);
+            return  false;
+        }
     }
 }

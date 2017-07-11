@@ -4,9 +4,8 @@
 require([
     'jquery',
     'art-dialog',
-    'widgets/ImgUpload',
     'widgets/ConfirmBtn',
-], function($, placeholder, ImgUpload) {
+], function($, placeholder) {
 
     var $form = $("#accountForm");
 
@@ -34,10 +33,9 @@ require([
 
     $("#edit").on('click', function() {
         var strData = chkParams();
-
         $.ajax({
             'url': window.saveUrl ,
-            'data': strData + '&spvId=' + $("#spvId").val(),
+            'data': strData + '&id=' + $("#id").val(),
             'dataType': 'json',
             'type': 'POST',
             'success': function(data) {
@@ -58,32 +56,11 @@ require([
 
     function chkParams(){
 
-        return 'showName=' + $("#showName").val() + '&spvName=' + $("#spvName").val() + '&account=' + $("#account").val()
-            + '&payName=' + $("#payName").val() + '&name=' + $("#name").val() + '&address=' +$("#address").val()
-            + '&imgPath=' + $("#imgPath").val() + '&settlement=' + $("input[name='settlement']:checked").val()
-            + '&isBeneAccount=' + $("input[name='isBeneAccount']:checked").val() + '&remarks=' + $("#remarks").val()
+        return 'name=' + $("#name").val() + '&type=' + $("#type").val() + '&bank_account=' + $("#bank_account").val()
+            + '&bank_address=' + $("#bank_address").val() + '&handler=' + $("#handler").val() + '&status=' + $("input[name='status']:checked").val()
             + '&opType=' + $("#opType").val() + '&g_tk=' + $("input[tkname=g_tk]").val();
     }
 
-    //共用确认弹框
-    function confirm(content,callback,params,flag)
-    {
-        var icon = (flag == "" || flag == undefined || flag == null) ? 'question' : '';
-        return art.dialog({
-            id: 'Confirm',
-            icon: icon,
-            fixed: true,
-            lock: true,
-            opacity: .8,
-            content: content,
-            ok: function(){
-                callback(params);
-            },
-            cancel: true
-        });
-    }
-
-    //消息提示框
     function msgDialog(content,url)
     {
         var msgDialog = art.dialog({
