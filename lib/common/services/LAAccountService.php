@@ -52,12 +52,12 @@ class LAAccountService
 
         if(!isset($data['create_time']))
         {
-            $data['create_time'] = time();
+            $data['create_time'] = date('Y-m-d H:i:s', time());
         }
 
         if(!isset($data['update_time']))
         {
-            $data['update_time'] = time();
+            $data['update_time'] = date('Y-m-d H:i:s', time());
         }
 
         $objAccount = new LAAccountModel();
@@ -92,7 +92,7 @@ class LAAccountService
 
         if(!isset($data['update_time']))
         {
-            $data['update_time'] = time();
+            $data['update_time'] = date('Y-m-d H:i:s', time());
         }
 
         $objAccount->setAttributes($data, false);

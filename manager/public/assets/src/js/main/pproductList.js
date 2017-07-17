@@ -6,12 +6,13 @@ define([
 ], function($, SingleMultiBtn, placeholder, ConfirmBtn) {
 
     var widget = new SingleMultiBtn("#btnPh", {
-        singleBtns: [{
-            name: "编辑母产品",
-            click: function(ppid) {
-                window.location.href = url;
-            }
-        },
+        singleBtns: [
+            {
+                name: "编辑母产品",
+                click: function(ppid) {
+                    window.location.href = url + "?ppid=" + ppid;
+                }
+            },
             {
                 name: "创建子产品",
                 click: function(id) {
@@ -22,68 +23,58 @@ define([
                         msgDialog("该母产品状态不允许创建子产品！");
                     }
                 },
-                canShowFunc: function() {
-                    if(finance == 1 || !createProductPermission)
-                        return false;
-                    else
-                        return true;
-                }
-            }
-        ],
-        commonBtns: [{
-            name: "转存续",
-            click: function() {
-                confirm("确定将所选的母产品转存续吗？", turnDuration);
+                // canShowFunc: function() {
+                //     if(!createProductPermission)
+                //         return false;
+                //     else
+                //         return true;
+                // }
             },
-            canShowFunc: function(ids) {
-                if(finance == 1 || !DurPProductPermission) {
-                    return false;
-                }
-                else
-                {
-                    var canShow = true;
-                    $.each(ids, function(i, h) {
-                        if ($.inArray(parseInt(h), canTurnPPids) == -1) {
-                            canShow = false;
-                        }
-                    });
-
-                    if(canShow && DurPProductPermission){
-                        return true;
-                    }
-
-                    return canShow;
-                }
-            }
-        },
             {
                 name: "查看子产品",
                 click: function(ids) {
-                    if(finance == 1) {
-                        url = subShow + '?ppids=' + ids + '&type=6';
-                    }
-                    else if(type == 7 && outside=='Y')
-                    {
-                        url = subShow + '?ppids=' + ids+'&type='+type;
-                    }
-                    else
-                    {
-                        url = subShow + '?ppids=' + ids;
-                    }
                     window.location.href = url;
                 },
-                canShowFunc: function(){
-                    return listProductPermission;
-                }
+                // canShowFunc: function(){
+                //     return listProductPermission;
+                // }
+            }
+        ],
+        commonBtns: [
+            {
+                name: "转存续",
+                click: function() {
+                    confirm("确定将所选的母产品转存续吗？", turnDuration);
+                },
+                // canShowFunc: function(ids) {
+                    // if(!DurPProductPermission) {
+                    //     return false;
+                    // }
+                    // else
+                    // {
+                        // var canShow = true;
+                        // $.each(ids, function(i, h) {
+                        //     if ($.inArray(parseInt(h), canTurnPPids) == -1) {
+                        //         canShow = false;
+                        //     }
+                        // });
+                        //
+                        // if(canShow && DurPProductPermission){
+                        //     return true;
+                        // }
+                        //
+                        // return canShow;
+                    // }
+                // }
             },
             {
                 name: "删除",
                 click: function() {
                     confirm("确定删除所选母产品吗？", delPProduct);
                 },
-                canShowFunc: function(){
-                    return delPProductPermission;
-                }
+                // canShowFunc: function(){
+                //     return delPProductPermission;
+                // }
             }
         ]
     });
@@ -143,6 +134,10 @@ define([
         var index = $(this).index('.check');
         this.checked ? $('.pure-table-tr:eq('+ index +')').addClass(' pure-table-selected') :
             $('.pure-table-tr:eq('+ index +')').removeClass(' pure-table-selected');
+    });
+
+    $('#reset').on("click",function(){
+        $("#fund_code").val("");
     });
 
     function confirm(content,callback,params)

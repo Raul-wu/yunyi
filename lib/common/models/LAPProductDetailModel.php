@@ -10,7 +10,7 @@ class LAPProductDetailModel extends LActiveRecord
 {
     public function tableName()
     {
-        return 'pproduct';
+        return 'pproduct_detail';
     }
 
     public function getDbConnection()

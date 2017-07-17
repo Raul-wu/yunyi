@@ -9,13 +9,10 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/js/lib/art
 Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/js/lib/art_dialog/jquery.artDialog.source.js?v=" . STATIC_VER);
 Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables.css?v=" . STATIC_VER);
 
-Yii::app()->clientScript->registerScript("durationUrl", 'window.durationUrl="'.Yii::app()->createUrl('/pProductFI/changeDuration/').'";', CClientScript::POS_END);
-Yii::app()->clientScript->registerScript("shareUrl", 'window.shareUrl="'.Yii::app()->createUrl('/pProductSM/loadShare/').'";', CClientScript::POS_END);
-Yii::app()->clientScript->registerScript("editUrl", 'window.editUrl="'.Yii::app()->createUrl('/pProductFI/edit').'";', CClientScript::POS_END);
-Yii::app()->clientScript->registerScript("copyUrl", 'window.copyUrl="'.Yii::app()->createUrl('/pProductFI/copy').'";', CClientScript::POS_END);
+Yii::app()->clientScript->registerScript("durationUrl", 'window.durationUrl="'.Yii::app()->createUrl('/PProduct/duration/').'";', CClientScript::POS_END);
 Yii::app()->clientScript->registerScript("subCreate", 'window.subCreate="'.Yii::app()->createUrl("p/new").'";', CClientScript::POS_END);
 Yii::app()->clientScript->registerScript("subShow", 'window.subShow="'.Yii::app()->createUrl('p/list').'";', CClientScript::POS_END);
-Yii::app()->clientScript->registerScript("url", 'window.url="'.Yii::app()->createUrl('pproduct/edit').'";', CClientScript::POS_END);
+Yii::app()->clientScript->registerScript("url", 'window.url="'.Yii::app()->createUrl('PProduct/edit').'";', CClientScript::POS_END);
 
 //列表页按钮权限
 Yii::app()->clientScript->registerScript("delPProductPermission", 'window.delPProductPermission="'.LAPermissionService::selectMenuPermission($this->menuId, 2001107).'";', CClientScript::POS_END);
@@ -32,9 +29,9 @@ Yii::app()->clientScript->registerScript("copyPProductPermission", 'window.copyP
             <form class="pure-form">
                 <div class="pure-g">
                     <div class="pure-u-2-3">
-                        <input type="text"   placeholder="基金代码" class="pure-input-1-1"  value="<?=$fund_code?>" name="fund_code" >
+                        <input type="text"   placeholder="基金代码" class="pure-input-1-1"  value="<?=isset($fund_code) ? $fund_code : ''?>" name="fund_code" >
                         <button type="submit" class="pure-button pure-button-primary">筛选</button>
-                        <button type="reset" class="pure-button">重置</button>
+                        <button type="button" id="reset" class="pure-button">重置</button>
                     </div>
                 </div>
             </form>
@@ -80,17 +77,17 @@ Yii::app()->clientScript->registerScript("copyPProductPermission", 'window.copyP
                 foreach ($pproducts as $key => $pproduct)
                 {
                     ?>
-                    <tr class="<?= $key % 2 ? "" : "pure-table-odd"?>  pure-table-tr" id="tr<?= $pproduct->ppid ?>">
-                        <td><input class="check"  type="checkbox" data-id="<?= $pproduct->ppid ?>"></td>
-                        <td><?= $pproduct->fund_code ?></td>
-                        <td><?= $pproduct->name ?></td>
-                        <td><?= $pproduct->project_type ?></td>
-                        <td><?= $pproduct->scale ?></td>
-                        <td><?= $pproduct->expected_date ?></td>
-                        <td><?= $pproduct->mode ?></td>
-                        <td><?= $pproduct->status ?></td>
+                    <tr class="<?= $key % 2 ? "" : "pure-table-odd"?>  pure-table-tr" id="tr<?= $pproduct['ppid'] ?>">
+                        <td><input class="check"  type="checkbox" data-id="<?= $pproduct['ppid'] ?>"></td>
+                        <td><?= $pproduct['fund_code'] ?></td>
+                        <td><?= $pproduct['name'] ?></td>
+                        <td><?= isset(LAPProductModel::$arrType[$pproduct['type']]) ? LAPProductModel::$arrType[$pproduct['type']] : ''?></td>
+                        <td><?= $pproduct['scale'] ?></td>
+                        <td><?= $pproduct['expected_date'] ?></td>
+                        <td><?= isset(LAPProductModel::$arrMode[$pproduct['mode']]) ? LAPProductModel::$arrMode[$pproduct['mode']] : '' ?></td>
+                        <td><?= isset(LAPProductModel::$arrStatus[$pproduct['status']]) ? LAPProductModel::$arrStatus[$pproduct['status']] : '' ?></td>
                         <td class="tc">
-                            <a href="<?= Yii::app()->createUrl('product/edit/', array('ppid' => $pproduct->ppid)) ?>">编辑</a>
+                            <a href="<?= Yii::app()->createUrl('PProduct/edit/', array('ppid' => $pproduct['ppid'])) ?>">编辑</a>
                         </td>
                     </tr>
                     <?php

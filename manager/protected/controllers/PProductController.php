@@ -65,78 +65,132 @@ class PProductController extends AdminBaseController
             Yii::app()->end();
         }
 
-        $ppid   = Yii::app()->request->getParam('ppid','');
-        $opType = Yii::app()->request->getParam('opType','');
-        $arrData = array(
-            'type'          => trim(Yii::app()->request->getParam('type','')),
-            'name'          => trim(Yii::app()->request->getParam('name','')),
-            'bank_account'       => trim(Yii::app()->request->getParam('bank_account','')),
-            'bank_address'      => trim(Yii::app()->request->getParam('bank_address','')),
-            'handler'       => trim(Yii::app()->request->getParam('handler','')),
-            'status'    => Yii::app()->request->getParam('status','')
-        );
-        if( $opType == LAAccountModel::OP_TYPE_ADD)
+        if (!$ppid = Yii::app()->request->getParam('ppid'))
         {
-            $scenario = SpvEditFormModel::SPV_NEW;
-            $msg = '新增操作';
-        }
-        else
-        {
-            $scenario = SpvEditFormModel::SPV_EDIT;
-            $msg = '修改操作';
-        }
+            $pproduct = new PProductFormModel();
+            $pproduct->setAttributes($_POST);
+            $pproduct->validate();
+            $pproductData = $pproduct->getData();
 
-        $request = new SpvEditFormModel();
-        $request->setScenario($scenario);
-        $request->setAttributes($arrData);
-        $request->validate();
-        if ($errors = $request->getErrors())
-        {
-            $this->ajaxReturn(LError::INTERNAL_ERROR, '数据不能为空');
-        }
+            $pproductDetail = new PProductDetailFormModel();
+            $pproductDetail->setAttributes($_POST);
+            $pproductDetail->validate();
+            $pproductDetailData = $pproductDetail->getData();
 
-        if( $opType == LAAccountModel::OP_TYPE_ADD)
-        {
-            if(LAAccountService::Create($arrData))
+            if(LAPProductService::create($pproductData, $pproductDetailData))
             {
-                $msg .= ',成功';
-                $code = LError::SUCCESS;
+                $this->ajaxReturn(LError::SUCCESS, "创建母产品成功！", array("url" => Yii::app()->createUrl("PProduct/list" )));
             }
             else
             {
-                $msg .= ',失败';
-                $code = LError::INTERNAL_ERROR;
+                $this->ajaxReturn(LError::INTERNAL_ERROR, "创建母产品失败！");
             }
         }
         else
         {
-            if(LAAccountService::Update($id, $arrData))
+            $pproduct = new PProductFormModel();
+            $pproduct->setAttributes($_POST);
+            $pproduct->validate();
+            $pproductData = $pproduct->getData();
+
+            $pproductDetail = new PProductDetailFormModel();
+            $pproductDetail->setAttributes($_POST);
+            $pproductDetail->validate();
+            $pproductDetailData = $pproductDetail->getData();
+
+            if(LAPProductService::update($ppid, $pproductData, $pproductDetailData))
             {
-                $msg .= ',成功';
-                $code = LError::SUCCESS;
+                $this->ajaxReturn(LError::SUCCESS, "更新母产品成功！", array("url" => Yii::app()->createUrl("PProduct/list" )));
             }
             else
             {
-                $msg .= ',失败';
-                $code = LError::INTERNAL_ERROR;
+                $this->ajaxReturn(LError::INTERNAL_ERROR, "更新母产品失败！");
             }
         }
-
-        $this->ajaxReturn($code, $msg, array("url" => Yii::app()->createUrl("account/list")));
     }
+
+    public function actionDelete()
+    {
+        LAPermissionService::checkMenuPermission($this->menuId, 2001104);
+
+        if (!$ppids = Yii::app()->request->getParam('ppids'))
+        {
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "缺少必要参数！");
+        }
+
+        $arrPPids = explode(',', $ppids);
+        $succID = $failID = '';
+        foreach($arrPPids as $ppid)
+        {
+            $pproduct = LAPProductService::getById($ppid);
+
+            if (LAPProductService::updatePProductStatus($pproduct, LAPProductModel::STATUS_DELETE))
+            {
+                $succID .= empty($succID) ? $ppid : ',' . $ppid;
+            }
+            else
+            {
+                $failID .= empty($failID) ? $ppid : ',' . $ppid;
+            }
+        }
+
+        if(!$failID)
+        {
+            $this->ajaxReturn(LError::SUCCESS, "母产品ID:{$succID}删除成功");
+        }
+        else
+        {
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "母产品ID:{$succID}删除成功;母产品ID:{$failID}删除失败");
+        }
+    }
+
+    public function actionDuration()
+    {
+        LAPermissionService::checkMenuPermission($this->menuId, 2001105);
+
+        if (!$ppids = Yii::app()->request->getParam('ppids'))
+        {
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "缺少必要参数！");
+        }
+
+        $arrPPids = explode(',', $ppids);
+        $succID = $failID = '';
+        foreach($arrPPids as $ppid)
+        {
+            $pproduct = LAPProductService::getById($ppid);
+
+            if (LAPProductService::updatePProductStatus($pproduct, LAPProductModel::STATUS_DURATION))
+            {
+                $succID .= empty($succID) ? $ppid : ',' . $ppid;
+            }
+            else
+            {
+                $failID .= empty($failID) ? $ppid : ',' . $ppid;
+            }
+        }
+
+        if(!$failID)
+        {
+            $this->ajaxReturn(LError::SUCCESS, "母产品ID:{$succID}转存续成功");
+        }
+        else
+        {
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "母产品ID:{$succID}转存续成功;母产品ID:{$failID}转存续失败");
+        }
+    }
+
 }
 
-class PProductEditFormModel extends AdminBaseFormModel
+class PProductFormModel extends AdminBaseFormModel
 {
     const PPRODUCT_NEW           = 'pproduct_new';
     const PPRODUCT_EDIT          = 'pproduct_edit';
 
-    public $ppid;
     public $fund_code;
     public $name;
     public $goods_type;
     public $struct;
-    public $project_type;
+    public $type;
     public $mode;
     public $scale;
     public $remain;
@@ -161,14 +215,37 @@ class PProductEditFormModel extends AdminBaseFormModel
     public function rules()
     {
         return array(
-            array('und_code, name, goods_type, struct, project_type, mode, scale, remain, income_rate_E6, buy_rate_E6,
+            array('fund_code, name, goods_type, struct, type, mode, scale, remain, income_rate_E6, buy_rate_E6,
             establish, value_date, duration_data, expected_date, interest_principle, management, trusteeship, epiboly, 
-            service_fees, adviser_fees, lending_rate_E6, investment_term, is_exchang, is_dely, pay_rule, create_time, update_time', 'safe'),
+            service_fees, adviser_fees, lending_rate_E6, investment_term, is_exchange, is_dely, pay_rule, create_time, update_time', 'safe'),
         );
+    }
+
+    public function getData()
+    {
+        $data = $this->attributes;
+        $data['income_rate_E6'] = $this->income_rate_E6 * LConstService::E4;
+        $data['buy_rate_E6'] = $this->buy_rate_E6 * LConstService::E4;
+        $data['lending_rate_E6'] = $this->lending_rate_E6 * LConstService::E4;
+
+        return $this->trimData($data);
+    }
+
+    public function trimData($data)
+    {
+        foreach ($data as $key =>  $val)
+        {
+            if (!is_array($val))
+            {
+                $data[$key] = trim($val);
+            }
+        }
+
+        return $data;
     }
 }
 
-class PProductDetailFormModel extends AdminBaseController
+class PProductDetailFormModel extends AdminBaseFormModel
 {
     const PPRODUCT_DETAIL_NEW           = 'pproduct_detail_new';
     const PPRODUCT_DETAIL_EDIT          = 'pproduct_detail_edit';
@@ -203,5 +280,25 @@ class PProductDetailFormModel extends AdminBaseController
             project_address, project_address_img, project_address_explain, project_summary, project_detail, manager, team_leader,
             project_manager, trustee, project_type, department, risk_level, legal_structure, publishing_organization',  'safe'),
         );
+    }
+
+    public function getData()
+    {
+        $data = $this->attributes;
+
+        return $this->trimData($data);
+    }
+
+    public function trimData($data)
+    {
+        foreach ($data as $key =>  $val)
+        {
+            if (!is_array($val))
+            {
+                $data[$key] = trim($val);
+            }
+        }
+
+        return $data;
     }
 }

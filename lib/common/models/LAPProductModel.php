@@ -16,6 +16,14 @@ class LAPProductModel extends LActiveRecord
     const SELECT_YES = 1; //是
     const SELECT_NO = 2;  //否
 
+    //状态
+    public static $arrStatus = array(
+        self::STATUS_ESTABLISH => '成立',
+        self::STATUS_DURATION => '存续',
+        self::STATUS_FINISH => '已结息',
+        self::STATUS_DELETE => '已废弃'
+    );
+
     //货源属性
     const GOODS_TYPE_EXCHANGE = 1;
     const GOODS_TYPE_NEW = 2;
@@ -35,11 +43,11 @@ class LAPProductModel extends LActiveRecord
     );
 
     //产品类型
-    const PROJECT_TYPE_FI = 1;
-    const PRODUCT_TYPE_SM = 2;
-    public static $arrProjectType = array(
-        self::PROJECT_TYPE_FI => '固定收益',
-        self::PRODUCT_TYPE_SM => '浮云收益'
+    const TYPE_FI = 1;
+    const TYPE_SM = 2;
+    public static $arrType = array(
+        self::TYPE_FI => '固定收益',
+        self::TYPE_SM => '浮云收益'
     );
 
     //收益分配方式

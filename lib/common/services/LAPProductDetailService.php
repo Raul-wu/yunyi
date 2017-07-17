@@ -15,6 +15,17 @@ class LAPProductDetailService
         return LAPProductDetailModel::model()->findByPk($ppid);
     }
 
+    public static function getByPPid($ppid)
+    {
+        $criteria = new CDbCriteria();
+        $criteria->compare('ppid', $ppid);
+        $objPProductDetail = LAPProductDetailModel::model()->find($criteria);
+
+        $arrPProductDetail =$objPProductDetail->attributes;
+        unset($arrPProductDetail['create_time'],$arrPProductDetail['update_time']);
+        return $arrPProductDetail;
+    }
+
     public static function create($ppid, $data)
     {
         if(empty($ppid) || empty($data))
@@ -24,7 +35,7 @@ class LAPProductDetailService
         }
 
         $data['ppid'] = $ppid;
-        $data['create_time'] = $data['update_time'] = time();
+        $data['create_time'] = $data['update_time'] = date('Y-m-d H:i:s', time());
 
         $objPProductDetail = new LAPProductDetailModel();
         $objPProductDetail->setAttributes($data, false);
@@ -48,7 +59,8 @@ class LAPProductDetailService
             return false;
         }
 
-        $objPProductDetail = self::getByID($ppid);
+        $arrPProductDetail = self::getByPPid($ppid);
+        $objPProductDetail = self::getByID($arrPProductDetail['pdid']);
 
         if(!$objPProductDetail)
         {
@@ -56,7 +68,7 @@ class LAPProductDetailService
             return false;
         }
 
-        $data['update_time'] = time();
+        $data['update_time'] = date('Y-m-d H:i:s', time());
 
         $objPProductDetail->setAttributes($data, false);
         if ($objPProductDetail->save())

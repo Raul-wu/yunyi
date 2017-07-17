@@ -10,7 +10,7 @@ class LAPProductService
 {
     const LOG_PREFIX = 'admin.services.LAPProductService.';
 
-    public static function getAll($arrCondition = array(), $page = 1, $perPage = 10, $order = '')
+    public static function getAll($arrCondition = array(), $page = 1, $perPage = 5, $order = '')
     {
         $criteria = new CDbCriteria();
         $strUrl = '?';
@@ -48,7 +48,7 @@ class LAPProductService
         $transaction = Yii::app()->yuyinDB->beginTransaction();
         try
         {
-            $pproduct = self::create($pproductData);
+            $pproduct = self::CreatePProduct($pproductData);
 
             if(!isset($pproduct->ppid))
             {
@@ -80,7 +80,7 @@ class LAPProductService
         $transaction = Yii::app()->yuyinDB->beginTransaction();
         try
         {
-            if(self::update($ppid, $pproductData))
+            if(self::UpdatePProduct($ppid, $pproductData))
             {
                 if(LAPProductDetailService::update($ppid, $pproductDetailData))
                 {
@@ -109,7 +109,8 @@ class LAPProductService
             return false;
         }
 
-        $data['create_time'] = $data['update_time'] = time();
+        $data['create_time'] = $data['update_time'] = date('Y-m-d H:i:s', time());
+        $data['status'] = LAPProductModel::STATUS_ESTABLISH;
 
         $objPProduct = new LAPProductModel();
         $objPProduct->setAttributes($data, false);
@@ -141,7 +142,7 @@ class LAPProductService
             return false;
         }
 
-        $data['update_time'] = time();
+        $data['update_time'] = date('Y-m-d H:i:s', time());
 
         $objPProduct->setAttributes($data, false);
         if ($objPProduct->save())
@@ -164,7 +165,7 @@ class LAPProductService
     public static function getPProductAndPProductDetail($ppid)
     {
         $pproduct = self::getById($ppid);
-        $pproductDetail = LAPProductDetailService::getByID($ppid);
+        $pproductDetail = LAPProductDetailService::getByPPid($ppid);
 
         $pproductById = array();
         foreach($pproduct as $key => $value)
@@ -178,5 +179,17 @@ class LAPProductService
         }
 
         return $pproductById;
+    }
+
+    public static function updatePProductStatus($pproduct, $status)
+    {
+        $pproduct->status = $status;
+        $pproduct->update_time = date('Y-m-d H:i:s');
+        if(!$pproduct->save())
+        {
+            Yii::log(sprintf("Update pproduct status Fail"),CLogger::LEVEL_ERROR, self::LOG_PREFIX . __FUNCTION__);
+            return false;
+        }
+        return true;
     }
 }
