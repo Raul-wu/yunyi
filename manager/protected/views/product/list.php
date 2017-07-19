@@ -50,15 +50,15 @@ Yii::app()->clientScript->registerScript("copyPProductPermission", 'window.copyP
             <table class="pure-table">
                 <colgroup>
                     <col class="w_60" />
-                    <col class="w_100" />
-                    <col class="w_100" />
-                    <col class="w_100" />
-                    <col class="w_100" />
-                    <col class="w_100" />
-                    <col class="w_100" />
-                    <col class="w_100" />
-                    <col class="w_100" />
-                    <col class="w_80" />
+                    <col class="w_120" />
+                    <col class="w_120" />
+                    <col class="w_120" />
+                    <col class="w_120" />
+                    <col class="w_120" />
+                    <col class="w_120" />
+                    <col class="w_120" />
+                    <col class="w_120" />
+                    <col class="w_60" />
                 </colgroup>
                 <thead>
                 <tr>
@@ -80,18 +80,19 @@ Yii::app()->clientScript->registerScript("copyPProductPermission", 'window.copyP
                 foreach ($products as $key => $product)
                 {
                     ?>
-                    <tr class="<?= $key % 2 ? "" : "pure-table-odd"?>  pure-table-tr" id="tr<?= $pproduct['ppid'] ?>">
-                        <td><input class="check"  type="checkbox" data-id="<?= $pproduct['ppid'] ?>"></td>
-                        <td><?= $pproduct['fund_code'] ?></td>
-                        <td><?= $pproduct['name'] ?></td>
-                        <td><?= isset(LAPProductModel::$arrType[$pproduct['type']]) ? LAPProductModel::$arrType[$pproduct['type']] : ''?></td>
-                        <td><?= $pproduct['scale'] ?></td>
-                        <td><?= $pproduct['expected_date'] ?></td>
-                        <td><?= isset(LAPProductModel::$arrMode[$pproduct['mode']]) ? LAPProductModel::$arrMode[$pproduct['mode']] : '' ?></td>
-                        <td><?= isset(LAPProductModel::$arrStatus[$pproduct['status']]) ? LAPProductModel::$arrStatus[$pproduct['status']] : '' ?></td>
-                        <td><?= isset(LAPProductModel::$arrStatus[$pproduct['status']]) ? LAPProductModel::$arrStatus[$pproduct['status']] : '' ?></td>
+                    <tr class="<?= $key % 2 ? "" : "pure-table-odd"?>  pure-table-tr" id="tr<?= $product['pid'] ?>">
+                        <td><input class="check"  type="checkbox" data-id="<?= $product['pid'] ?>"></td>
+                        <td><?= $product['pproduct']['ppid'] ?></td>
+                        <td><?= $product['pproduct']['fund_code'] ?></td>
+                        <td><?= $product['pproduct']['name'] ?></td>
+                        <td><?= $product['total_count']?></td>
+                        <td><?= $product['expected_income_rate_E6'] ?></td>
+                        <td><?= $product['pproduct']['value_date'] ?></td>
+                        <td><?= $product['pproduct']['expected_date'] ?></td>
+                        <td><?= isset(LAPProductModel::$arrMode[$product['pproduct']['mode']]) ? LAPProductModel::$arrMode[$product['pproduct']['mode']] : '' ?></td>
+                        <td><?= isset(LAPProductModel::$arrStatus[$product['status']]) ? LAPProductModel::$arrStatus[$product['status']] : '' ?></td>
                         <td class="tc">
-                            <a href="<?= Yii::app()->createUrl('PProduct/edit/', array('ppid' => $pproduct['ppid'])) ?>">编辑</a>
+                            <a href="<?= Yii::app()->createUrl('product/edit/', array('pid' => $product['pid'], 'ppid'=>$product['ppid'])) ?>">编辑</a>
                         </td>
                     </tr>
                     <?php

@@ -24,7 +24,7 @@ class LAProductModel extends LActiveRecord
 
     public function relations()
     {
-        return array('pproduct' => array(self::HAS_ONE, 'LAPProductModel', '', 'on' => 't.ppid = pproduct.ppid', 'joinType' => 'LEFT JOIN','select'=>'pproduct.ppid,pproduct.fund_code,pproduct.name,pproduct.value_date,pproduct.expected_date,pproduct.mode'),);
+        return array('pproduct' => array(self::HAS_ONE, 'LAPProductModel', '', 'on' => 't.ppid = pproduct.ppid'),);
     }
 
     public function tableName()

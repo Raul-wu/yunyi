@@ -21,28 +21,19 @@ class LAProductService
             $strUrl .= "&fund_code={$arrCondition['fund_code']}";
         }
 
-        $criteria->select = 't.total_count, t.expected_income_rate_E6';
+//        $criteria->select = 't.pid, t.ppid, t.total_count, t.expected_income_rate_E6,pp.fund_code,name,value_date,expected_date,mode';
         $criteria->order = $order ? $order : 'pid desc ';
-//        $criteria->join = 'LEFT JOIN pproduct pp ON p.ppid = pp.ppid ';
+//        $criteria->join = 'LEFT JOIN pproduct pp ON t.ppid = pp.ppid ';
 
-        $count = LAProductModel::model()->with('pproduct')->count($criteria);
+        $count = LAProductModel::model()->count($criteria);
 
         $criteria->limit  = $perPage;
         $criteria->offset = ($perPage * ($page - 1));
         $pageBar = LAdminPager::getPages($count, $page, $perPage, $strUrl);
 
-        $objPProduct = LAProductModel::model()->with('pproduct')->findAll($criteria);
+        $product = LAProductModel::model()->with('pproduct')->findAll($criteria);
 
-        $arrPProduct = array_map(function($list){
-            return $list->attributes;
-        }, $objPProduct);
-
-        foreach($arrPProduct as &$pproduct)
-        {
-            $pproduct['product'] = self::getProductByPPid($pproduct['ppid']);
-        }
-
-        return array('productAll' => $arrPProduct,'pageBar' => $pageBar,'count' => $count);
+        return array('productAll' => $product,'pageBar' => $pageBar,'count' => $count);
     }
 
     public static function create($ppid, $data)
