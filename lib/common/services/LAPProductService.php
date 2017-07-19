@@ -138,7 +138,7 @@ class LAPProductService
 
         if(!$objPProduct)
         {
-            Yii::log(sprintf("Update pproduct Fail, Get Empty accountInfo, id:[%s]", $ppid),CLogger::LEVEL_ERROR, self::LOG_PREFIX . __FUNCTION__);
+            Yii::log(sprintf("Update pproduct Fail, Get Empty pproduct info, id:[%s]", $ppid),CLogger::LEVEL_ERROR, self::LOG_PREFIX . __FUNCTION__);
             return false;
         }
 

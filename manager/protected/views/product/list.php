@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: rwu
- * Date: 7/11/17
- * Time: 20:52
+ * Date: 7/18/17
+ * Time: 09:09
  */
 Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/js/lib/art_dialog/skins/black.css?v=" . STATIC_VER);
 Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/js/lib/art_dialog/jquery.artDialog.source.js?v=" . STATIC_VER);
@@ -11,10 +11,9 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
 
 Yii::app()->clientScript->registerScript("durationUrl", 'window.durationUrl="'.Yii::app()->createUrl('/PProduct/duration/').'";', CClientScript::POS_END);
 Yii::app()->clientScript->registerScript("subCreate", 'window.subCreate="'.Yii::app()->createUrl("p/new").'";', CClientScript::POS_END);
+Yii::app()->clientScript->registerScript("subShow", 'window.subShow="'.Yii::app()->createUrl('p/list').'";', CClientScript::POS_END);
 Yii::app()->clientScript->registerScript("url", 'window.url="'.Yii::app()->createUrl('PProduct/edit').'";', CClientScript::POS_END);
 Yii::app()->clientScript->registerScript("deletePProduct", 'window.deletePProduct="'.Yii::app()->createUrl('PProduct/delete').'";', CClientScript::POS_END);
-Yii::app()->clientScript->registerScript("subCreate", 'window.subCreate="'.Yii::app()->createUrl("product/add").'";', CClientScript::POS_END);
-Yii::app()->clientScript->registerScript("subShow", 'window.subShow="'.Yii::app()->createUrl('product/list').'";', CClientScript::POS_END);
 
 //列表页按钮权限
 Yii::app()->clientScript->registerScript("delPProductPermission", 'window.delPProductPermission="'.LAPermissionService::selectMenuPermission($this->menuId, 2001107).'";', CClientScript::POS_END);
@@ -41,7 +40,6 @@ Yii::app()->clientScript->registerScript("copyPProductPermission", 'window.copyP
     </div>
     <div class="quick_action fix_panel">
         <div class="action_mod"  >
-            <a id="btnPh" href="<?php echo Yii::app()->createUrl("PProduct/add") ?>" class="pure-button pure-button-primary " style="">创建母产品</a>
 
         </div>
     </div>
@@ -52,23 +50,26 @@ Yii::app()->clientScript->registerScript("copyPProductPermission", 'window.copyP
             <table class="pure-table">
                 <colgroup>
                     <col class="w_60" />
-                    <col class="w_80" />
-                    <col class="w_80" />
-                    <col class="w_80" />
-                    <col class="w_80" />
-                    <col class="w_80" />
-                    <col class="w_80" />
-                    <col class="w_80" />
+                    <col class="w_100" />
+                    <col class="w_100" />
+                    <col class="w_100" />
+                    <col class="w_100" />
+                    <col class="w_100" />
+                    <col class="w_100" />
+                    <col class="w_100" />
+                    <col class="w_100" />
                     <col class="w_80" />
                 </colgroup>
                 <thead>
                 <tr>
                     <th><input type="checkbox" id="selectAll"></th>
+                    <th>产品ID</th>
                     <th>基金代码</th>
-                    <th>项目名称</th>
-                    <th>收益类型</th>
-                    <th>募集规模（万元）</th>
-                    <th>预计到期</th>
+                    <th>产品名称</th>
+                    <th>额度</th>
+                    <th>预期收益</th>
+                    <th>起息日</th>
+                    <th>到期日</th>
                     <th>分配方式</th>
                     <th>状态</th>
                     <th>操作</th>
@@ -76,7 +77,7 @@ Yii::app()->clientScript->registerScript("copyPProductPermission", 'window.copyP
                 </thead>
                 <tbody>
                 <?php
-                foreach ($pproducts as $key => $pproduct)
+                foreach ($products as $key => $product)
                 {
                     ?>
                     <tr class="<?= $key % 2 ? "" : "pure-table-odd"?>  pure-table-tr" id="tr<?= $pproduct['ppid'] ?>">
@@ -87,6 +88,7 @@ Yii::app()->clientScript->registerScript("copyPProductPermission", 'window.copyP
                         <td><?= $pproduct['scale'] ?></td>
                         <td><?= $pproduct['expected_date'] ?></td>
                         <td><?= isset(LAPProductModel::$arrMode[$pproduct['mode']]) ? LAPProductModel::$arrMode[$pproduct['mode']] : '' ?></td>
+                        <td><?= isset(LAPProductModel::$arrStatus[$pproduct['status']]) ? LAPProductModel::$arrStatus[$pproduct['status']] : '' ?></td>
                         <td><?= isset(LAPProductModel::$arrStatus[$pproduct['status']]) ? LAPProductModel::$arrStatus[$pproduct['status']] : '' ?></td>
                         <td class="tc">
                             <a href="<?= Yii::app()->createUrl('PProduct/edit/', array('ppid' => $pproduct['ppid'])) ?>">编辑</a>

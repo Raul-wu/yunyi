@@ -15,13 +15,9 @@ define([
             },
             {
                 name: "创建子产品",
-                click: function(id) {
-                    if ($.inArray(parseInt(id), canDistributePPids) != -1) {
-                        url = subCreate + '?ppid=' + id;
+                click: function(ppid) {
+                        url = subCreate + '?ppid=' + ppid;
                         window.location.href = url;
-                    } else {
-                        msgDialog("该母产品状态不允许创建子产品！");
-                    }
                 },
                 // canShowFunc: function() {
                 //     if(!createProductPermission)
@@ -32,7 +28,8 @@ define([
             },
             {
                 name: "查看子产品",
-                click: function(ids) {
+                click: function(ppid) {
+                    url = subShow + '?ppid=' + ppid;
                     window.location.href = url;
                 },
                 // canShowFunc: function(){
@@ -80,7 +77,30 @@ define([
     });
     widget.listen();
 
-    //类固定母产品转存续
+    function delPProduct() {
+        var chk_ids=[];
+        $(":checkbox:checked").each(function(){
+            chk_ids.push($(this).attr('data-id'));
+        });
+
+        var params={};
+        params['ppids'] = chk_ids.join(',');
+        params[$("#tkName").attr('tkName')] = $("#tkName").val();
+        $.ajax({
+            'url': deletePProduct,
+            'data': params,
+            'dataType': 'json',
+            'type': 'POST',
+            'success': function (data) {
+                if(!data.retCode){
+                    msgDialog(data.retMsg, 'reload');
+                }else{
+                    msgDialog(data.retMsg);
+                }
+            }
+        });
+    }
+
     function turnDuration() {
         var chk_ids=[];
         $(":checkbox:checked").each(function(){
