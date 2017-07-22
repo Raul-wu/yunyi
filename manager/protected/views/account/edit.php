@@ -27,23 +27,23 @@ Yii::app()->clientScript->registerScript("saveUrl", 'window.saveUrl="/account/sa
             <div class="editor_form">
                 <div class="pure-g">
                     <div class="pure-u-1"><label>账户性质</label>
-                        <input type="text" class="pure-input-2-3 submit" name="type" id="type" placeholder="募集户" maxlength="255" value="<?= isset($type) ? $type : ''; ?>" />
+                        <input type="text" class="pure-input-2-3 submit" name="type" id="type" placeholder="必填" maxlength="255" value="<?= isset($type) ? $type : ''; ?>" />
                     </div>
 
                     <div class="pure-u-1"><label>户名</label>
-                        <input type="text" class="pure-input-2-3 submit" name="name" id="name" placeholder="户名" maxlength="255" value="<?= isset($name) ? $name : ''; ?>">
+                        <input type="text" class="pure-input-2-3 submit" name="name" id="name" placeholder="必填" maxlength="255" value="<?= isset($name) ? $name : ''; ?>">
                     </div>
 
                     <div class="pure-u-1"><label>银行账号</label>
-                        <input type="text" class="pure-input-2-3 submit" name="bank_account" id="bank_account" placeholder="" maxlength="255" value="<?= isset($bank_account) ? $bank_account : ''; ?>">
+                        <input type="text" class="pure-input-2-3 submit" name="bank_account" id="bank_account" placeholder="必填" maxlength="255" value="<?= isset($bank_account) ? $bank_account : ''; ?>">
                     </div>
 
                     <div class="pure-u-1"><label>开户行</label>
-                        <input type="text" class="pure-input-2-3 submit" name="bank_address" id="bank_address" placeholder="" maxlength="255" value="<?= isset($bank_address) ? $bank_address : ''; ?>">
+                        <input type="text" class="pure-input-2-3 submit" name="bank_address" id="bank_address" placeholder="必填" maxlength="255" value="<?= isset($bank_address) ? $bank_address : ''; ?>">
                     </div>
 
                     <div class="pure-u-1"><label>经办人</label>
-                        <input type="text" class="pure-input-2-3 submit" name="handler" id="handler" placeholder="" maxlength="255" value="<?= isset($handler) ? $handler : ''; ?>">
+                        <input type="text" class="pure-input-2-3 submit" name="handler" id="handler" placeholder="必填" maxlength="255" value="<?= isset($handler) ? $handler : ''; ?>">
                     </div>
 
 

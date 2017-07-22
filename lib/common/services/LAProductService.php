@@ -21,11 +21,9 @@ class LAProductService
             $strUrl .= "&fund_code={$arrCondition['fund_code']}";
         }
 
-//        $criteria->select = 't.pid, t.ppid, t.total_count, t.expected_income_rate_E6,pp.fund_code,name,value_date,expected_date,mode';
         $criteria->order = $order ? $order : 'pid desc ';
-//        $criteria->join = 'LEFT JOIN pproduct pp ON t.ppid = pp.ppid ';
 
-        $count = LAProductModel::model()->count($criteria);
+        $count = LAProductModel::model()->with('pproduct')->count($criteria);
 
         $criteria->limit  = $perPage;
         $criteria->offset = ($perPage * ($page - 1));

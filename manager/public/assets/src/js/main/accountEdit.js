@@ -25,6 +25,12 @@ require([
                 if(!data.retCode) {
                     msgDialog(data.retMsg, data.retData.url);
                 }else{
+                    if (data.retData.errors) {
+                        $.each(data.retData.errors, function(i) {
+                            $form.find('[name=' + i + ']').addClass('error');
+                            $form.find('[name=' + i + ']').attr('placeholder','必填');
+                        });
+                    }
                     msgDialog(data.retMsg);
                 }
             }

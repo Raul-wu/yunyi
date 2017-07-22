@@ -81,16 +81,16 @@ class AccountController extends AdminBaseController
         );
         if( $opType == LAAccountModel::OP_TYPE_ADD)
         {
-            $scenario = SpvEditFormModel::SPV_NEW;
+            $scenario = AccountEditFormModel::ACCOUNT_NEW;
             $msg = '新增操作';
         }
         else
         {
-            $scenario = SpvEditFormModel::SPV_EDIT;
+            $scenario = AccountEditFormModel::ACCOUNT_EDIT;
             $msg = '修改操作';
         }
 
-        $request = new SpvEditFormModel();
+        $request = new AccountEditFormModel();
         $request->setScenario($scenario);
         $request->setAttributes($arrData);
         $request->validate();
@@ -132,10 +132,10 @@ class AccountController extends AdminBaseController
 
 
 
-class SpvEditFormModel extends AdminBaseFormModel
+class AccountEditFormModel extends AdminBaseFormModel
 {
-    const SPV_NEW           = 'account_new';
-    const SPV_EDIT          = 'account_edit';
+    const ACCOUNT_NEW           = 'account_new';
+    const ACCOUNT_EDIT          = 'account_edit';
 
     public $id;
     public $type;
@@ -149,6 +149,8 @@ class SpvEditFormModel extends AdminBaseFormModel
     {
         return array(
             array('type, name, bank_account, bank_address, handler, status, create_time, update_time', 'safe'),
+
+            array('type, name, bank_account, bank_address, handler, status', 'required', 'on' => array(self::ACCOUNT_NEW, self::ACCOUNT_EDIT)),
         );
     }
 }
