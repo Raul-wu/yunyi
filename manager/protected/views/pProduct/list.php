@@ -31,7 +31,7 @@ Yii::app()->clientScript->registerScript("copyPProductPermission", 'window.copyP
             <form class="pure-form">
                 <div class="pure-g">
                     <div class="pure-u-2-3">
-                        <input type="text"   placeholder="基金代码" class="pure-input-1-1"  value="<?=isset($fund_code) ? $fund_code : ''?>" name="fund_code" >
+                        <input type="text"   placeholder="基金代码" class="pure-input-1-1" id="fund_code" value="<?=isset($fund_code) ? $fund_code : ''?>" name="fund_code" >
                         <button type="submit" class="pure-button pure-button-primary">筛选</button>
                         <button type="button" id="reset" class="pure-button">重置</button>
                     </div>
@@ -85,7 +85,7 @@ Yii::app()->clientScript->registerScript("copyPProductPermission", 'window.copyP
                         <td><?= $pproduct['name'] ?></td>
                         <td><?= isset(LAPProductModel::$arrType[$pproduct['type']]) ? LAPProductModel::$arrType[$pproduct['type']] : ''?></td>
                         <td><?= $pproduct['scale'] ?></td>
-                        <td><?= $pproduct['expected_date'] ?></td>
+                        <td><?= date('Y-m-d',$pproduct['expected_date']) ?></td>
                         <td><?= isset(LAPProductModel::$arrMode[$pproduct['mode']]) ? LAPProductModel::$arrMode[$pproduct['mode']] : '' ?></td>
                         <td><?= isset(LAPProductModel::$arrStatus[$pproduct['status']]) ? LAPProductModel::$arrStatus[$pproduct['status']] : '' ?></td>
                         <td class="tc">

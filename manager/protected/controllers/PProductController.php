@@ -68,13 +68,19 @@ class PProductController extends AdminBaseController
         if (!$ppid = Yii::app()->request->getParam('ppid'))
         {
             $pproduct = new PProductFormModel();
+            $pproduct->setScenario(PProductFormModel::PPRODUCT_NEW);
             $pproduct->setAttributes($_POST);
             $pproduct->validate();
+            if ($errors = $pproduct->getErrors())
+            {
+                $this->ajaxReturn(LError::INTERNAL_ERROR, '数据不能为空');
+            }
             $pproductData = $pproduct->getData();
 
             $pproductDetail = new PProductDetailFormModel();
             $pproductDetail->setAttributes($_POST);
             $pproductDetail->validate();
+
             $pproductDetailData = $pproductDetail->getData();
 
             if(LAPProductService::create($pproductData, $pproductDetailData))
@@ -89,8 +95,13 @@ class PProductController extends AdminBaseController
         else
         {
             $pproduct = new PProductFormModel();
+            $pproduct->setScenario(PProductFormModel::PPRODUCT_EDIT);
             $pproduct->setAttributes($_POST);
             $pproduct->validate();
+            if ($errors = $pproduct->getErrors())
+            {
+                $this->ajaxReturn(LError::INTERNAL_ERROR, '数据不能为空');
+            }
             $pproductData = $pproduct->getData();
 
             $pproductDetail = new PProductDetailFormModel();
@@ -218,6 +229,8 @@ class PProductFormModel extends AdminBaseFormModel
             array('fund_code, name, goods_type, struct, type, mode, scale, remain, income_rate_E6, buy_rate_E6,
             establish, value_date, duration_data, expected_date, interest_principle, management, trusteeship, epiboly, 
             service_fees, adviser_fees, lending_rate_E6, investment_term, is_exchange, is_dely, pay_rule, create_time, update_time', 'safe'),
+
+            array('fund_code, name, scale, income_rate_E6, value_date, expected_date', 'required', 'on' => array(self::PPRODUCT_NEW, self::PPRODUCT_EDIT))
         );
     }
 
@@ -227,6 +240,9 @@ class PProductFormModel extends AdminBaseFormModel
         $data['income_rate_E6'] = $this->income_rate_E6 * LConstService::E4;
         $data['buy_rate_E6'] = $this->buy_rate_E6 * LConstService::E4;
         $data['lending_rate_E6'] = $this->lending_rate_E6 * LConstService::E4;
+        $data['establish'] = strtotime($this->establish);
+        $data['value_date'] = strtotime($this->value_date);
+        $data['expected_date'] = strtotime($this->expected_date);
 
         return $this->trimData($data);
     }

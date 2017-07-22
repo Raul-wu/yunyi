@@ -29,11 +29,11 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                         <input type="hidden" key=''token" class="submit" name="<?= Yii::app()->request->csrfTokenName ?>" value="<?= Yii::app()->request->csrfToken ?>" csrfInput/>
 
                         <div class="pure-u-1"><label>基金代码</label>
-                            <input type="text" class="pure-input-1-2  submit"  name="fund_code" maxlength="255" value="<?= isset($pproduct['fund_code']) ? $pproduct['fund_code'] : '';?>">
+                            <input type="text" class="pure-input-1-2  submit"  name="fund_code" maxlength="255" placeholder="必填" value="<?= isset($pproduct['fund_code']) ? $pproduct['fund_code'] : '';?>"> *
                         </div>
 
                         <div class="pure-u-1"><label>项目名称</label>
-                            <input type="text" class="pure-input-1-2  submit"  name="name" maxlength="255" value="<?= isset($pproduct['name']) ? $pproduct['name'] : '';?>">
+                            <input type="text" class="pure-input-1-2  submit"  name="name" maxlength="255" placeholder="必填" value="<?= isset($pproduct['name']) ? $pproduct['name'] : '';?>"> *
                         </div>
 
                         <div class="pure-u-1"><label>货源属性</label>
@@ -89,7 +89,7 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                         </div>
 
                         <div class="pure-u-1"><label>募集规模</label>
-                            <input type="text" class="pure-input-2-3 submit" name="scale" value="<?= isset($pproduct['scale'])  ? $pproduct['scale'] : ' '?>">
+                            <input type="text" class="pure-input-2-3 submit" name="scale" placeholder="必填" value="<?= isset($pproduct['scale'])  ? $pproduct['scale'] : ' '?>"> *
                         </div>
 
                         <div class="pure-u-md-1-2"><label>剩余额度</label>
@@ -97,19 +97,19 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                         </div>
 
                         <div class="pure-u-md-1-2"><label>收益率</label>
-                            <input type="text" class="pure-input-2-3 submit" name="income_rate_E6" value="<?= isset($pproduct['income_rate_E6']) ? $pproduct['income_rate_E6'] : ''?>">
+                            <input type="text" class="pure-input-2-3 submit" name="income_rate_E6" placeholder="必填" value="<?= isset($pproduct['income_rate_E6']) ? $pproduct['income_rate_E6'] / LConstService::E4 : ''?>"> *
                         </div>
 
                         <div class="pure-u-md-1-2"><label>认购费</label>
-                            <input type="text" class="pure-input-2-3 submit" name="buy_rate_E6" value="<?= isset($pproduct['buy_rate_E6']) ? $pproduct['buy_rate_E6'] : ''?>">
+                            <input type="text" class="pure-input-2-3 submit" name="buy_rate_E6" value="<?= isset($pproduct['buy_rate_E6']) ? $pproduct['buy_rate_E6'] / LConstService::E4 : ''?>">
                         </div>
 
                         <div class="pure-u-md-1-2"><label>批次成立日</label>
-                            <input type="text" class="pure-input-2-3 submit" name="establish" datepicker="datepicker" value="<?= isset($pproduct['establish']) ? $pproduct['establish'] : ''?>">
+                            <input type="text" class="pure-input-2-3 submit" name="establish" datepicker="datepicker" value="<?= isset($pproduct['establish']) ? date('Y-m-d', $pproduct['establish']) : ''?>">
                         </div>
 
                         <div class="pure-u-md-1-2"><label>起息日</label>
-                            <input type="text" class="pure-input-2-3 submit" name="value_date" datepicker="datepicker" value="<?= isset($pproduct['value_date']) ? $pproduct['value_date'] : ''?>">
+                            <input type="text" class="pure-input-2-3 submit" name="value_date" placeholder="必填" datepicker="datepicker" value="<?= isset($pproduct['value_date']) ? date('Y-m-d',$pproduct['value_date']) : ''?>"> *
                         </div>
 
                         <div class="pure-u-md-1-2"><label>存续期限</label>
@@ -117,7 +117,7 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                         </div>
 
                         <div class="pure-u-md-1-2"><label>预计到期日</label>
-                            <input type="text" class="pure-input-2-3 submit" name="expected_date" datepicker="datepicker" value="<?= isset($pproduct['expected_date']) ? $pproduct['expected_date'] : ''?>">
+                            <input type="text" class="pure-input-2-3 submit" name="expected_date" placeholder="必填" datepicker="datepicker" value="<?= isset($pproduct['expected_date']) ? date('Y-m-d', $pproduct['expected_date']) : ''?>"> *
                         </div>
 
                         <div class="pure-u-md-1-2"><label>计息原则</label>
@@ -154,7 +154,7 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                         </div>
 
                         <div class="pure-u-md-1-2"><label>委贷利率</label>
-                            <input type="text" class="pure-input-2-3 submit" name="lending_rate_E6" value="<?= isset($pproduct['lending_rate_E6']) ? $pproduct['lending_rate_E6'] : ''?>">
+                            <input type="text" class="pure-input-2-3 submit" name="lending_rate_E6" value="<?= isset($pproduct['lending_rate_E6']) ? $pproduct['lending_rate_E6']  / LConstService::E4: ''?>">
                         </div>
 
                         <div class="pure-u-md-1-2"><label>投资期限</label>
