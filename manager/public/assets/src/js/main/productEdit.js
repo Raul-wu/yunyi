@@ -14,13 +14,6 @@ require([
     $("#save").on('click', function(e) {
 
         e.preventDefault();
-        var $this = $(this);
-
-        if (!$this.data('lock')) {
-            $this.data('lock', 1);
-        } else {
-            return;
-        }
 
         $form.attr('action', $form.attr('saveAction'));
 
@@ -29,10 +22,14 @@ require([
             if (!data.retCode) {
                 msgDialog(data.retMsg, data.retData.url);
             } else {
+                if (data.retData.errors) {
+                    $.each(data.retData.errors, function(i) {
+                        $form.find('[name=' + i + ']').addClass('error');
+                        $form.find('[name=' + i + ']').attr('placeholder','必填');
+                    });
+                }
                 msgDialog(data.retMsg);
             }
-
-            $this.data('lock', 0);
         });
 
     });

@@ -67,7 +67,7 @@ Yii::app()->clientScript->registerScript("copyPProductPermission", 'window.copyP
                     <th>基金代码</th>
                     <th>产品名称</th>
                     <th>额度</th>
-                    <th>预期收益</th>
+                    <th>预期收益率</th>
                     <th>起息日</th>
                     <th>到期日</th>
                     <th>分配方式</th>
@@ -86,9 +86,9 @@ Yii::app()->clientScript->registerScript("copyPProductPermission", 'window.copyP
                         <td><?= $product['pproduct']['fund_code'] ?></td>
                         <td><?= $product['pproduct']['name'] ?></td>
                         <td><?= $product['total_count']?></td>
-                        <td><?= $product['expected_income_rate_E6'] ?></td>
-                        <td><?= $product['pproduct']['value_date'] ?></td>
-                        <td><?= $product['pproduct']['expected_date'] ?></td>
+                        <td><?= $product['expected_income_rate_E6'] / LConstService::E4 ?></td>
+                        <td><?= date('Y-m-d',$product['pproduct']['value_date']) ?></td>
+                        <td><?= date('Y-m-d',$product['pproduct']['expected_date']) ?></td>
                         <td><?= isset(LAPProductModel::$arrMode[$product['pproduct']['mode']]) ? LAPProductModel::$arrMode[$product['pproduct']['mode']] : '' ?></td>
                         <td><?= isset(LAPProductModel::$arrStatus[$product['status']]) ? LAPProductModel::$arrStatus[$product['status']] : '' ?></td>
                         <td class="tc">

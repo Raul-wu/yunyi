@@ -21,6 +21,12 @@ class LAProductService
             $strUrl .= "&fund_code={$arrCondition['fund_code']}";
         }
 
+        if(isset($arrCondition['ppid']) && !empty($arrCondition['ppid']))
+        {
+            $criteria->compare('pproduct.ppid', $arrCondition['ppid'], true);
+            $strUrl .= "&ppid={$arrCondition['ppid']}";
+        }
+
         $criteria->order = $order ? $order : 'pid desc ';
 
         $count = LAProductModel::model()->with('pproduct')->count($criteria);

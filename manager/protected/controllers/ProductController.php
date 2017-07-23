@@ -15,6 +15,7 @@ class ProductController extends AdminBaseController
 
         $this->setJsMain('productList');
 
+        $conditions['ppid'] = Yii::app()->request->getParam('ppid',0);
         $conditions['fund_code'] = trim(Yii::app()->request->getParam('fund_code',''));
         $conditions['page'] = trim(Yii::app()->request->getParam('page', 1));
         $arrProduct = LAProductService::getAll($conditions, $conditions['page']);
@@ -87,12 +88,17 @@ class ProductController extends AdminBaseController
         {
             $product = new ProductFormModel();
             $product->setAttributes($_POST);
+            $product->setScenario(ProductFormModel::PRODUCT_NEW);
             $product->validate();
-            $productData = $product->getData();
+            if ($errors = $product->getErrors())
+            {
+                $this->ajaxReturn(LError::INTERNAL_ERROR, '数据不能为空');
+            }
 
+            $productData = $product->getData();
             if(LAProductService::create($ppid, $productData))
             {
-                $this->ajaxReturn(LError::SUCCESS, "创建子产品成功！", array("url" => Yii::app()->createUrl("product/list" )));
+                $this->ajaxReturn(LError::SUCCESS, "创建子产品成功！", array("url" => Yii::app()->createUrl("product/list?ppid=". $ppid)));
             }
             else
             {
@@ -103,12 +109,17 @@ class ProductController extends AdminBaseController
         {
             $product = new ProductFormModel();
             $product->setAttributes($_POST);
+            $product->setScenario(ProductFormModel::PRODUCT_EDIT);
             $product->validate();
-            $productData = $product->getData();
+            if ($errors = $product->getErrors())
+            {
+                $this->ajaxReturn(LError::INTERNAL_ERROR, '数据不能为空');
+            }
 
+            $productData = $product->getData();
             if(LAProductService::update($pid, $productData))
             {
-                $this->ajaxReturn(LError::SUCCESS, "更新子产品成功！", array("url" => Yii::app()->createUrl("product/list" )));
+                $this->ajaxReturn(LError::SUCCESS, "更新子产品成功！", array("url" => Yii::app()->createUrl("product/list?ppid=". $ppid )));
             }
             else
             {
@@ -205,6 +216,8 @@ class ProductFormModel extends AdminBaseFormModel
     {
         return array(
             array('expected_income_rate_E6, total_count, actually_total, per_user_by_limit, max_buy, min_buy, mode, status, create_time, update_time', 'safe'),
+
+            array('expected_income_rate_E6, total_count, actually_total', 'required', 'on' => array(self::PRODUCT_NEW, self::PRODUCT_EDIT))
         );
     }
 

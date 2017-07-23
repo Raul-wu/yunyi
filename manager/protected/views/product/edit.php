@@ -39,7 +39,7 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                     </div>
 
                     <div class="pure-u-1"><label>预计到期日</label>
-                        <input type="text" class="pure-input-2-3 submit" disabled value="<?= isset($pproduct->expected_date) ? $pproduct->expected_date : ''?>">
+                        <input type="text" class="pure-input-2-3 submit" disabled value="<?= isset($pproduct->expected_date) ? date('Y-m-d',$pproduct->expected_date) : ''?>">
                     </div>
 
                     <div class="pure-u-md-1-2"><label>收益分配方式</label>
@@ -73,27 +73,27 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                 <div class="pure-g">
 
                     <div class="pure-u-md-1-2"><label>预期年化收益率</label>
-                        <input type="text" class="pure-input-2-3 submit" name="expected_income_rate_E6" value="<?= isset($product->expected_income_rate_E6) ? $product->expected_income_rate_E6 : ''?>"">
+                        <input type="text" class="pure-input-2-3 submit" name="expected_income_rate_E6" placeholder="必填" value="<?= isset($product->expected_income_rate_E6) ? $product->expected_income_rate_E6 / LConstService::E4 : ''?>"> *
                     </div>
 
                     <div class="pure-u-md-1-2"><label>产品总额/元</label>
-                        <input type="text" class="pure-input-2-3 submit" name="total_count" value="<?= isset($product->total_count) ? $product->total_count : ''?>"">
+                        <input type="text" class="pure-input-2-3 submit" name="total_count" placeholder="必填" value="<?= isset($product->total_count) ? $product->total_count : ''?>"> *
                     </div>
 
                     <div class="pure-u-1"><label>实际募集/元</label>
-                        <input type="text" class="pure-input-2-3 submit" name="actually_total" value="<?= isset($product->actually_total) ? $product->actually_total : ''?>"">
+                        <input type="text" class="pure-input-2-3 submit" name="actually_total" placeholder="必填" value="<?= isset($product->actually_total) ? $product->actually_total : ''?>"> *
                     </div>
 
                     <div class="pure-u-1"><label>单用户限购/元</label>
-                        <input type="text" class="pure-input-2-3 submit" name="per_user_by_limit" value="<?= isset($product->per_user_by_limit) ? $product->per_user_by_limit : ''?>"">
+                        <input type="text" class="pure-input-2-3 submit" name="per_user_by_limit" value="<?= isset($product->per_user_by_limit) ? $product->per_user_by_limit : ''?>">
                     </div>
 
                     <div class="pure-u-1"><label>单笔最大金额/元</label>
-                        <input type="text" class="pure-input-2-3 submit" name="max_buy" value="<?= isset($product->max_buy) ? $product->max_buy : ''?>"">
+                        <input type="text" class="pure-input-2-3 submit" name="max_buy" value="<?= isset($product->max_buy) ? $product->max_buy : ''?>">
                     </div>
 
                     <div class="pure-u-1"><label>单笔最小金额/元</label>
-                        <input type="text" class="pure-input-2-3 submit" name="min_buy" value="<?= isset($product->min_buy) ? $product->min_buy : ''?>"">
+                        <input type="text" class="pure-input-2-3 submit" name="min_buy" value="<?= isset($product->min_buy) ? $product->min_buy : ''?>">
                     </div>
 
                 </div>
