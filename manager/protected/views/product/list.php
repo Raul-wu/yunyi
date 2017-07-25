@@ -9,19 +9,20 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/js/lib/art
 Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/js/lib/art_dialog/jquery.artDialog.source.js?v=" . STATIC_VER);
 Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables.css?v=" . STATIC_VER);
 
-Yii::app()->clientScript->registerScript("durationUrl", 'window.durationUrl="'.Yii::app()->createUrl('/PProduct/duration/').'";', CClientScript::POS_END);
-Yii::app()->clientScript->registerScript("subCreate", 'window.subCreate="'.Yii::app()->createUrl("p/new").'";', CClientScript::POS_END);
-Yii::app()->clientScript->registerScript("subShow", 'window.subShow="'.Yii::app()->createUrl('p/list').'";', CClientScript::POS_END);
-Yii::app()->clientScript->registerScript("url", 'window.url="'.Yii::app()->createUrl('PProduct/edit').'";', CClientScript::POS_END);
-Yii::app()->clientScript->registerScript("deletePProduct", 'window.deletePProduct="'.Yii::app()->createUrl('PProduct/delete').'";', CClientScript::POS_END);
+//Yii::app()->clientScript->registerScript("durationUrl", 'window.durationUrl="'.Yii::app()->createUrl('/PProduct/duration/').'";', CClientScript::POS_END);
+//Yii::app()->clientScript->registerScript("subCreate", 'window.subCreate="'.Yii::app()->createUrl("p/new").'";', CClientScript::POS_END);
+//Yii::app()->clientScript->registerScript("subShow", 'window.subShow="'.Yii::app()->createUrl('p/list').'";', CClientScript::POS_END);
+//Yii::app()->clientScript->registerScript("url", 'window.url="'.Yii::app()->createUrl('PProduct/edit').'";', CClientScript::POS_END);
+//Yii::app()->clientScript->registerScript("deletePProduct", 'window.deletePProduct="'.Yii::app()->createUrl('PProduct/delete').'";', CClientScript::POS_END);
+Yii::app()->clientScript->registerScript("quotient", 'window.quotient="'.Yii::app()->createUrl('quotient/add').'";', CClientScript::POS_END);
 
 //列表页按钮权限
-Yii::app()->clientScript->registerScript("delPProductPermission", 'window.delPProductPermission="'.LAPermissionService::selectMenuPermission($this->menuId, 2001107).'";', CClientScript::POS_END);
-Yii::app()->clientScript->registerScript("listProductPermission", 'window.listProductPermission="'.LAPermissionService::selectMenuPermission($this->menuId, 2001106).'";', CClientScript::POS_END);
-Yii::app()->clientScript->registerScript("DurPProductPermission", 'window.DurPProductPermission="'.LAPermissionService::selectMenuPermission($this->menuId, 2001110).'";', CClientScript::POS_END);
-Yii::app()->clientScript->registerScript("prePProductPermission", 'window.prePProductPermission="'.LAPermissionService::selectMenuPermission($this->menuId, 2001105).'";', CClientScript::POS_END);
-Yii::app()->clientScript->registerScript("createProductPermission", 'window.createProductPermission="'.LAPermissionService::selectMenuPermission($this->menuId, 2001103).'";', CClientScript::POS_END);
-Yii::app()->clientScript->registerScript("copyPProductPermission", 'window.copyPProductPermission="'.LAPermissionService::selectMenuPermission($this->menuId, 2001102).'";', CClientScript::POS_END);
+//Yii::app()->clientScript->registerScript("delPProductPermission", 'window.delPProductPermission="'.LAPermissionService::selectMenuPermission($this->menuId, 2001107).'";', CClientScript::POS_END);
+//Yii::app()->clientScript->registerScript("listProductPermission", 'window.listProductPermission="'.LAPermissionService::selectMenuPermission($this->menuId, 2001106).'";', CClientScript::POS_END);
+//Yii::app()->clientScript->registerScript("DurPProductPermission", 'window.DurPProductPermission="'.LAPermissionService::selectMenuPermission($this->menuId, 2001110).'";', CClientScript::POS_END);
+//Yii::app()->clientScript->registerScript("prePProductPermission", 'window.prePProductPermission="'.LAPermissionService::selectMenuPermission($this->menuId, 2001105).'";', CClientScript::POS_END);
+//Yii::app()->clientScript->registerScript("createProductPermission", 'window.createProductPermission="'.LAPermissionService::selectMenuPermission($this->menuId, 2001103).'";', CClientScript::POS_END);
+//Yii::app()->clientScript->registerScript("copyPProductPermission", 'window.copyPProductPermission="'.LAPermissionService::selectMenuPermission($this->menuId, 2001102).'";', CClientScript::POS_END);
 ?>
 
 <div id="main">
@@ -30,7 +31,7 @@ Yii::app()->clientScript->registerScript("copyPProductPermission", 'window.copyP
             <form class="pure-form">
                 <div class="pure-g">
                     <div class="pure-u-2-3">
-                        <input type="text"   placeholder="基金代码" class="pure-input-1-1"  value="<?=isset($fund_code) ? $fund_code : ''?>" name="fund_code" >
+                        <input type="text"   placeholder="基金代码" class="pure-input-1-1"  value="<?=isset($fund_code) ? $fund_code : ''?>" name="fund_code" id="fund_code" >
                         <button type="submit" class="pure-button pure-button-primary">筛选</button>
                         <button type="button" id="reset" class="pure-button">重置</button>
                     </div>
@@ -40,7 +41,7 @@ Yii::app()->clientScript->registerScript("copyPProductPermission", 'window.copyP
     </div>
     <div class="quick_action fix_panel">
         <div class="action_mod"  >
-
+            <a type="submit" id="buttonHolder"></a>
         </div>
     </div>
     <div class="content">

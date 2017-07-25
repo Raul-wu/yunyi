@@ -25,7 +25,6 @@ class ProductController extends AdminBaseController
             'pageBar'   => $arrProduct['pageBar'],
             'count'     => $arrProduct['count'],
             'fund_code'      => $conditions['fund_code'],
-            'url'       => array('editUrl'=>Yii::app()->createUrl("product/edit/")),
         ));
     }
 
@@ -204,6 +203,7 @@ class ProductFormModel extends AdminBaseFormModel
     const PRODUCT_NEW           = 'product_new';
     const PRODUCT_EDIT          = 'product_edit';
 
+    public $name;
     public $expected_income_rate_E6;
     public $total_count;
     public $actually_total;
@@ -215,9 +215,9 @@ class ProductFormModel extends AdminBaseFormModel
     public function rules()
     {
         return array(
-            array('expected_income_rate_E6, total_count, actually_total, per_user_by_limit, max_buy, min_buy, mode, status, create_time, update_time', 'safe'),
+            array('name, expected_income_rate_E6, total_count, actually_total, per_user_by_limit, max_buy, min_buy, mode, status, create_time, update_time', 'safe'),
 
-            array('expected_income_rate_E6, total_count, actually_total', 'required', 'on' => array(self::PRODUCT_NEW, self::PRODUCT_EDIT))
+            array('name, expected_income_rate_E6, total_count, actually_total', 'required', 'on' => array(self::PRODUCT_NEW, self::PRODUCT_EDIT))
         );
     }
 

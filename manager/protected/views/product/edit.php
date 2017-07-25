@@ -72,6 +72,10 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
 
                 <div class="pure-g">
 
+                    <div class="pure-u-md-1-2"><label>产品名称</label>
+                        <input type="text" class="pure-input-2-3 submit" name="name" placeholder="必填" value="<?= isset($product->name) ? $product->name : ''?>"> *
+                    </div>
+
                     <div class="pure-u-md-1-2"><label>预期年化收益率</label>
                         <input type="text" class="pure-input-2-3 submit" name="expected_income_rate_E6" placeholder="必填" value="<?= isset($product->expected_income_rate_E6) ? $product->expected_income_rate_E6 / LConstService::E4 : ''?>"> *
                     </div>

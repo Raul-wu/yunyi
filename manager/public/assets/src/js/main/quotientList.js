@@ -1,5 +1,5 @@
 /**
- * Created by hexi on 14-10-13.
+ * Created by Raul on 2015/8/14.
  */
 require([
     'jquery',
@@ -10,12 +10,15 @@ require([
 
     var widget = new SingleMultiBtn("#buttonHolder", {
         singleBtns: [
-        {
-            name: "导入客户份额",
-            click: function(id) {
-                window.location.href= quotient + '?pid='+id;
-            },
-        }
+        //  {
+        //     name: "编辑",
+        //     click: function(id) {
+        //         window.location.href= url.editUrl + '?id='+id;
+        //     },
+        //     canShowFunc: function() {
+        //         return listSpvPermission;
+        //     }
+        // },
         ],
     });
 
@@ -37,7 +40,7 @@ require([
         }
     });
 
-    $('#reset').on("fund_code",function(){
+    $('#reset').on("click",function(){
         $("#name").val("");
     });
 
@@ -65,3 +68,6 @@ require([
         });
     }
 });
+
+
+
