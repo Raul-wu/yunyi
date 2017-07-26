@@ -74,13 +74,13 @@ Yii::app()->clientScript->registerScript("listSpvPermission", 'window.listSpvPer
                         ?>
                         <tr class="<?= $key % 2 ? "" : "pure-table-odd" ?> pure-table-tr">
                             <td><input type="checkbox" value="<?= $quotient['qid'] ?>" class="check" data-id="<?= $quotient['qid'] ?>"/></td>
-                            <td class="tl"><?= $quotient['product']['name'] ?></td>
-                            <td class="tl"><?= $quotient['name'] ?></td>
-                            <td class="tl"><?= $quotient['amount'] ?></td>
-                            <td class="tl"><?= isset(LAQuotientModel::$arrType[$quotient['type']]) ? LAQuotientModel::$arrType[$quotient['type']] : '' ?></td>
-                            <td class="tl"><?= isset(LAQuotientModel::$arrIdType[$quotient['id_type']]) ? LAQuotientModel::$arrIdType[$quotient['id_type']] : '' ?></td>
-                            <td class="tl"><?= $quotient['id_content'] ?></td>
-                            <td class="tl"><?= $quotient['handler_name'] ?></td>
+                            <td class="tc"><?= $quotient['product']['name'] ?></td>
+                            <td class="tc"><?= $quotient['name'] ?></td>
+                            <td class="tc"><?= $quotient['amount'] ?></td>
+                            <td class="tc"><?= isset(LAQuotientModel::$arrType[$quotient['type']]) ? LAQuotientModel::$arrType[$quotient['type']] : '' ?></td>
+                            <td class="tc"><?= isset(LAQuotientModel::$arrIdType[$quotient['id_type']]) ? LAQuotientModel::$arrIdType[$quotient['id_type']] : '' ?></td>
+                            <td class="tc"><?= $quotient['id_content'] ?></td>
+                            <td class="tc"><?= $quotient['handler_name'] ?></td>
                             <td class="tc"><?= isset(LAQuotientModel::$arrStatus[$quotient['status']]) ? LAQuotientModel::$arrStatus[$quotient['status']] : '' ?></td>
                         </tr>
                         <?php

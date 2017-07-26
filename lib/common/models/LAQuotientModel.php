@@ -28,12 +28,22 @@ class LAQuotientModel extends LActiveRecord
         self::TYPE_COMPANY => '机构',
     );
 
+    public static $arrTypeReversal = array(
+        '个人' => self::TYPE_SELF,
+        '机构' => self::TYPE_COMPANY
+    );
+
     const ID_TYPE_SELF = 1; //身份证
     const ID_TYPE_COMPANY = 2;//营业执照
 
     public static $arrIdType = array(
         self::ID_TYPE_SELF => '身份证',
         self::ID_TYPE_COMPANY => '营业执照',
+    );
+
+    public static $arrIdTypeReversal = array(
+        '身份证' => self::ID_TYPE_SELF,
+        '营业执照'=>self::ID_TYPE_COMPANY ,
     );
 
     public function relations()

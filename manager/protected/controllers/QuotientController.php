@@ -19,12 +19,13 @@ class QuotientController extends AdminBaseController
         $conditions['pid'] = trim(Yii::app()->request->getParam('pid',''));
         $conditions['name'] = trim(Yii::app()->request->getParam('name',''));
         $conditions['page'] = trim(Yii::app()->request->getParam('page', 1));
-        $arrQuotient = LAQuotientService::getAll(array(), $conditions['page']);
+        $arrQuotient = LAQuotientService::getAll($conditions, $conditions['page']);
 
         $this->render('list',array(
             'quotients'  => $arrQuotient['quotientAll'],
             'pageBar'   => $arrQuotient['pageBar'],
             'count'     => $arrQuotient['count'],
+            'name'     => $conditions['name'],
         ));
     }
 
@@ -65,7 +66,7 @@ class QuotientController extends AdminBaseController
         }
 
         $name = explode('.', $_FILES['quotients']['name']);
-        if(isset($name[1]) && ($name[1] != 'xls') || $name[1] != 'xlsx')
+        if(!in_array($name[1], array('xls', 'xlsx')))
         {
             $this->ajaxReturn(LError::SUCCESS, '请上传excel后缀的文件');
         }
@@ -81,7 +82,7 @@ class QuotientController extends AdminBaseController
             $this->ajaxReturn(LError::SUCCESS, '读取文件失败');
         }
 
-        $result = LAQuotientService::analysisServiceExcel($filePath);
+        $result = LAQuotientService::analysisServiceExcel($pid, $filePath);
         if($result && $result['res'])
         {
             $this->ajaxReturn(LError::SUCCESS,$result['msg']);

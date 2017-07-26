@@ -34,13 +34,9 @@ class LAQuotientService
         $criteria->offset = ($perPage * ($page - 1));
         $pageBar = LAdminPager::getPages($count, $page, $perPage, $strUrl);
 
-        $objQuotient = LAQuotientModel::model()->with('product')->findAll($criteria);
+        $quotient = LAQuotientModel::model()->with('product')->findAll($criteria);
 
-        $arrQuotient = array_map(function($list){
-            return $list->attributes;
-        }, $objQuotient);
-
-        return array('quotientAll' => $arrQuotient,'pageBar' => $pageBar,'count' => $count);
+        return array('quotientAll' => $quotient,'pageBar' => $pageBar,'count' => $count);
     }
 
     public static function getByID($id)
@@ -126,11 +122,62 @@ class LAQuotientService
         return true;
     }
 
-    public static function analysisServiceExcel($filePath)
+    public static function analysisServiceExcel($pid, $filePath)
     {
         $data = self::commonExcel($filePath);
+        unset($data['head']);
 
-        echo '<pre>';var_dump($data);echo '</pre>';exit;
+        $sql = "insert into quotient(pid,name,amount,type,id_type,id_content,handler_name,delegate_name,bank_account,bank_name,bank_address,bank_province,bank_city,create_time,update_time) values ";
+
+        $time =  date('Y-m-d H:i:s', time());
+
+        $sql_insert ="";
+        foreach($data as $key => $arr)
+        {
+            foreach($arr as $value)
+            {
+                $name = isset($value[1]) && !empty($value[1]) ? $value[1] : '';
+                $amount = isset($value[2]) && !empty($value[2]) ? $value[2] : '';
+                $type = isset(LAQuotientModel::$arrTypeReversal[$value[3]]) ? LAQuotientModel::$arrTypeReversal[$value[3]] : LAQuotientModel::TYPE_SELF;
+                $id_type = isset(LAQuotientModel::$arrIdTypeReversal[$value[4]]) ? LAQuotientModel::$arrIdTypeReversal[$value[4]] : LAQuotientModel::ID_TYPE_SELF;
+                $id_content = isset($value[5]) && !empty($value[5]) ? $value[5] : '';
+                $handler_name = isset($value[6]) && !empty($value[6]) ? $value[6] : '';
+                $delegate_name = isset($value[7]) && !empty($value[7]) ? $value[7] : '';
+                $bank_account = isset($value[8]) && !empty($value[8]) ? $value[8] : '';
+                $bank_name = isset($value[9]) && !empty($value[9]) ? $value[9] : '';
+                $bank_address = isset($value[10]) && !empty($value[10]) ? $value[10] : '';
+                $bank_province = isset($value[11]) && !empty($value[11]) ? $value[11] : '';
+                $bank_city = isset($value[12]) && !empty($value[12]) ? $value[12] : '';
+
+                $sql_insert .= "($pid, '$name',$amount, $type, $id_type, '$id_content', '$handler_name', '$delegate_name', '$bank_account', '$bank_name', '$bank_address', '$bank_province', '$bank_city', '$time', '$time' ),";
+            }
+        }
+
+        if($sql_insert)
+        {
+            $sql_insert = substr($sql_insert, 0, -1) . ';';
+            $sql = $sql . $sql_insert;
+        }
+
+        try
+        {
+            if (Yii::app()->yuyinDB->createCommand($sql)->execute())
+            {
+                Yii::log("import client quotient success ", CLogger::LEVEL_TRACE, self::LOG_PREFIX . __FUNCTION__);
+
+                return array("msg" => "导入客户份额成功", 'res' => true);
+            }
+            else
+            {
+                Yii::log("import client quotient failed ", CLogger::LEVEL_ERROR, self::LOG_PREFIX . __FUNCTION__);
+                return array('msg' => '导入客户份额失败', 'res' => false);
+            }
+        }
+        catch (Exception $e)
+        {
+            Yii::log("import client quotient failed message {$e->getMessage()};", CLogger::LEVEL_ERROR, self::LOG_PREFIX . __FUNCTION__);
+            return false;
+        }
     }
 
     public static function storeUploadFile($data)

@@ -38,7 +38,11 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                     </div>
 
                     <div class="pure-u-1"><label>份额表</label>
-                        <input id="quotients" type="file" name="quotients" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" /> 文件大小不能超过5M
+                        <input id="quotients" type="file" name="quotients" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+                        <span>文件大小不能超过5M</span>
+                        <a href="/assets/tml/client_quotient.xlsx" target="_blank" >
+                            样例模板下载
+                        </a>
                     </div>
 
                 </div>
