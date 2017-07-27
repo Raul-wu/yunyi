@@ -1,5 +1,5 @@
 /**
- * Created by ge on 14-8-5.
+ * Created by Raul on 2017/7/15.
  */
 
 require([
@@ -19,7 +19,6 @@ require([
     var $form = $("#form");
     var saveAction = $form.attr('saveAction');
 
-    //保存
 	$("#save").on('click', function(e) {
 
         e.preventDefault();

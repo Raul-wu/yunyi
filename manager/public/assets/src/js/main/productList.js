@@ -1,5 +1,5 @@
 /**
- * Created by hexi on 14-10-13.
+ * Created by Raul on 2017/7/13.
  */
 require([
     'jquery',
@@ -37,8 +37,8 @@ require([
         }
     });
 
-    $('#reset').on("fund_code",function(){
-        $("#name").val("");
+    $('#reset').on("click",function(){
+        $("#fund_code").val("");
     });
 
     //消息提示框

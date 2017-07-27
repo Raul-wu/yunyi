@@ -2,7 +2,7 @@
 
 /**
  * Created by PhpStorm.
- * User: rwu
+ * User: Raul
  * Date: 7/24/17
  * Time: 20:28
  */
@@ -85,7 +85,7 @@ class QuotientController extends AdminBaseController
         $result = LAQuotientService::analysisServiceExcel($pid, $filePath);
         if($result && $result['res'])
         {
-            $this->ajaxReturn(LError::SUCCESS,$result['msg']);
+            $this->ajaxReturn(LError::SUCCESS,$result['msg'], array("url" => Yii::app()->createUrl("quotient/list?pid=". $pid)));
         }
         else
         {

@@ -2,7 +2,7 @@
 
 /**
  * Created by PhpStorm.
- * User: rwu
+ * User: Raul
  * Date: 7/11/17
  * Time: 20:57
  */
@@ -47,7 +47,7 @@ class LAPProductModel extends LActiveRecord
     const TYPE_SM = 2;
     public static $arrType = array(
         self::TYPE_FI => '固定收益',
-        self::TYPE_SM => '浮云收益'
+        self::TYPE_SM => '浮动收益'
     );
 
     //收益分配方式

@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: rwu
+ * User: Raul
  * Date: 7/18/17
  * Time: 09:09
  */
@@ -47,19 +47,19 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                     </div>
 
                     <div class="pure-u-md-1-2"><label>项目名称</label>
-                        <input type="text" class="pure-input-2-3 submit" disabled value="<?= isset($pproductDetail->project_name) ? $pproductDetail->project_name : ''?>">
+                        <input type="text" class="pure-input-2-3 submit" disabled value="<?= isset($pproduct_detail['project_name']) ? $pproduct_detail['project_name'] : ''?>">
                     </div>
 
                     <div class="pure-u-md-1-2"><label>融资方名称</label>
-                        <input type="text" class="pure-input-2-3 submit" disabled value="<?= isset($pproductDetail->finance_name) ? $pproductDetail->finance_name : ''?>">
+                        <input type="text" class="pure-input-2-3 submit" disabled value="<?= isset($pproduct_detail['finance_name']) ? $pproduct_detail['finance_name'] : ''?>">
                     </div>
 
                     <div class="pure-u-md-1-2"><label>项目资金用途</label>
-                        <input type="text" class="pure-input-2-3 submit" disabled value="<?= isset($pproductDetail->money_use) ? $pproductDetail->money_use : ''?>">
+                        <input type="text" class="pure-input-2-3 submit" disabled value="<?= isset($pproduct_detail['money_use']) ? $pproduct_detail['money_use'] : ''?>">
                     </div>
 
                     <div class="pure-u-md-1-2"><label>还款来源</label>
-                        <input type="text" class="pure-input-2-3 submit" disabled value="<?= isset($pproductDetail->payment_source) ? $pproductDetail->payment_source : ''?>">
+                        <input type="text" class="pure-input-2-3 submit" disabled value="<?= isset($pproduct_detail['payment_source']) ? $pproduct_detail['payment_source'] : ''?>">
                     </div>
                 </div>
             </div>

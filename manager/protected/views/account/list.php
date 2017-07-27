@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: rwu
+ * User: Raul
  * Date: 7/10/17
  * Time: 21:24
  */
@@ -81,11 +81,11 @@ Yii::app()->clientScript->registerScript("listSpvPermission", 'window.listSpvPer
                         ?>
                         <tr class="<?= $key % 2 ? "" : "pure-table-odd" ?> pure-table-tr">
                             <td><input type="checkbox" value="<?= $account['id'] ?>" class="check" data-id="<?= $account['id'] ?>"/></td>
-                            <td class="tl"><?= $account['type'] ?></td>
-                            <td class="tl"><?= $account['name'] ?></td>
-                            <td class="tl"><?= $account['bank_account'] ?></td>
-                            <td class="tl"><?= $account['bank_address'] ?></td>
-                            <td class="tl"><?= $account['handler'] ?></td>
+                            <td class="tc"><?= $account['type'] ?></td>
+                            <td class="tc"><?= $account['name'] ?></td>
+                            <td class="tc"><?= $account['bank_account'] ?></td>
+                            <td class="tc"><?= $account['bank_address'] ?></td>
+                            <td class="tc"><?= $account['handler'] ?></td>
                             <td class="tc"><?= $account['status'] == LAAccountModel::STATUS_OPEN ? '正常' : '停用' ?></td>
                             <td class="tc">
                                 <a href="<?= Yii::app()->createUrl('account/edit/', array('id' => $account['id'])) ?>">编辑</a>
