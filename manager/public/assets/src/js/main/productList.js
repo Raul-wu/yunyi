@@ -17,6 +17,22 @@ require([
             },
         }
         ],
+        commonBtns: [
+            {
+                name: "查看客户份额",
+                click: function() {
+                    var chk_ids=[];
+                    $(":checkbox:checked").each(function(){
+                        chk_ids.push($(this).attr('data-id'));
+                    });
+
+                    window.location.href= quotientList + '?pid=' + chk_ids.join(',');
+                },
+                // canShowFunc: function(){
+                //     return delPProductPermission;
+                // }
+            }
+        ]
     });
 
     widget.listen();

@@ -23,7 +23,7 @@ class LAQuotientService
 
         if(isset($arrCondition['pid']) && !empty($arrCondition['pid']))
         {
-            $criteria->compare('product.pid', $arrCondition['pid'], true);
+            $criteria->addInCondition('product.pid', explode(',', $arrCondition['pid']));
             $strUrl .= "&pid={$arrCondition['pid']}";
         }
 

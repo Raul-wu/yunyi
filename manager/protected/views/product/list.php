@@ -15,6 +15,7 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
 //Yii::app()->clientScript->registerScript("url", 'window.url="'.Yii::app()->createUrl('PProduct/edit').'";', CClientScript::POS_END);
 //Yii::app()->clientScript->registerScript("deletePProduct", 'window.deletePProduct="'.Yii::app()->createUrl('PProduct/delete').'";', CClientScript::POS_END);
 Yii::app()->clientScript->registerScript("quotient", 'window.quotient="'.Yii::app()->createUrl('quotient/add').'";', CClientScript::POS_END);
+Yii::app()->clientScript->registerScript("quotientList", 'window.quotientList="'.Yii::app()->createUrl('quotient/list').'";', CClientScript::POS_END);
 
 //列表页按钮权限
 //Yii::app()->clientScript->registerScript("delPProductPermission", 'window.delPProductPermission="'.LAPermissionService::selectMenuPermission($this->menuId, 2001107).'";', CClientScript::POS_END);
