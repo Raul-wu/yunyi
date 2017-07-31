@@ -13,23 +13,12 @@ class LAPProductModel extends LActiveRecord
     const STATUS_FINISH = 3;    //已结息
     const STATUS_DELETE = 4;    //已废弃
 
-    const SELECT_YES = 1; //是
-    const SELECT_NO = 2;  //否
-
     //状态
     public static $arrStatus = array(
         self::STATUS_ESTABLISH => '成立',
         self::STATUS_DURATION => '存续',
         self::STATUS_FINISH => '已结息',
         self::STATUS_DELETE => '已废弃'
-    );
-
-    //货源属性
-    const GOODS_TYPE_EXCHANGE = 1;
-    const GOODS_TYPE_NEW = 2;
-    public static $arrGoodTypes = array(
-        self::GOODS_TYPE_EXCHANGE          => "大V/机构现货转让",
-        self::GOODS_TYPE_NEW        => "凑份子买新货",
     );
 
     //产品结构
@@ -69,12 +58,6 @@ class LAPProductModel extends LActiveRecord
         self::INTERSET_PRINCIPLE_360 => '30/360天',
         self::INTERSET_PRINCIPLE_365 => '31/365天',
     );
-
-    public static $arrYesOrNo = array(
-        self::SELECT_YES => '是',
-        self::SELECT_NO => '否'
-    );
-
 
     public function tableName()
     {

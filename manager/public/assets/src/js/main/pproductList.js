@@ -8,7 +8,7 @@ define([
     var widget = new SingleMultiBtn("#btnPh", {
         singleBtns: [
             {
-                name: "编辑母产品",
+                name: "编辑基金",
                 click: function(ppid) {
                     window.location.href = url + "?ppid=" + ppid;
                 }
@@ -16,8 +16,7 @@ define([
             {
                 name: "创建子产品",
                 click: function(ppid) {
-                        url = subCreate + '?ppid=' + ppid;
-                        window.location.href = url;
+                    checkHasScale(ppid);
                 },
                 // canShowFunc: function() {
                 //     if(!createProductPermission)
@@ -41,7 +40,7 @@ define([
             {
                 name: "转存续",
                 click: function() {
-                    confirm("确定将所选的母产品转存续吗？", turnDuration);
+                    confirm("确定将所选的基金转存续吗？", turnDuration);
                 },
                 // canShowFunc: function(ids) {
                     // if(!DurPProductPermission) {
@@ -67,7 +66,7 @@ define([
             {
                 name: "删除",
                 click: function() {
-                    confirm("确定删除所选母产品吗？", delPProduct);
+                    confirm("确定删除所选基金吗？", delPProduct);
                 },
                 // canShowFunc: function(){
                 //     return delPProductPermission;
@@ -76,6 +75,28 @@ define([
         ]
     });
     widget.listen();
+
+    function checkHasScale(ppid) {
+        var params={};
+        params['ppid'] = ppid;
+        params[$("#tkName").attr('tkName')] = $("#tkName").val();
+
+        $.ajax({
+            'url': checkScale,
+            'data': params,
+            'dataType': 'json',
+            'type': 'POST',
+            'success': function (data) {
+                if(data.retCode){
+                    msgDialog(data.retMsg);
+                }else{
+                    url = subCreate + '?ppid=' + ppid;
+                    window.location.href = url;
+                }
+            }
+        });
+    }
+
 
     function delPProduct() {
         var chk_ids=[];

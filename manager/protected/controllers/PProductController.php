@@ -54,6 +54,7 @@ class PProductController extends AdminBaseController
             'opType'    => 'edit',
             'ppid'     => $ppid,
             'pproduct'  => $arrPProduct,
+            'remain'    => LAPProductService::getProductTotalCountByPPid($ppid)
         ));
     }
 
@@ -85,11 +86,11 @@ class PProductController extends AdminBaseController
 
             if(LAPProductService::create($pproductData, $pproductDetailData))
             {
-                $this->ajaxReturn(LError::SUCCESS, "创建母产品成功！", array("url" => Yii::app()->createUrl("PProduct/list" )));
+                $this->ajaxReturn(LError::SUCCESS, "创建基金成功！", array("url" => Yii::app()->createUrl("PProduct/list" )));
             }
             else
             {
-                $this->ajaxReturn(LError::INTERNAL_ERROR, "创建母产品失败！");
+                $this->ajaxReturn(LError::INTERNAL_ERROR, "创建基金失败！");
             }
         }
         else
@@ -111,11 +112,11 @@ class PProductController extends AdminBaseController
 
             if(LAPProductService::update($ppid, $pproductData, $pproductDetailData))
             {
-                $this->ajaxReturn(LError::SUCCESS, "更新母产品成功！", array("url" => Yii::app()->createUrl("PProduct/list" )));
+                $this->ajaxReturn(LError::SUCCESS, "更新基金成功！", array("url" => Yii::app()->createUrl("PProduct/list" )));
             }
             else
             {
-                $this->ajaxReturn(LError::INTERNAL_ERROR, "更新母产品失败！");
+                $this->ajaxReturn(LError::INTERNAL_ERROR, "更新基金失败！");
             }
         }
     }
@@ -147,11 +148,11 @@ class PProductController extends AdminBaseController
 
         if(!$failID)
         {
-            $this->ajaxReturn(LError::SUCCESS, "母产品ID:{$succID}删除成功");
+            $this->ajaxReturn(LError::SUCCESS, "基金ID:{$succID}删除成功");
         }
         else
         {
-            $this->ajaxReturn(LError::INTERNAL_ERROR, "母产品ID:{$succID}删除成功;母产品ID:{$failID}删除失败");
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "基金ID:{$succID}删除成功;基金ID:{$failID}删除失败");
         }
     }
 
@@ -182,11 +183,31 @@ class PProductController extends AdminBaseController
 
         if(!$failID)
         {
-            $this->ajaxReturn(LError::SUCCESS, "母产品ID:{$succID}转存续成功");
+            $this->ajaxReturn(LError::SUCCESS, "基金ID:{$succID}转存续成功");
         }
         else
         {
-            $this->ajaxReturn(LError::INTERNAL_ERROR, "母产品ID:{$succID}转存续成功;母产品ID:{$failID}转存续失败");
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "基金ID:{$succID}转存续成功;基金ID:{$failID}转存续失败");
+        }
+    }
+
+    public function actionCheckHasScale()
+    {
+        LAPermissionService::checkMenuPermission($this->menuId, 2001106);
+
+        if (!$ppid = Yii::app()->request->getParam('ppid'))
+        {
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "缺少必要参数！");
+        }
+
+        $pproduct = LAPProductService::getById($ppid);//echo '<pre>';var_dump($pproduct->scale);echo '</pre>';exit;
+        if($pproduct->scale <= 0)
+        {
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "募集规模为0时不可创建子产品");
+        }
+        else
+        {
+            $this->ajaxReturn(LError::SUCCESS, "");
         }
     }
 
@@ -199,7 +220,6 @@ class PProductFormModel extends AdminBaseFormModel
 
     public $fund_code;
     public $name;
-    public $goods_type;
     public $struct;
     public $type;
     public $mode;
@@ -212,25 +232,23 @@ class PProductFormModel extends AdminBaseFormModel
     public $duration_data;
     public $expected_date;
     public $interest_principle;
-    public $management;
-    public $trusteeship;
-    public $epiboly;
-    public $service_fees;
-    public $adviser_fees;
+    public $management_E6;
+    public $trusteeship_E6;
+    public $epiboly_E6;
+    public $service_fees_E6;
+    public $adviser_fees_E6;
     public $lending_rate_E6;
     public $investment_term;
-    public $is_exchange;
-    public $is_dely;
     public $pay_rule;
 
     public function rules()
     {
         return array(
-            array('fund_code, name, goods_type, struct, type, mode, scale, remain, income_rate_E6, buy_rate_E6,
-            establish, value_date, duration_data, expected_date, interest_principle, management, trusteeship, epiboly, 
-            service_fees, adviser_fees, lending_rate_E6, investment_term, is_exchange, is_dely, pay_rule, create_time, update_time', 'safe'),
+            array('fund_code, name, struct, type, mode, scale, remain, income_rate_E6, buy_rate_E6,
+            establish, value_date, duration_data, expected_date, interest_principle, management_E6, trusteeship_E6, epiboly_E6, 
+            service_fees_E6, adviser_fees_E6, lending_rate_E6, investment_term, pay_rule, create_time, update_time', 'safe'),
 
-            array('fund_code, name, scale, income_rate_E6, value_date, expected_date', 'required', 'on' => array(self::PPRODUCT_NEW, self::PPRODUCT_EDIT))
+            array('fund_code, name, income_rate_E6, value_date, expected_date', 'required', 'on' => array(self::PPRODUCT_NEW, self::PPRODUCT_EDIT))
         );
     }
 
@@ -243,6 +261,12 @@ class PProductFormModel extends AdminBaseFormModel
         $data['establish'] = strtotime($this->establish);
         $data['value_date'] = strtotime($this->value_date);
         $data['expected_date'] = strtotime($this->expected_date);
+
+        $data['management_E6'] = $this->management_E6 * LConstService::E4;
+        $data['trusteeship_E6'] = $this->trusteeship_E6 * LConstService::E4;
+        $data['epiboly_E6'] = $this->epiboly_E6 * LConstService::E4;
+        $data['service_fees_E6'] = $this->service_fees_E6 * LConstService::E4;
+        $data['adviser_fees_E6'] = $this->adviser_fees_E6 * LConstService::E4;
 
         return $this->trimData($data);
     }

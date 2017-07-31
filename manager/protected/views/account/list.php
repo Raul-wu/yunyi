@@ -58,7 +58,6 @@ Yii::app()->clientScript->registerScript("listSpvPermission", 'window.listSpvPer
                     <col class="w_120" />
                     <col class="w_120" />
                     <col class="w_120" />
-                    <col class="w_80" />
                 </colgroup>
                 <thead>
                 <tr>
@@ -69,7 +68,6 @@ Yii::app()->clientScript->registerScript("listSpvPermission", 'window.listSpvPer
                     <th>开户行</th>
                     <th>经办人</th>
                     <th>状态</th>
-                    <th>操作</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -87,9 +85,6 @@ Yii::app()->clientScript->registerScript("listSpvPermission", 'window.listSpvPer
                             <td class="tc"><?= $account['bank_address'] ?></td>
                             <td class="tc"><?= $account['handler'] ?></td>
                             <td class="tc"><?= $account['status'] == LAAccountModel::STATUS_OPEN ? '正常' : '停用' ?></td>
-                            <td class="tc">
-                                <a href="<?= Yii::app()->createUrl('account/edit/', array('id' => $account['id'])) ?>">编辑</a>
-                            </td>
                         </tr>
                         <?php
                     }

@@ -13,7 +13,7 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
 //Yii::app()->clientScript->registerScript("subCreate", 'window.subCreate="'.Yii::app()->createUrl("p/new").'";', CClientScript::POS_END);
 //Yii::app()->clientScript->registerScript("subShow", 'window.subShow="'.Yii::app()->createUrl('p/list').'";', CClientScript::POS_END);
 //Yii::app()->clientScript->registerScript("url", 'window.url="'.Yii::app()->createUrl('PProduct/edit').'";', CClientScript::POS_END);
-//Yii::app()->clientScript->registerScript("deletePProduct", 'window.deletePProduct="'.Yii::app()->createUrl('PProduct/delete').'";', CClientScript::POS_END);
+Yii::app()->clientScript->registerScript("editProduct", 'window.editProduct="'.Yii::app()->createUrl('product/edit').'";', CClientScript::POS_END);
 Yii::app()->clientScript->registerScript("quotient", 'window.quotient="'.Yii::app()->createUrl('quotient/add').'";', CClientScript::POS_END);
 Yii::app()->clientScript->registerScript("quotientList", 'window.quotientList="'.Yii::app()->createUrl('quotient/list').'";', CClientScript::POS_END);
 
@@ -74,7 +74,6 @@ Yii::app()->clientScript->registerScript("quotientList", 'window.quotientList="'
                     <th>到期日</th>
                     <th>分配方式</th>
                     <th>状态</th>
-                    <th>操作</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -93,9 +92,6 @@ Yii::app()->clientScript->registerScript("quotientList", 'window.quotientList="'
                         <td><?= date('Y-m-d',$product['pproduct']['expected_date']) ?></td>
                         <td><?= isset(LAPProductModel::$arrMode[$product['pproduct']['mode']]) ? LAPProductModel::$arrMode[$product['pproduct']['mode']] : '' ?></td>
                         <td><?= isset(LAPProductModel::$arrStatus[$product['status']]) ? LAPProductModel::$arrStatus[$product['status']] : '' ?></td>
-                        <td class="tc">
-                            <a href="<?= Yii::app()->createUrl('product/edit/', array('pid' => $product['pid'], 'ppid'=>$product['ppid'])) ?>">编辑</a>
-                        </td>
                     </tr>
                     <?php
                 }

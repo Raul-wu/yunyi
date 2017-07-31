@@ -15,6 +15,7 @@ Yii::app()->clientScript->registerScript("url", 'window.url="'.Yii::app()->creat
 Yii::app()->clientScript->registerScript("deletePProduct", 'window.deletePProduct="'.Yii::app()->createUrl('PProduct/delete').'";', CClientScript::POS_END);
 Yii::app()->clientScript->registerScript("subCreate", 'window.subCreate="'.Yii::app()->createUrl("product/add").'";', CClientScript::POS_END);
 Yii::app()->clientScript->registerScript("subShow", 'window.subShow="'.Yii::app()->createUrl('product/list').'";', CClientScript::POS_END);
+Yii::app()->clientScript->registerScript("checkScale", 'window.checkScale="'.Yii::app()->createUrl('PProduct/checkHasScale').'";', CClientScript::POS_END);
 
 //列表页按钮权限
 Yii::app()->clientScript->registerScript("delPProductPermission", 'window.delPProductPermission="'.LAPermissionService::selectMenuPermission($this->menuId, 2001107).'";', CClientScript::POS_END);
@@ -41,7 +42,7 @@ Yii::app()->clientScript->registerScript("copyPProductPermission", 'window.copyP
     </div>
     <div class="quick_action fix_panel">
         <div class="action_mod"  >
-            <a id="btnPh" href="<?php echo Yii::app()->createUrl("PProduct/add") ?>" class="pure-button pure-button-primary " style="">创建母产品</a>
+            <a id="btnPh" href="<?php echo Yii::app()->createUrl("PProduct/add") ?>" class="pure-button pure-button-primary " style="">创建基金</a>
 
         </div>
     </div>
@@ -59,19 +60,17 @@ Yii::app()->clientScript->registerScript("copyPProductPermission", 'window.copyP
                     <col class="w_80" />
                     <col class="w_80" />
                     <col class="w_80" />
-                    <col class="w_80" />
                 </colgroup>
                 <thead>
                 <tr>
                     <th><input type="checkbox" id="selectAll"></th>
                     <th>基金代码</th>
-                    <th>项目名称</th>
+                    <th>基金名称</th>
                     <th>收益类型</th>
                     <th>募集规模（万元）</th>
                     <th>预计到期</th>
                     <th>分配方式</th>
                     <th>状态</th>
-                    <th>操作</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -88,9 +87,6 @@ Yii::app()->clientScript->registerScript("copyPProductPermission", 'window.copyP
                         <td><?= date('Y-m-d',$pproduct['expected_date']) ?></td>
                         <td><?= isset(LAPProductModel::$arrMode[$pproduct['mode']]) ? LAPProductModel::$arrMode[$pproduct['mode']] : '' ?></td>
                         <td><?= isset(LAPProductModel::$arrStatus[$pproduct['status']]) ? LAPProductModel::$arrStatus[$pproduct['status']] : '' ?></td>
-                        <td class="tc">
-                            <a href="<?= Yii::app()->createUrl('PProduct/edit/', array('ppid' => $pproduct['ppid'])) ?>">编辑</a>
-                        </td>
                     </tr>
                     <?php
                 }

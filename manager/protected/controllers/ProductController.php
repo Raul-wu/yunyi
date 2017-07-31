@@ -35,16 +35,16 @@ class ProductController extends AdminBaseController
         $this->setJsMain('productEdit');
 
         $pid = trim(Yii::app()->request->getParam('pid',''));
-        $ppid = Yii::app()->request->getParam('ppid','');
 
         $objProduct = LAProductService::getByID($pid);
-        $objPProduct = LAPProductService::getById($ppid);
-        $objPProductDetail = LAPProductDetailService::getByPPid($ppid);
+
+        $objPProduct = LAPProductService::getById($objProduct->ppid);
+        $objPProductDetail = LAPProductDetailService::getByPPid($objProduct->ppid);
 
         $this->render('edit',array(
             'opType'    => 'edit',
             'pid'           => $pid,
-            'ppid'          => $ppid,
+            'ppid'          => $objProduct->ppid,
             'product'     => $objProduct,
             'pproduct'  => $objPProduct,
             'pproduct_detail'   => $objPProductDetail,
@@ -158,7 +158,7 @@ class ProductController extends AdminBaseController
         }
         else
         {
-            $this->ajaxReturn(LError::INTERNAL_ERROR, "子产品ID:{$succID}删除成功;母产品ID:{$failID}删除失败");
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "子产品ID:{$succID}删除成功;基金ID:{$failID}删除失败");
         }
     }
 
@@ -193,7 +193,7 @@ class ProductController extends AdminBaseController
         }
         else
         {
-            $this->ajaxReturn(LError::INTERNAL_ERROR, "子产品ID:{$succID}删除成功;母产品ID:{$failID}审核失败");
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "子产品ID:{$succID}删除成功;基金ID:{$failID}审核失败");
         }
     }
 }

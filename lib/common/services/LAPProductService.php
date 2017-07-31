@@ -192,4 +192,18 @@ class LAPProductService
         }
         return true;
     }
+
+    public static function getProductTotalCountByPPid($ppid)
+    {
+        $criteria = new CDbCriteria();
+        $criteria->compare('ppid', $ppid, false);
+        $criteria->select = 'total_count';
+        $products = LAProductModel::model()->findAll($criteria);
+        $total_count = 0;
+        foreach($products as $product)
+        {
+            $total_count += $product->total_count;
+        }
+        return $total_count;
+    }
 }

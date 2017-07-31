@@ -32,21 +32,8 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                             <input type="text" class="pure-input-1-2  submit"  name="fund_code" maxlength="255" placeholder="必填" value="<?= isset($pproduct['fund_code']) ? $pproduct['fund_code'] : '';?>"> *
                         </div>
 
-                        <div class="pure-u-1"><label>项目名称</label>
+                        <div class="pure-u-1"><label>基金名称</label>
                             <input type="text" class="pure-input-1-2  submit"  name="name" maxlength="255" placeholder="必填" value="<?= isset($pproduct['name']) ? $pproduct['name'] : '';?>"> *
-                        </div>
-
-                        <div class="pure-u-1"><label>货源属性</label>
-                            <select class="pure-input-1-2 "  name="goods_type" >
-                                <?php
-                                foreach (LAPProductModel::$arrGoodTypes as $key => $goodsType)
-                                {
-                                    ?>
-                                    <option value="<?= $key ?>" <?= isset($pproduct['goods_type']) && $pproduct['goods_type'] == $key ? "selected=\"selected\"" : "" ?> ><?= CHtml::encode($goodsType) ?></option>
-                                    <?php
-                                }
-                                ?>
-                            </select>
                         </div>
 
                         <div class="pure-u-1"><label>产品结构</label>
@@ -89,11 +76,11 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                         </div>
 
                         <div class="pure-u-1"><label>募集规模</label>
-                            <input type="text" class="pure-input-2-3 submit" name="scale" placeholder="必填" value="<?= isset($pproduct['scale'])  ? $pproduct['scale'] : ' '?>"> *
+                            <input type="text" class="pure-input-2-3 submit" name="scale" value="<?= isset($pproduct['scale'])  ? $pproduct['scale'] : ' '?>">
                         </div>
 
                         <div class="pure-u-md-1-2"><label>剩余额度</label>
-                            <input type="text" class="pure-input-2-3 submit" name="remain" value="<?= isset($pproduct['remain']) ? $pproduct['remain'] : ''?>">
+                            <input type="text" class="pure-input-2-3 submit" name="remain" disabled value="<?= isset($remain) && ($pproduct['scale'] - $remain) > 0 ? $pproduct['scale'] - $remain : 0?>">
                         </div>
 
                         <div class="pure-u-md-1-2"><label>收益率</label>
@@ -101,7 +88,7 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                         </div>
 
                         <div class="pure-u-md-1-2"><label>认购费</label>
-                            <input type="text" class="pure-input-2-3 submit" name="buy_rate_E6" value="<?= isset($pproduct['buy_rate_E6']) ? $pproduct['buy_rate_E6'] / LConstService::E4 : ''?>">
+                            <input type="text" class="pure-input-2-3 submit" name="buy_rate_E6" value="<?= isset($pproduct['buy_rate_E6']) ? $pproduct['buy_rate_E6'] / LConstService::E4 : ''?>"> %
                         </div>
 
                         <div class="pure-u-md-1-2"><label>批次成立日</label>
@@ -134,57 +121,31 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                         </div>
 
                         <div class="pure-u-md-1-2"><label>A管理费</label>
-                            <input type="text" class="pure-input-2-3 submit" name="management" value="<?= isset($pproduct['management']) ? $pproduct['management'] : ''?>">
+                            <input type="text" class="pure-input-2-3 submit" name="management_E6" value="<?= isset($pproduct['management_E6']) ? $pproduct['management_E6'] / LConstService::E4 : ''?>"> %
                         </div>
 
                         <div class="pure-u-md-1-2"><label>B托管费</label>
-                            <input type="text" class="pure-input-2-3 submit" name="trusteeship" value="<?= isset($pproduct['trusteeship']) ? $pproduct['trusteeship'] : ''?>">
+                            <input type="text" class="pure-input-2-3 submit" name="trusteeship_E6" value="<?= isset($pproduct['trusteeship_E6']) ? $pproduct['trusteeship_E6'] / LConstService::E4 : ''?>"> %
                         </div>
 
                         <div class="pure-u-md-1-2"><label>C外包费</label>
-                            <input type="text" class="pure-input-2-3 submit" name="epiboly" value="<?= isset($pproduct['epiboly']) ? $pproduct['epiboly'] : ''?>">
+                            <input type="text" class="pure-input-2-3 submit" name="epiboly_E6" value="<?= isset($pproduct['epiboly_E6']) ? $pproduct['epiboly_E6'] / LConstService::E4 : ''?>"> %
                         </div>
 
                         <div class="pure-u-md-1-2"><label>D客户/销售服务费</label>
-                            <input type="text" class="pure-input-2-3 submit" name="service_fees" value="<?= isset($pproduct['service_fees']) ? $pproduct['service_fees'] : ''?>">
+                            <input type="text" class="pure-input-2-3 submit" name="service_fees_E6" value="<?= isset($pproduct['service_fees_E6']) ? $pproduct['service_fees_E6'] / LConstService::E4 : ''?>"> %
                         </div>
 
                         <div class="pure-u-md-1-2"><label>E投资/财务顾问费</label>
-                            <input type="text" class="pure-input-2-3 submit" name="adviser_fees" value="<?= isset($pproduct['adviser_fees']) ? $pproduct['adviser_fees'] : ''?>">
+                            <input type="text" class="pure-input-2-3 submit" name="adviser_fees_E6" value="<?= isset($pproduct['adviser_fees_E6']) ? $pproduct['adviser_fees_E6'] / LConstService::E4 : ''?>"> %
                         </div>
 
                         <div class="pure-u-md-1-2"><label>委贷利率</label>
-                            <input type="text" class="pure-input-2-3 submit" name="lending_rate_E6" value="<?= isset($pproduct['lending_rate_E6']) ? $pproduct['lending_rate_E6']  / LConstService::E4: ''?>">
+                            <input type="text" class="pure-input-2-3 submit" name="lending_rate_E6" value="<?= isset($pproduct['lending_rate_E6']) ? $pproduct['lending_rate_E6'] / LConstService::E4 : ''?>"> %
                         </div>
 
                         <div class="pure-u-md-1-2"><label>投资期限</label>
                             <input type="text" class="pure-input-2-3 submit" name="investment_term" value="<?= isset($pproduct['investment_term']) ? $pproduct['investment_term'] : ''?>">
-                        </div>
-
-                        <div class="pure-u-md-1-2"><label>是否转让</label>
-                            <select class="pure-input-1-2 "  name="is_exchange" >
-                                <?php
-                                foreach (LAPProductModel::$arrYesOrNo as $key => $yesOrNo)
-                                {
-                                    ?>
-                                    <option value="<?= $key ?>" <?= isset($pproduct['is_exchange']) && $pproduct['is_exchange'] == $key ? "selected=\"selected\"" : "" ?> ><?= CHtml::encode($yesOrNo) ?></option>
-                                    <?php
-                                }
-                                ?>
-                            </select>
-                        </div>
-
-                        <div class="pure-u-md-1-2"><label>是否可延期</label>
-                            <select class="pure-input-1-2 "  name="is_dely" >
-                                <?php
-                                foreach (LAPProductModel::$arrYesOrNo as $key => $yesOrNo)
-                                {
-                                    ?>
-                                    <option value="<?= $key ?>" <?= isset($pproduct['is_dely']) && $pproduct['is_dely'] == $key ? "selected=\"selected\"" : "" ?> ><?= CHtml::encode($yesOrNo) ?></option>
-                                    <?php
-                                }
-                                ?>
-                            </select>
                         </div>
 
                         <div class="pure-u-1"><label>付费规则</label>

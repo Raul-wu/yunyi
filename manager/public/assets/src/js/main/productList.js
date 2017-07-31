@@ -10,12 +10,18 @@ require([
 
     var widget = new SingleMultiBtn("#buttonHolder", {
         singleBtns: [
-        {
-            name: "导入客户份额",
-            click: function(id) {
-                window.location.href= quotient + '?pid='+id;
+            {
+                name: "编辑子产品",
+                click: function(id) {
+                    window.location.href= editProduct + '?pid='+id;
+                },
             },
-        }
+            {
+                name: "导入客户份额",
+                click: function(id) {
+                    window.location.href= quotient + '?pid='+id;
+                },
+            }
         ],
         commonBtns: [
             {
