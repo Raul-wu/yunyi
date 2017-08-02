@@ -21,6 +21,7 @@ class LAPProductService
             $strUrl .= "&fund_code={$arrCondition['fund_code']}";
         }
 
+        $criteria->addCondition('status != ' . LAPProductModel::STATUS_DELETE);
         $criteria->order = $order ? $order : 'ppid desc ';
         $count = LAPProductModel::model()->count($criteria);
 
@@ -197,6 +198,7 @@ class LAPProductService
     {
         $criteria = new CDbCriteria();
         $criteria->compare('ppid', $ppid, false);
+        $criteria->addCondition('status != ' . LAProductModel::STATUS_DELETE);
         $criteria->select = 'total_count';
         $products = LAProductModel::model()->findAll($criteria);
         $total_count = 0;

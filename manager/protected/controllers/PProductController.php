@@ -130,6 +130,12 @@ class PProductController extends AdminBaseController
             $this->ajaxReturn(LError::INTERNAL_ERROR, "缺少必要参数！");
         }
 
+        $hasPids = LAProductService::getPidByPPid($ppids);
+        if($hasPids)
+        {
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "请先删除子产品后再删除基金！");
+        }
+
         $arrPPids = explode(',', $ppids);
         $succID = $failID = '';
         foreach($arrPPids as $ppid)
@@ -144,6 +150,12 @@ class PProductController extends AdminBaseController
             {
                 $failID .= empty($failID) ? $ppid : ',' . $ppid;
             }
+        }
+
+        if(LAProductService::updateProductStatusByPPid($succID, LAProductModel::STATUS_DELETE))
+        {
+            $pids = LAProductService::getPidByPPid($succID);
+            LAQuotientService::deleteQuotientStatusByPid($pids);
         }
 
         if(!$failID)
@@ -180,6 +192,8 @@ class PProductController extends AdminBaseController
                 $failID .= empty($failID) ? $ppid : ',' . $ppid;
             }
         }
+
+        LAProductService::updateProductStatusByPPid($succID, LAProductModel::STATUS_DURATION);
 
         if(!$failID)
         {

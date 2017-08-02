@@ -9,13 +9,13 @@
 class LAQuotientModel extends LActiveRecord
 {
     const STATUS_OPEN = 1; //启用
-    const STATUS_STOP = 2; //停用
+    const STATUS_DEL = 2; //删除
     const STATUS_DURATION = 3; //存续中
     const STATUS_FINISH = 4; //已结清
 
     public static $arrStatus = array(
         self::STATUS_OPEN => '启用',
-        self::STATUS_STOP => '停用',
+        self::STATUS_DEL => '删除',
         self::STATUS_DURATION => '存续中',
         self::STATUS_FINISH => '已结清',
     );
@@ -48,7 +48,10 @@ class LAQuotientModel extends LActiveRecord
 
     public function relations()
     {
-        return array('product' => array(self::HAS_ONE, 'LAProductModel', '', 'on' => 't.pid = product.pid'),);
+        return array(
+            'product' => array(self::HAS_ONE, 'LAProductModel', '', 'on' => 't.pid = product.pid'),
+            'pproduct' => array(self::HAS_ONE, 'LAPProductModel', '', 'on' => 'product.ppid = pproduct.ppid')
+            );
     }
 
     public function tableName()

@@ -42,6 +42,7 @@ require([
 
     $('#reset').on("click",function(){
         $("#name").val("");
+        $("#fund_name").val("");
     });
 
     //消息提示框

@@ -8,16 +8,12 @@
  */
 class LAProductModel extends LActiveRecord
 {
-    const STATUS_DRAFT = 1; //草稿
-    const STATUS_WAITING_VERIFY = 2;  //待审核
-    const STATUS_VERIFY = 3;    //已审核
-    const STATUS_DURATION = 4;    //存续中
-    const STATUS_DELETE = 5;    //删除
+    const STATUS_ESTABLISH = 1; //成立
+    const STATUS_DURATION = 2;  //存续中
+    const STATUS_DELETE = 3;    //删除
 
     public static $arrStatus = array(
-        self::STATUS_DRAFT => '草稿',
-        self::STATUS_WAITING_VERIFY => '待审核',
-        self::STATUS_VERIFY => '已审核',
+        self::STATUS_ESTABLISH => '成立',
         self::STATUS_DURATION => '存续中',
         self::STATUS_DELETE => '删除'
     );

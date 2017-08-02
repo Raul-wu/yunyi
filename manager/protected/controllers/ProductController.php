@@ -83,6 +83,15 @@ class ProductController extends AdminBaseController
             Yii::app()->end();
         }
 
+        $pproduct = LAPProductService::getById($ppid);
+        $all_product_total_count = LAPProductService::getProductTotalCountByPPid($ppid);
+        $product_total_count = $_POST['total_count'];
+
+        if($product_total_count > ($pproduct->scale - $all_product_total_count))
+        {
+            $this->ajaxReturn(LError::INTERNAL_ERROR, '子产品总额不能超过基金募集规模');
+        }
+
         if (!$pid = Yii::app()->request->getParam('pid'))
         {
             $product = new ProductFormModel();
@@ -142,7 +151,7 @@ class ProductController extends AdminBaseController
         {
             $product = LAProductService::getById($pid);
 
-            if (LAProductService::updatePProductStatus($product, LAProductModel::STATUS_DELETE))
+            if (LAProductService::updateProductStatus($product, LAProductModel::STATUS_DELETE))
             {
                 $succID .= empty($succID) ? $pid : ',' . $pid;
             }
@@ -151,6 +160,8 @@ class ProductController extends AdminBaseController
                 $failID .= empty($failID) ? $pid : ',' . $pid;
             }
         }
+
+        LAQuotientService::deleteQuotientStatusByPid($succID);
 
         if(!$failID)
         {
@@ -158,44 +169,44 @@ class ProductController extends AdminBaseController
         }
         else
         {
-            $this->ajaxReturn(LError::INTERNAL_ERROR, "子产品ID:{$succID}删除成功;基金ID:{$failID}删除失败");
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "子产品ID:{$succID}删除成功;子产品ID:{$failID}删除失败");
         }
     }
 
-    public function actionVerify()
-    {
-        LAPermissionService::checkMenuPermission($this->menuId, 2001104);
-
-        if (!$pids = Yii::app()->request->getParam('pids'))
-        {
-            $this->ajaxReturn(LError::INTERNAL_ERROR, "缺少必要参数！");
-        }
-
-        $arrPids = explode(',', $pids);
-        $succID = $failID = '';
-        foreach($arrPids as $pid)
-        {
-            $product = LAProductService::getById($pid);
-
-            if (LAProductService::updatePProductStatus($product, LAProductModel::STATUS_VERIFY))
-            {
-                $succID .= empty($succID) ? $pid : ',' . $pid;
-            }
-            else
-            {
-                $failID .= empty($failID) ? $pid : ',' . $pid;
-            }
-        }
-
-        if(!$failID)
-        {
-            $this->ajaxReturn(LError::SUCCESS, "子产品ID:{$succID}审核成功");
-        }
-        else
-        {
-            $this->ajaxReturn(LError::INTERNAL_ERROR, "子产品ID:{$succID}删除成功;基金ID:{$failID}审核失败");
-        }
-    }
+//    public function actionVerify()
+//    {
+//        LAPermissionService::checkMenuPermission($this->menuId, 2001104);
+//
+//        if (!$pids = Yii::app()->request->getParam('pids'))
+//        {
+//            $this->ajaxReturn(LError::INTERNAL_ERROR, "缺少必要参数！");
+//        }
+//
+//        $arrPids = explode(',', $pids);
+//        $succID = $failID = '';
+//        foreach($arrPids as $pid)
+//        {
+//            $product = LAProductService::getById($pid);
+//
+//            if (LAProductService::updateProductStatus($product, LAProductModel::STATUS_VERIFY))
+//            {
+//                $succID .= empty($succID) ? $pid : ',' . $pid;
+//            }
+//            else
+//            {
+//                $failID .= empty($failID) ? $pid : ',' . $pid;
+//            }
+//        }
+//
+//        if(!$failID)
+//        {
+//            $this->ajaxReturn(LError::SUCCESS, "子产品ID:{$succID}审核成功");
+//        }
+//        else
+//        {
+//            $this->ajaxReturn(LError::INTERNAL_ERROR, "子产品ID:{$succID}删除成功;基金ID:{$failID}审核失败");
+//        }
+//    }
 }
 
 class ProductFormModel extends AdminBaseFormModel

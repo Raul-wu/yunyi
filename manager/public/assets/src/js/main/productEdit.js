@@ -18,7 +18,6 @@ require([
         $form.attr('action', $form.attr('saveAction'));
 
         $form.ajaxSubmit(function(data) {
-            //var turnError = true;
             if (!data.retCode) {
                 msgDialog(data.retMsg, data.retData.url);
             } else {

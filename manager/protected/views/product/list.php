@@ -16,6 +16,7 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
 Yii::app()->clientScript->registerScript("editProduct", 'window.editProduct="'.Yii::app()->createUrl('product/edit').'";', CClientScript::POS_END);
 Yii::app()->clientScript->registerScript("quotient", 'window.quotient="'.Yii::app()->createUrl('quotient/add').'";', CClientScript::POS_END);
 Yii::app()->clientScript->registerScript("quotientList", 'window.quotientList="'.Yii::app()->createUrl('quotient/list').'";', CClientScript::POS_END);
+Yii::app()->clientScript->registerScript("delProduct", 'window.delProduct="'.Yii::app()->createUrl('product/delete').'";', CClientScript::POS_END);
 
 //列表页按钮权限
 //Yii::app()->clientScript->registerScript("delPProductPermission", 'window.delPProductPermission="'.LAPermissionService::selectMenuPermission($this->menuId, 2001107).'";', CClientScript::POS_END);
@@ -91,7 +92,7 @@ Yii::app()->clientScript->registerScript("quotientList", 'window.quotientList="'
                         <td><?= date('Y-m-d',$product['pproduct']['value_date']) ?></td>
                         <td><?= date('Y-m-d',$product['pproduct']['expected_date']) ?></td>
                         <td><?= isset(LAPProductModel::$arrMode[$product['pproduct']['mode']]) ? LAPProductModel::$arrMode[$product['pproduct']['mode']] : '' ?></td>
-                        <td><?= isset(LAPProductModel::$arrStatus[$product['status']]) ? LAPProductModel::$arrStatus[$product['status']] : '' ?></td>
+                        <td><?= isset(LAProductModel::$arrStatus[$product['status']]) ? LAProductModel::$arrStatus[$product['status']] : '' ?></td>
                     </tr>
                     <?php
                 }

@@ -37,11 +37,42 @@ require([
                 // canShowFunc: function(){
                 //     return delPProductPermission;
                 // }
+            },
+            {
+                name: "删除",
+                click: function() {
+                    confirm("是否确认删除子产品(同时会删除该子产品下的客户份额！)", deleteProducts);
+                },
             }
         ]
     });
 
     widget.listen();
+
+    function deleteProducts() {
+        var chk_ids=[];
+        $(":checkbox:checked").each(function(){
+            chk_ids.push($(this).attr('data-id'));
+        });
+
+        var params={};
+        params['pids'] = chk_ids.join(',');
+        params[$("#tkName").attr('tkName')] = $("#tkName").val();
+
+        $.ajax({
+            'url': delProduct,
+            'data': params,
+            'dataType': 'json',
+            'type': 'POST',
+            'success': function (data) {
+                if(!data.retCode){
+                    msgDialog(data.retMsg, 'reload');
+                }else{
+                    msgDialog(data.retMsg);
+                }
+            }
+        });
+    }
 
     $('#selectAll').on('click', function() {
         if (this.checked) {
@@ -63,7 +94,23 @@ require([
         $("#fund_code").val("");
     });
 
-    //消息提示框
+    function confirm(content,callback,params,flag)
+    {
+        var icon = (flag == "" || flag == undefined || flag == null) ? 'question' : '';
+        return art.dialog({
+            id: 'Confirm',
+            icon: icon,
+            fixed: true,
+            lock: true,
+            opacity: .8,
+            content: content,
+            ok: function(){
+                callback(params);
+            },
+            cancel: true
+        });
+    }
+
     function msgDialog(content,url)
     {
         var msgDialog = art.dialog({

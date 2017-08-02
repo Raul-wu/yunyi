@@ -27,6 +27,7 @@ class LAProductService
             $strUrl .= "&ppid={$arrCondition['ppid']}";
         }
 
+        $criteria->addCondition('t.status != ' . LAProductModel::STATUS_DELETE);
         $criteria->order = $order ? $order : 'pid desc ';
 
         $count = LAProductModel::model()->with('pproduct')->count($criteria);
@@ -49,7 +50,7 @@ class LAProductService
         }
 
         $data['create_time'] = $data['update_time'] = date('Y-m-d H:i:s', time());
-        $data['status'] = LAProductModel::STATUS_DRAFT;
+        $data['status'] = LAProductModel::STATUS_ESTABLISH;
         $data['ppid'] = $ppid;
 
         $objProduct = new LAProductModel();
@@ -83,6 +84,7 @@ class LAProductService
         }
 
         $data['update_time'] = date('Y-m-d H:i:s', time());
+        $data['status'] = $objProduct->status;
 
         $objProduct->setAttributes($data, false);
         if ($objProduct->save())
@@ -97,7 +99,7 @@ class LAProductService
         }
     }
 
-    public static function updatePProductStatus($product, $status)
+    public static function updateProductStatus($product, $status)
     {
         $product->status = $status;
         $product->update_time = date('Y-m-d H:i:s');
@@ -109,23 +111,35 @@ class LAProductService
         return true;
     }
 
+    public static function updateProductStatusByPPid($ppid, $status)
+    {
+        return LAProductModel::model()->updateAll(array('status'=>$status, 'update_time'=>date('Y-m-d H:i:s')), "ppid = {$ppid} and status != " . LAProductModel::STATUS_DELETE);
+    }
+
     public static function getById($pid)
     {
         return LAProductModel::model()->findByPk($pid);
     }
 
-    public static function getProductByPPid($ppid)
+    public static function getPidByPPid($ppid)
     {
         $criteria = new CDbCriteria();
 
-        $criteria->select = 'ppid,pid,total_count,expected_income_rate_E6,status';
-        $criteria->order = 'pid desc ';
+        $criteria->select = 'pid';
         $criteria->compare('ppid', $ppid, false);
+        $criteria->addCondition('status !=' . LAProductModel::STATUS_DELETE);
 
-        $objProduct = LAPProductModel::model()->findAll($criteria);
+        $objProducts = LAProductModel::model()->findAll($criteria);
 
-        return array_map(function($list){
+        $products = array_map(function($list){
             return $list->attributes;
-        }, $objProduct);
+        }, $objProducts);
+
+        $pids = '';
+        foreach($products as $product)
+        {
+            $pids .= empty($pids) ? $product['pid'] : ',' . $product['pid'];
+        }
+        return $pids;
     }
 }

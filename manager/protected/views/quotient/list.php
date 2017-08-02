@@ -24,7 +24,8 @@ Yii::app()->clientScript->registerScript("listSpvPermission", 'window.listSpvPer
                 <input type="hidden" id="tkName" tkName="<?= Yii::app()->request->csrfTokenName ?>" value="<?= Yii::app()->request->csrfToken ?>">
                 <div class="pure-g">
                     <div class="pure-u-2-3">
-                        <input type="text"  placeholder="产品名称" class="pure-input-1-1"  value="<?= isset($name) ? $name : '' ?>" name="name" id="name" />
+                        <input type="text"  placeholder="子产品名称" class="pure-input-1-1"  value="<?= isset($name) ? $name : '' ?>" name="name" id="name" />
+                        <input type="text"  placeholder="基金名称" class="pure-input-1-1"  value="<?= isset($fund_name) ? $fund_name : '' ?>" name="fund_name" id="fund_name" />
                         <button type="submit" class="pure-button pure-button-primary">筛选</button>
                         <button type="button" id="reset" class="pure-button">重置</button>
                     </div>

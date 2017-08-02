@@ -21,6 +21,12 @@ class LAQuotientService
             $strUrl .= "&name={$arrCondition['name']}";
         }
 
+        if(isset($arrCondition['fund_name']) && !empty($arrCondition['fund_name']))
+        {
+            $criteria->compare('pproduct.name', $arrCondition['fund_name'], true);
+            $strUrl .= "&fund_name={$arrCondition['fund_name']}";
+        }
+
         if(isset($arrCondition['pid']) && !empty($arrCondition['pid']))
         {
             $criteria->addInCondition('product.pid', explode(',', $arrCondition['pid']));
@@ -28,13 +34,13 @@ class LAQuotientService
         }
 
         $criteria->order = $order ? $order : 'qid desc ';
-        $count = LAQuotientModel::model()->with('product')->count($criteria);
+        $count = LAQuotientModel::model()->with('product')->with('pproduct')->count($criteria);
 
         $criteria->limit  = $perPage;
         $criteria->offset = ($perPage * ($page - 1));
         $pageBar = LAdminPager::getPages($count, $page, $perPage, $strUrl);
 
-        $quotient = LAQuotientModel::model()->with('product')->findAll($criteria);
+        $quotient = LAQuotientModel::model()->with('product')->with('pproduct')->findAll($criteria);
 
         return array('quotientAll' => $quotient,'pageBar' => $pageBar,'count' => $count);
     }
@@ -120,6 +126,21 @@ class LAQuotientService
             return false;
         }
         return true;
+    }
+
+    public static function deleteQuotientStatusByPid($pids)
+    {
+        $params = array(':pids'=>$pids);
+        if(LAQuotientModel::model()->deleteAll("pid in (:pids)", $params))
+        {
+            Yii::log(sprintf("Delete Quotient Succ"),CLogger::LEVEL_TRACE, self::LOG_PREFIX . __FUNCTION__);
+            return true;
+        }
+        else
+        {
+            Yii::log(sprintf("Delete Quotient Fail"),CLogger::LEVEL_ERROR, self::LOG_PREFIX . __FUNCTION__);
+            return false;
+        }
     }
 
     public static function analysisServiceExcel($pid, $filePath)
