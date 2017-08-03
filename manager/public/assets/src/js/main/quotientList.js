@@ -10,17 +10,47 @@ require([
 
     var widget = new SingleMultiBtn("#buttonHolder", {
         singleBtns: [
-        //  {
-        //     name: "编辑",
-        //     click: function(id) {
-        //         window.location.href= url.editUrl + '?id='+id;
-        //     },
-        //     canShowFunc: function() {
-        //         return listSpvPermission;
-        //     }
-        // },
+         {
+            name: "编辑",
+            click: function(id) {
+                // window.location.href= url.editUrl + '?id='+id;
+            }
+        },
         ],
+        commonBtns: [
+        {
+            name: "删除",
+            click: function() {
+                confirm("是否确认删除客户份额？", deleteQuotients);
+            },
+        }
+    ]
     });
+
+    function deleteQuotients() {
+        var chk_ids=[];
+        $(":checkbox:checked").each(function(){
+            chk_ids.push($(this).attr('data-id'));
+        });
+
+        var params={};
+        params['qids'] = chk_ids.join(',');
+        params[$("#tkName").attr('tkName')] = $("#tkName").val();
+
+        $.ajax({
+            'url': delQuotient,
+            'data': params,
+            'dataType': 'json',
+            'type': 'POST',
+            'success': function (data) {
+                if(!data.retCode){
+                    msgDialog(data.retMsg, 'reload');
+                }else{
+                    msgDialog(data.retMsg);
+                }
+            }
+        });
+    }
 
     widget.listen();
 
@@ -45,7 +75,6 @@ require([
         $("#fund_name").val("");
     });
 
-    //消息提示框
     function msgDialog(content,url)
     {
         var msgDialog = art.dialog({
@@ -66,6 +95,23 @@ require([
             },
             'content' : content,
             'lock' :true
+        });
+    }
+
+    function confirm(content,callback,params,flag)
+    {
+        var icon = (flag == "" || flag == undefined || flag == null) ? 'question' : '';
+        return art.dialog({
+            id: 'Confirm',
+            icon: icon,
+            fixed: true,
+            lock: true,
+            opacity: .8,
+            content: content,
+            ok: function(){
+                callback(params);
+            },
+            cancel: true
         });
     }
 });

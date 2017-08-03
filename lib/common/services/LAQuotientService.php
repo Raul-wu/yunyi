@@ -143,8 +143,15 @@ class LAQuotientService
         }
     }
 
+    public static function deleteQuotientStatusByQid($qid)
+    {
+        return LAQuotientModel::model()->deleteByPk(intval($qid));
+    }
+
     public static function analysisServiceExcel($pid, $filePath)
     {
+        $product = LAProductService::getById($pid);
+
         $data = self::commonExcel($filePath);
         unset($data['head']);
 
@@ -152,11 +159,32 @@ class LAQuotientService
 
         $time =  date('Y-m-d H:i:s', time());
 
-        $sql_insert ="";
+        $sql_insert = "";
+        $err_msg_detail = '';
         foreach($data as $key => $arr)
         {
             foreach($arr as $value)
             {
+                if($product->per_user_by_limit)
+                {
+                    $total_amount = self::getUsersTotalAmountByIDCard($value[5]);
+                    if($product->per_user_by_limit < ($total_amount+$value[2]))
+                    {
+                        $err_msg_detail .= "序号:{$value[1]} 姓名:{$value[1]}; ";
+                        continue;
+                    }
+                }
+                if($product->max_buy && ($value[2] > $product->max_buy))
+                {
+                    $err_msg_detail .= "序号:{$value[0]} 姓名:{$value[1]}; ";
+                    continue;
+                }
+                if($product->min_buy && ($value[2] < $product->min_buy ))
+                {
+                    $err_msg_detail .= "序号:{$value[0]} 姓名:{$value[1]}; ";
+                    continue;
+                }
+
                 $name = isset($value[1]) && !empty($value[1]) ? $value[1] : '';
                 $amount = isset($value[2]) && !empty($value[2]) ? $value[2] : '';
                 $type = isset(LAQuotientModel::$arrTypeReversal[$value[3]]) ? LAQuotientModel::$arrTypeReversal[$value[3]] : LAQuotientModel::TYPE_SELF;
@@ -174,10 +202,19 @@ class LAQuotientService
             }
         }
 
+        if($err_msg_detail)
+        {
+            $err_msg_detail = "以下用户'交易金额'未通过子产品购买限额校验：" . $err_msg_detail;
+        }
+
         if($sql_insert)
         {
             $sql_insert = substr($sql_insert, 0, -1) . ';';
             $sql = $sql . $sql_insert;
+        }
+        else
+        {
+            return array('msg' => "导入客户份额失败". ", {$err_msg_detail}", 'res' => false);
         }
 
         try
@@ -186,18 +223,18 @@ class LAQuotientService
             {
                 Yii::log("import client quotient success ", CLogger::LEVEL_TRACE, self::LOG_PREFIX . __FUNCTION__);
 
-                return array("msg" => "导入客户份额成功", 'res' => true);
+                return array("msg" => "导入客户份额成功" . ", {$err_msg_detail}", 'res' => true);
             }
             else
             {
                 Yii::log("import client quotient failed ", CLogger::LEVEL_ERROR, self::LOG_PREFIX . __FUNCTION__);
-                return array('msg' => '导入客户份额失败', 'res' => false);
+                return array('msg' => "导入客户份额失败", 'res' => false);
             }
         }
         catch (Exception $e)
         {
             Yii::log("import client quotient failed message {$e->getMessage()};", CLogger::LEVEL_ERROR, self::LOG_PREFIX . __FUNCTION__);
-            return false;
+            return array('msg' => $e->getMessage(), 'res' => false);
         }
     }
 
@@ -252,5 +289,27 @@ class LAQuotientService
             }
         }
         return array('data'=>$first_row,'head'=>$head);
+    }
+
+    public static function getUsersTotalAmountByIDCard($id_card)
+    {
+        if(empty($id_card))
+        {
+            Yii::log(sprintf("id card is empty"),CLogger::LEVEL_ERROR, self::LOG_PREFIX . __FUNCTION__);
+            return false;
+        }
+
+        $criteria = new CDbCriteria();
+        $criteria->select = 'amount';
+        $criteria->compare('id_content', $id_card, false);
+        $criteria->compare('status', LAQuotientModel::STATUS_OPEN);
+        $quotients = LAQuotientModel::model()->findAll($criteria);
+
+        $total_amount = 0;
+        foreach($quotients as $quotient)
+        {
+            $total_amount += $quotient['amount'];
+        }
+        return $total_amount;
     }
 }

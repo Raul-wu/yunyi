@@ -21,6 +21,12 @@ class LAAccountService
             $strUrl .= "&name={$arrCondition['name']}";
         }
 
+        if(isset($arrCondition['fund_code']) && !empty($arrCondition['fund_code']))
+        {
+            $criteria->compare('fund_code', $arrCondition['fund_code'], true);
+            $strUrl .= "&fund_code={$arrCondition['fund_code']}";
+        }
+
         $criteria->order = $order ? $order : 'id desc ';
         $count = LAAccountModel::model()->count($criteria);
 

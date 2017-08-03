@@ -10,11 +10,12 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
 Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/js/lib/art_dialog/skins/black.css?v=" . STATIC_VER);
 Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/js/lib/art_dialog/jquery.artDialog.source.js?v=" . STATIC_VER);
 
+Yii::app()->clientScript->registerScript("delQuotient", 'window.delQuotient="'.Yii::app()->createUrl('quotient/delete').'";', CClientScript::POS_END);
 //Yii::app()->clientScript->registerScript("url", 'window.url='.json_encode($url).';', CClientScript::POS_END);
 
-Yii::app()->clientScript->registerScript("addSpvPermission", 'window.addSpvPermission="'.LAPermissionService::selectMenuPermission($this->menuId, 2006102).'";', CClientScript::POS_END);
-Yii::app()->clientScript->registerScript("changeStateSpvPermission", 'window.changeStateSpvPermission="'.LAPermissionService::selectMenuPermission($this->menuId, 2006101).'";', CClientScript::POS_END);
-Yii::app()->clientScript->registerScript("listSpvPermission", 'window.listSpvPermission="'.LAPermissionService::selectMenuPermission($this->menuId, 9999).'";', CClientScript::POS_END);
+//Yii::app()->clientScript->registerScript("addSpvPermission", 'window.addSpvPermission="'.LAPermissionService::selectMenuPermission($this->menuId, 2006102).'";', CClientScript::POS_END);
+//Yii::app()->clientScript->registerScript("changeStateSpvPermission", 'window.changeStateSpvPermission="'.LAPermissionService::selectMenuPermission($this->menuId, 2006101).'";', CClientScript::POS_END);
+//Yii::app()->clientScript->registerScript("listSpvPermission", 'window.listSpvPermission="'.LAPermissionService::selectMenuPermission($this->menuId, 9999).'";', CClientScript::POS_END);
 ?>
 
 <div id="main">
@@ -36,6 +37,7 @@ Yii::app()->clientScript->registerScript("listSpvPermission", 'window.listSpvPer
 
     <div class="quick_action fix_panel">
         <div class="action_mod">
+            <a type="submit" id="buttonHolder"></a>
         </div>
     </div>
 

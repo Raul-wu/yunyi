@@ -94,6 +94,37 @@ class QuotientController extends AdminBaseController
             $this->ajaxReturn(LError::PARAM_ERROR,$result['msg']);
         }
     }
+
+    public function actionDelete()
+    {
+        if (!$qids = Yii::app()->request->getParam('qids'))
+        {
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "缺少必要参数！");
+        }
+
+        $arrQids = explode(',', $qids);
+        $succID = $failID = '';
+        foreach($arrQids as $qid)
+        {
+            if (LAQuotientService::deleteQuotientStatusByQid($qid))
+            {
+                $succID .= empty($succID) ? $qid : ',' . $qid;
+            }
+            else
+            {
+                $failID .= empty($failID) ? $qid : ',' . $qid;
+            }
+        }
+
+        if(!$failID)
+        {
+            $this->ajaxReturn(LError::SUCCESS, "客户份额ID:{$succID}删除成功");
+        }
+        else
+        {
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "客户份额ID:{$succID}删除成功;客户份额ID:{$failID}删除失败");
+        }
+    }
 }
 
 class QuotientEditFormModel extends AdminBaseFormModel

@@ -15,6 +15,7 @@ class AccountController extends AdminBaseController
 
         $this->setJsMain('accountList');
 
+        $conditions['fund_code'] = trim(Yii::app()->request->getParam('fund_code',''));
         $conditions['name'] = trim(Yii::app()->request->getParam('name',''));
         $conditions['page'] = trim(Yii::app()->request->getParam('page', 1));
         $arrAccount = LAAccountService::getAll($conditions, $conditions['page']);
@@ -24,6 +25,7 @@ class AccountController extends AdminBaseController
             'pageBar'   => $arrAccount['pageBar'],
             'count'     => $arrAccount['count'],
             'name'      => $conditions['name'],
+            'fund_code'      => $conditions['fund_code'],
             'url'       => array('editUrl'=>Yii::app()->createUrl("account/edit/")),
         ));
     }
@@ -52,6 +54,7 @@ class AccountController extends AdminBaseController
         $this->render('edit',array(
             'opType'    => 'edit',
             'id'     => $id,
+            'fund_code'  => $objAccount->fund_code,
             'type'  => $objAccount->type,
             'name'   => $objAccount->name,
             'bank_account'   => $objAccount->bank_account,
@@ -72,6 +75,7 @@ class AccountController extends AdminBaseController
         $id   = Yii::app()->request->getParam('id','');
         $opType = Yii::app()->request->getParam('opType','');
         $arrData = array(
+            'fund_code'          => trim(Yii::app()->request->getParam('fund_code','')),
             'type'          => trim(Yii::app()->request->getParam('type','')),
             'name'          => trim(Yii::app()->request->getParam('name','')),
             'bank_account'       => trim(Yii::app()->request->getParam('bank_account','')),
@@ -138,6 +142,7 @@ class AccountEditFormModel extends AdminBaseFormModel
     const ACCOUNT_EDIT          = 'account_edit';
 
     public $id;
+    public $fund_code;
     public $type;
     public $name;
     public $bank_account;
@@ -148,7 +153,7 @@ class AccountEditFormModel extends AdminBaseFormModel
     public function rules()
     {
         return array(
-            array('type, name, bank_account, bank_address, handler, status, create_time, update_time', 'safe'),
+            array('fund_code, type, name, bank_account, bank_address, handler, status, create_time, update_time', 'safe'),
 
             array('type, name, bank_account, bank_address, handler, status', 'required', 'on' => array(self::ACCOUNT_NEW, self::ACCOUNT_EDIT)),
         );

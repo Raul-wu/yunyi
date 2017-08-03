@@ -62,7 +62,7 @@ require([
 
     function chkParams(){
 
-        return 'name=' + $("#name").val() + '&type=' + $("#type").val() + '&bank_account=' + $("#bank_account").val()
+        return 'fund_code=' + $("#fund_code").val() + '&name=' + $("#name").val() + '&type=' + $("#type").val() + '&bank_account=' + $("#bank_account").val()
             + '&bank_address=' + $("#bank_address").val() + '&handler=' + $("#handler").val() + '&status=' + $("input[name='status']:checked").val()
             + '&opType=' + $("#opType").val() + '&g_tk=' + $("input[tkname=g_tk]").val();
     }

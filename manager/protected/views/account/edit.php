@@ -26,6 +26,10 @@ Yii::app()->clientScript->registerScript("saveUrl", 'window.saveUrl="/account/sa
             <h1>添加资金账户</h1>
             <div class="editor_form">
                 <div class="pure-g">
+                    <div class="pure-u-1"><label>基金代码</label>
+                        <input type="text" class="pure-input-2-3 submit" name="type" id="fund_code"  maxlength="255" value="<?= isset($fund_code) ? $fund_code : ''; ?>" /> *
+                    </div>
+
                     <div class="pure-u-1"><label>账户性质</label>
                         <input type="text" class="pure-input-2-3 submit" name="type" id="type" placeholder="必填" maxlength="255" value="<?= isset($type) ? $type : ''; ?>" /> *
                     </div>

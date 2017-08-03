@@ -25,6 +25,7 @@ Yii::app()->clientScript->registerScript("listSpvPermission", 'window.listSpvPer
                 <div class="pure-g">
                     <div class="pure-u-2-3">
                         <input type="text"  placeholder="户名" class="pure-input-1-1"  value="<?= $name ?>" name="name" id="name" />
+                        <input type="text"  placeholder="基金代码" class="pure-input-1-1"  value="<?= $fund_code ?>" name="fund_code" id="fund_code" />
                         <button type="submit" class="pure-button pure-button-primary">筛选</button>
                         <button type="button" id="reset" class="pure-button">重置</button>
                     </div>
@@ -55,6 +56,7 @@ Yii::app()->clientScript->registerScript("listSpvPermission", 'window.listSpvPer
                     <col class="w_100" />
                     <col class="w_100" />
                     <col class="w_100" />
+                    <col class="w_100" />
                     <col class="w_120" />
                     <col class="w_120" />
                     <col class="w_120" />
@@ -62,6 +64,7 @@ Yii::app()->clientScript->registerScript("listSpvPermission", 'window.listSpvPer
                 <thead>
                 <tr>
                     <th><input type="checkbox" id="selectAll"></th>
+                    <th>基金代码</th>
                     <th>账户性质</th>
                     <th>户名</th>
                     <th>银行账号</th>
@@ -79,6 +82,7 @@ Yii::app()->clientScript->registerScript("listSpvPermission", 'window.listSpvPer
                         ?>
                         <tr class="<?= $key % 2 ? "" : "pure-table-odd" ?> pure-table-tr">
                             <td><input type="checkbox" value="<?= $account['id'] ?>" class="check" data-id="<?= $account['id'] ?>"/></td>
+                            <td class="tc"><?= $account['fund_code'] ?></td>
                             <td class="tc"><?= $account['type'] ?></td>
                             <td class="tc"><?= $account['name'] ?></td>
                             <td class="tc"><?= $account['bank_account'] ?></td>

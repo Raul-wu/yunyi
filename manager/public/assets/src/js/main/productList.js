@@ -21,6 +21,12 @@ require([
                 click: function(id) {
                     window.location.href= quotient + '?pid='+id;
                 },
+            },
+            {
+                name: "添加单个客户份额",
+                click: function(id) {
+                    // window.location.href= quotient + '?pid='+id;
+                },
             }
         ],
         commonBtns: [
