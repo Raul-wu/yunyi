@@ -20,7 +20,7 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
 <div id="main">
     <div class="content">
 
-        <form class="pure-form" saveAction="<?= Yii::app()->createUrl('product/save')?>" method="post" id="form" ">
+        <form class="pure-form" saveAction="<?= Yii::app()->createUrl('product/save')?>" method="post" id="form">
 
         <div class="editor_box">
             <div class="editor_form">
@@ -85,7 +85,7 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                     </div>
 
                     <div class="pure-u-1"><label>实际募集/元</label>
-                        <input type="text" class="pure-input-2-3 submit" name="actually_total" placeholder="必填" value="<?= isset($product->actually_total) ? $product->actually_total : ''?>"> *
+                        <input type="text" class="pure-input-2-3 submit" disabled value="<?= isset($actually_total) ? $actually_total : ''?>">
                     </div>
 
                     <div class="pure-u-1"><label>单用户限购/元</label>

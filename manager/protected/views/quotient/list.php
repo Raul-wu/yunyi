@@ -11,7 +11,7 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/js/lib/art
 Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/js/lib/art_dialog/jquery.artDialog.source.js?v=" . STATIC_VER);
 
 Yii::app()->clientScript->registerScript("delQuotient", 'window.delQuotient="'.Yii::app()->createUrl('quotient/delete').'";', CClientScript::POS_END);
-//Yii::app()->clientScript->registerScript("url", 'window.url='.json_encode($url).';', CClientScript::POS_END);
+Yii::app()->clientScript->registerScript("editUrl", 'window.editUrl="'.Yii::app()->createUrl('quotient/editOne').'";', CClientScript::POS_END);
 
 //Yii::app()->clientScript->registerScript("addSpvPermission", 'window.addSpvPermission="'.LAPermissionService::selectMenuPermission($this->menuId, 2006102).'";', CClientScript::POS_END);
 //Yii::app()->clientScript->registerScript("changeStateSpvPermission", 'window.changeStateSpvPermission="'.LAPermissionService::selectMenuPermission($this->menuId, 2006101).'";', CClientScript::POS_END);
@@ -58,9 +58,9 @@ Yii::app()->clientScript->registerScript("delQuotient", 'window.delQuotient="'.Y
                 <thead>
                 <tr>
                     <th><input type="checkbox" id="selectAll"></th>
-                    <th>产品名称</th>
+                    <th>子产品名称</th>
                     <th>投资人姓名</th>
-                    <th>交易金额（万元）</th>
+                    <th>交易金额（元）</th>
                     <th>投资类型</th>
                     <th>证件类别</th>
                     <th>证件号码</th>

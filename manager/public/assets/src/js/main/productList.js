@@ -25,7 +25,7 @@ require([
             {
                 name: "添加单个客户份额",
                 click: function(id) {
-                    // window.location.href= quotient + '?pid='+id;
+                    window.location.href= addQuotient + '?pid='+id;
                 },
             }
         ],

@@ -125,26 +125,153 @@ class QuotientController extends AdminBaseController
             $this->ajaxReturn(LError::INTERNAL_ERROR, "客户份额ID:{$succID}删除成功;客户份额ID:{$failID}删除失败");
         }
     }
+
+    public function actionAddOne()
+    {
+        $this->setJsMain('quotientEditOne');
+
+        $pid = Yii::app()->request->getParam('pid');
+
+        $this->render('editOne',array(
+            'pid'            => $pid,
+        ));
+    }
+
+    public function actionEditOne()
+    {
+        $this->setJsMain('quotientEditOne');
+
+        $qid = Yii::app()->request->getParam('qid');
+        $quotient = LAQuotientService::getByID($qid);
+        $this->render('editOne',array(
+            'qid' =>$qid,
+            'quotient' => $quotient
+        ));
+    }
+
+    public function actionSaveOne()
+    {
+        if(!Yii::app()->request->isAjaxRequest)
+        {
+            throw new CHttpException(404,'非法操作');
+            Yii::app()->end();
+        }
+
+        $pid = Yii::app()->request->getParam('pid');
+        $product = LAProductService::getById($pid);
+        $total = LAQuotientService::getTotalAmountByPid($pid);
+        if($product->total_count < $total+intval($_POST['amount']))
+        {
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "创建客户份额失败！已达子产品限购额度上限");
+        }
+        if($product->per_user_by_limit)
+        {
+            $total_amount = LAQuotientService::getUsersTotalAmountByIDCard($_POST['id_content']);
+            if($product->per_user_by_limit < ($total_amount + intval($_POST['amount'])))
+            {
+                $this->ajaxReturn(LError::INTERNAL_ERROR, "创建客户份额失败！已达单用户限购额度");
+            }
+        }
+        if($product->max_buy && ( intval($_POST['amount']) > $product->max_buy))
+        {
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "创建客户份额失败！已达单笔最大金额");
+        }
+        if($product->min_buy && ( intval($_POST['amount']) < $product->min_buy ))
+        {
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "创建客户份额失败！已达单笔最小金额");
+        }
+
+        if (!$qid = Yii::app()->request->getParam('qid'))
+        {
+            $quotient = new QuotientEditFormModel();
+            $quotient->setAttributes($_POST);
+            $quotient->setScenario(QuotientEditFormModel::QUOTIENT_NEW_ONE);
+            $quotient->validate();
+            if ($errors = $quotient->getErrors())
+            {
+                $this->ajaxReturn(LError::INTERNAL_ERROR, '数据不能为空');
+            }
+
+            $quotientData = $quotient->getData();
+            if(LAQuotientService::create($pid, $quotientData))
+            {
+                $this->ajaxReturn(LError::SUCCESS, "创建客户份额成功！", array("url" => Yii::app()->createUrl("quotient/list?pid=". $pid)));
+            }
+            else
+            {
+                $this->ajaxReturn(LError::INTERNAL_ERROR, "创建客户份额失败！");
+            }
+        }
+        else
+        {
+            $quotient = new QuotientEditFormModel();
+            $quotient->setAttributes($_POST);
+            $quotient->setScenario(QuotientEditFormModel::QUOTIENT_EDIT_ONE);
+            $quotient->validate();
+            if ($errors = $quotient->getErrors())
+            {
+                $this->ajaxReturn(LError::INTERNAL_ERROR, '数据不能为空');
+            }
+
+            $quotientData = $quotient->getData();
+            if(LAQuotientService::update($qid, $quotientData))
+            {
+                $this->ajaxReturn(LError::SUCCESS, "更新客户份额成功！", array("url" => Yii::app()->createUrl("quotient/list?pid=". $pid)));
+            }
+            else
+            {
+                $this->ajaxReturn(LError::INTERNAL_ERROR, "更新客户份额失败！");
+            }
+        }
+    }
 }
 
 class QuotientEditFormModel extends AdminBaseFormModel
 {
-    const QUOTIENT_NEW           = 'quotient_new';
+    const QUOTIENT_NEW_ONE          = 'quotient_new_one';
+    const QUOTIENT_EDIT_ONE         = 'quotient_edit_one';
 
-    public $id;
-    public $type;
+    public $pid;
     public $name;
+    public $type;
+    public $amount;
+    public $id_type;
+    public $id_content;
+    public $handler_name;
+    public $delegate_name;
     public $bank_account;
+    public $bank_name;
     public $bank_address;
-    public $handler;
+    public $bank_province;
+    public $bank_city;
     public $status;
 
     public function rules()
     {
         return array(
-            array('type, name, bank_account, bank_address, handler, status, create_time, update_time', 'safe'),
+            array('pid, name, amount, type, id_type, id_content, handler_name, delegate_name, bank_account, bank_name, bank_address, bank_province, bank_city, status, create_time, update_time', 'safe'),
 
-            array('type, name, bank_account, bank_address, handler, status', 'required', 'on' => array(self::QUOTIENT_NEW)),
+            array('pid, name, amount, id_content', 'required', 'on' => array(self::QUOTIENT_NEW_ONE, self::QUOTIENT_EDIT_ONE)),
         );
+    }
+
+    public function getData()
+    {
+        $data = $this->attributes;
+
+        return $this->trimData($data);
+    }
+
+    public function trimData($data)
+    {
+        foreach ($data as $key =>  $val)
+        {
+            if (!is_array($val))
+            {
+                $data[$key] = trim($val);
+            }
+        }
+
+        return $data;
     }
 }

@@ -20,7 +20,7 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
 <div id="main">
     <div class="content">
 
-        <form class="pure-form" enctype="multipart/form-data" saveAction="<?= Yii::app()->createUrl('quotient/save')?>" method="post" id="form" ">
+        <form class="pure-form" enctype="multipart/form-data" saveAction="<?= Yii::app()->createUrl('quotient/save')?>" method="post" id="form">
 
         <div class="editor_box">
             <div class="editor_form">

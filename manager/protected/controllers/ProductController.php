@@ -41,6 +41,8 @@ class ProductController extends AdminBaseController
         $objPProduct = LAPProductService::getById($objProduct->ppid);
         $objPProductDetail = LAPProductDetailService::getByPPid($objProduct->ppid);
 
+        $actually_total = LAQuotientService::getTotalAmountByPid($pid);
+
         $this->render('edit',array(
             'opType'    => 'edit',
             'pid'           => $pid,
@@ -48,6 +50,7 @@ class ProductController extends AdminBaseController
             'product'     => $objProduct,
             'pproduct'  => $objPProduct,
             'pproduct_detail'   => $objPProductDetail,
+            'actually_total' => $actually_total
         ));
     }
 
@@ -217,7 +220,6 @@ class ProductFormModel extends AdminBaseFormModel
     public $name;
     public $expected_income_rate_E6;
     public $total_count;
-    public $actually_total;
     public $per_user_by_limit;
     public $max_buy;
     public $min_buy;
@@ -226,9 +228,9 @@ class ProductFormModel extends AdminBaseFormModel
     public function rules()
     {
         return array(
-            array('name, expected_income_rate_E6, total_count, actually_total, per_user_by_limit, max_buy, min_buy, mode, status, create_time, update_time', 'safe'),
+            array('name, expected_income_rate_E6, total_count, per_user_by_limit, max_buy, min_buy, mode, status, create_time, update_time', 'safe'),
 
-            array('name, expected_income_rate_E6, total_count, actually_total', 'required', 'on' => array(self::PRODUCT_NEW, self::PRODUCT_EDIT))
+            array('name, expected_income_rate_E6, total_count', 'required', 'on' => array(self::PRODUCT_NEW, self::PRODUCT_EDIT))
         );
     }
 

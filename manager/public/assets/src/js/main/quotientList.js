@@ -13,7 +13,7 @@ require([
          {
             name: "编辑",
             click: function(id) {
-                // window.location.href= url.editUrl + '?id='+id;
+                window.location.href= editUrl + '?qid='+id;
             }
         },
         ],

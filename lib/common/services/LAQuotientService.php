@@ -50,8 +50,14 @@ class LAQuotientService
         return LAQuotientModel::model()->findByPk($id);
     }
 
-    public static function Create($data)
+    public static function Create($pid, $data)
     {
+        if(empty($pid))
+        {
+            Yii::log(sprintf("Create Quotient Fail, Create Params Empty(pid)"), CLogger::LEVEL_ERROR, self::LOG_PREFIX . __FUNCTION__);
+            return false;
+        }
+
         if(empty($data))
         {
             Yii::log(sprintf("Create Quotient Fail, Create Params Empty"), CLogger::LEVEL_ERROR, self::LOG_PREFIX . __FUNCTION__);
@@ -67,6 +73,8 @@ class LAQuotientService
         {
             $data['update_time'] = date('Y-m-d H:i:s', time());
         }
+
+        $data['status'] = LAQuotientModel::STATUS_OPEN;
 
         $objQuotient = new LAQuotientModel();
         $objQuotient->setAttributes($data, false);
@@ -151,6 +159,7 @@ class LAQuotientService
     public static function analysisServiceExcel($pid, $filePath)
     {
         $product = LAProductService::getById($pid);
+        $total = LAQuotientService::getTotalAmountByPid($pid);
 
         $data = self::commonExcel($filePath);
         unset($data['head']);
@@ -165,6 +174,12 @@ class LAQuotientService
         {
             foreach($arr as $value)
             {
+                if($product->total_count < $total+$value[2])
+                {
+                    $err_msg_detail .= "序号:{$value[0]} 姓名:{$value[1]}; ";
+                    continue;
+                }
+
                 if($product->per_user_by_limit)
                 {
                     $total_amount = self::getUsersTotalAmountByIDCard($value[5]);
@@ -174,11 +189,13 @@ class LAQuotientService
                         continue;
                     }
                 }
+
                 if($product->max_buy && ($value[2] > $product->max_buy))
                 {
                     $err_msg_detail .= "序号:{$value[0]} 姓名:{$value[1]}; ";
                     continue;
                 }
+
                 if($product->min_buy && ($value[2] < $product->min_buy ))
                 {
                     $err_msg_detail .= "序号:{$value[0]} 姓名:{$value[1]}; ";
@@ -302,6 +319,28 @@ class LAQuotientService
         $criteria = new CDbCriteria();
         $criteria->select = 'amount';
         $criteria->compare('id_content', $id_card, false);
+        $criteria->compare('status', LAQuotientModel::STATUS_OPEN);
+        $quotients = LAQuotientModel::model()->findAll($criteria);
+
+        $total_amount = 0;
+        foreach($quotients as $quotient)
+        {
+            $total_amount += $quotient['amount'];
+        }
+        return $total_amount;
+    }
+
+    public static function getTotalAmountByPid($pid)
+    {
+        if(empty($pid))
+        {
+            Yii::log(sprintf("pid is empty"),CLogger::LEVEL_ERROR, self::LOG_PREFIX . __FUNCTION__);
+            return false;
+        }
+
+        $criteria = new CDbCriteria();
+        $criteria->select = 'amount';
+        $criteria->compare('pid', $pid, false);
         $criteria->compare('status', LAQuotientModel::STATUS_OPEN);
         $quotients = LAQuotientModel::model()->findAll($criteria);
 
