@@ -21,7 +21,16 @@ class LAPProductService
             $strUrl .= "&fund_code={$arrCondition['fund_code']}";
         }
 
-        $criteria->addCondition('status != ' . LAPProductModel::STATUS_DELETE);
+        if(isset($arrCondition['status']) && !empty($arrCondition['status']))
+        {
+            $criteria->compare('status', $arrCondition['status'], true);
+            $strUrl .= "&status={$arrCondition['status']}";
+        }
+        else
+        {
+            $criteria->addCondition('status != ' . LAPProductModel::STATUS_DELETE);
+        }
+
         $criteria->order = $order ? $order : 'ppid desc ';
         $count = LAPProductModel::model()->count($criteria);
 

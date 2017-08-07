@@ -84,7 +84,7 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                         </div>
 
                         <div class="pure-u-md-1-2"><label>收益率</label>
-                            <input type="text" class="pure-input-2-3 submit" name="income_rate_E6" placeholder="必填" value="<?= isset($pproduct['income_rate_E6']) ? $pproduct['income_rate_E6'] / LConstService::E4 : ''?>"> *
+                            <input type="text" class="pure-input-2-3 submit" name="income_rate_E6" placeholder="必填" value="<?= isset($pproduct['income_rate_E6']) ? $pproduct['income_rate_E6'] / LConstService::E4 : ''?>">% *
                         </div>
 
                         <div class="pure-u-md-1-2"><label>认购费</label>
