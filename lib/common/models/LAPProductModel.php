@@ -25,10 +25,12 @@ class LAPProductModel extends LActiveRecord
     const STRUCT_PALN = 1;
     const STRUCT_LIMIT = 2;
     const STRUCT_INTRUST = 3;
+    const STRUCT_NORMAL = 4;
     public static $arrStruct = array(
         self::STRUCT_PALN => '资管计划',
         self::STRUCT_LIMIT => '有限合伙',
-        self::STRUCT_INTRUST => '信托'
+        self::STRUCT_INTRUST => '信托',
+        self::STRUCT_NORMAL => '一般固定收益类契约型基金',
     );
 
     //产品类型

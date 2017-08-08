@@ -80,24 +80,24 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                         <input type="text" class="pure-input-2-3 submit" name="expected_income_rate_E6" placeholder="必填" value="<?= isset($product->expected_income_rate_E6) ? $product->expected_income_rate_E6 / LConstService::E4 : ''?>"> *
                     </div>
 
-                    <div class="pure-u-md-1-2"><label>产品总额/元</label>
-                        <input type="text" class="pure-input-2-3 submit" name="total_count" placeholder="必填" value="<?= isset($product->total_count) ? $product->total_count : ''?>"> *
+                    <div class="pure-u-md-1-2"><label>产品总额/万元</label>
+                        <input type="text" class="pure-input-2-3 submit" name="total_count" placeholder="必填" value="<?= isset($product->total_count) ? $product->total_count / LConstService::E4 : ''?>"> *
                     </div>
 
-                    <div class="pure-u-1"><label>实际募集/元</label>
-                        <input type="text" class="pure-input-2-3 submit" disabled value="<?= isset($actually_total) ? $actually_total : ''?>">
+                    <div class="pure-u-1"><label>实际募集/万元</label>
+                        <input type="text" class="pure-input-2-3 submit" disabled value="<?= isset($actually_total) ? $actually_total / LConstService::E4 : ''?>">
                     </div>
 
-                    <div class="pure-u-1"><label>单用户限购/元</label>
-                        <input type="text" class="pure-input-2-3 submit" name="per_user_by_limit" value="<?= isset($product->per_user_by_limit) ? $product->per_user_by_limit : ''?>">
+                    <div class="pure-u-1"><label>单用户限购/万元</label>
+                        <input type="text" class="pure-input-2-3 submit" name="per_user_by_limit" value="<?= isset($product->per_user_by_limit) ? $product->per_user_by_limit / LConstService::E4 : ''?>">
                     </div>
 
-                    <div class="pure-u-1"><label>单笔最大金额/元</label>
-                        <input type="text" class="pure-input-2-3 submit" name="max_buy" value="<?= isset($product->max_buy) ? $product->max_buy : ''?>">
+                    <div class="pure-u-1"><label>单笔最大金额/万元</label>
+                        <input type="text" class="pure-input-2-3 submit" name="max_buy" value="<?= isset($product->max_buy) ? $product->max_buy / LConstService::E4 : ''?>">
                     </div>
 
-                    <div class="pure-u-1"><label>单笔最小金额/元</label>
-                        <input type="text" class="pure-input-2-3 submit" name="min_buy" value="<?= isset($product->min_buy) ? $product->min_buy : ''?>">
+                    <div class="pure-u-1"><label>单笔最小金额/万元</label>
+                        <input type="text" class="pure-input-2-3 submit" name="min_buy" value="<?= isset($product->min_buy) ? $product->min_buy / LConstService::E4 : ''?>">
                     </div>
 
                 </div>

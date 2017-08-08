@@ -36,14 +36,36 @@ class FinanceController extends AdminBaseController
 
         LAPermissionService::checkMenuPermission($this->menuId, 9999);
 
-        $conditions['page'] = trim(Yii::app()->request->getParam('page', 1));
+        $conditions['name'] = trim(Yii::app()->request->getParam('name', ''));
+        $conditions['id_content'] = trim(Yii::app()->request->getParam('id_content', ''));
 
-        $infoRes = LAPProductService::getAll($conditions, $conditions['page']);
+        $quotientAll = LAQuotientService::getListForQuotientList($conditions);
+
+        $pids = array();
+        foreach($quotientAll as $quotient)
+        {
+            $pids[] = $quotient['pid'];
+        }
+
+        $products = array();
+        foreach($pids as $key => $pid)
+        {
+            $product = LAProductService::getById($pid);
+            $pproduct = LAPProductService::getById($product->ppid);
+
+            $products[$key] = array(
+                'name' => $product->name,
+                'expected_date' => date('Y-m-d', $pproduct->expected_date),
+
+            );
+        }
+
 
         $this->render('quotientList', array(
-            'pproducts' => $infoRes['productAll'],
-            'count' => $infoRes['count'],
-            'pageBar'   => $infoRes['pageBar'],
+            'quotients'  => $quotientAll,
+            'name'     => $conditions['name'],
+            'id_content'     => $conditions['id_content'],
+            'products' => $product
         ));
     }
 

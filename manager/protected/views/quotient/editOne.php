@@ -32,8 +32,8 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                         <input type="text" class="pure-input-2-3 submit" name="name" id="name"  placeholder="必填" value="<?= isset($quotient->name) ? $quotient->name : ''; ?>" /> *
                     </div>
 
-                    <div class="pure-u-1"><label>交易金额（元）</label>
-                        <input type="text" class="pure-input-2-3 submit" name="amount" id="amount" placeholder="必填" value="<?= isset($quotient->amount) ? $quotient->amount : ''; ?>" /> *
+                    <div class="pure-u-1"><label>交易金额（万元）</label>
+                        <input type="text" class="pure-input-2-3 submit" name="amount" id="amount" placeholder="必填" value="<?= isset($quotient->amount) ? $quotient->amount / LConstService::E4 : ''; ?>" /> *
                     </div>
 
                     <div class="pure-u-1"><label>投资人类型</label>

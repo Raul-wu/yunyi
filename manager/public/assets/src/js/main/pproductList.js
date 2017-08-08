@@ -34,7 +34,17 @@ define([
                 // canShowFunc: function(){
                 //     return listProductPermission;
                 // }
-            }
+            },
+            {
+                name: "添加资金账户",
+                click: function(ppid) {
+                    url = createAccount + '?ppid=' + ppid;
+                    window.location.href = url;
+                },
+                // canShowFunc: function(){
+                //     return listProductPermission;
+                // }
+            },
         ],
         commonBtns: [
             {

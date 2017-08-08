@@ -66,6 +66,11 @@ class PProductController extends AdminBaseController
             Yii::app()->end();
         }
 
+        if(strtotime($_POST['expected_date']) < strtotime($_POST['value_date']))
+        {
+            $this->ajaxReturn(LError::INTERNAL_ERROR, '预计到期日不能小于起息日');
+        }
+
         if (!$ppid = Yii::app()->request->getParam('ppid'))
         {
             $pproduct = new PProductFormModel();
@@ -79,9 +84,13 @@ class PProductController extends AdminBaseController
             $pproductData = $pproduct->getData();
 
             $pproductDetail = new PProductDetailFormModel();
+            $pproductDetail->setScenario(PProductDetailFormModel::PPRODUCT_DETAIL_NEW);
             $pproductDetail->setAttributes($_POST);
             $pproductDetail->validate();
-
+            if ($errors = $pproductDetail->getErrors())
+            {
+                $this->ajaxReturn(LError::INTERNAL_ERROR, '数据不能为空');
+            }
             $pproductDetailData = $pproductDetail->getData();
 
             if(LAPProductService::create($pproductData, $pproductDetailData))
@@ -106,8 +115,13 @@ class PProductController extends AdminBaseController
             $pproductData = $pproduct->getData();
 
             $pproductDetail = new PProductDetailFormModel();
+            $pproductDetail->setScenario(PProductDetailFormModel::PPRODUCT_DETAIL_EDIT);
             $pproductDetail->setAttributes($_POST);
             $pproductDetail->validate();
+            if ($errors = $pproductDetail->getErrors())
+            {
+                $this->ajaxReturn(LError::INTERNAL_ERROR, '数据不能为空');
+            }
             $pproductDetailData = $pproductDetail->getData();
 
             if(LAPProductService::update($ppid, $pproductData, $pproductDetailData))
@@ -241,6 +255,7 @@ class PProductFormModel extends AdminBaseFormModel
     public $remain;
     public $income_rate_E6;
     public $buy_rate_E6;
+    public $batch;
     public $establish;
     public $value_date;
     public $duration_data;
@@ -258,7 +273,7 @@ class PProductFormModel extends AdminBaseFormModel
     public function rules()
     {
         return array(
-            array('fund_code, name, struct, type, mode, scale, remain, income_rate_E6, buy_rate_E6,
+            array('fund_code, name, struct, type, mode, scale, remain, income_rate_E6, buy_rate_E6, batch,
             establish, value_date, duration_data, expected_date, interest_principle, management_E6, trusteeship_E6, epiboly_E6, 
             service_fees_E6, adviser_fees_E6, lending_rate_E6, investment_term, pay_rule, create_time, update_time', 'safe'),
 
@@ -281,6 +296,8 @@ class PProductFormModel extends AdminBaseFormModel
         $data['epiboly_E6'] = $this->epiboly_E6 * LConstService::E4;
         $data['service_fees_E6'] = $this->service_fees_E6 * LConstService::E4;
         $data['adviser_fees_E6'] = $this->adviser_fees_E6 * LConstService::E4;
+
+        $data['scale'] = $this->scale * LConstService::E4;
 
         return $this->trimData($data);
     }
@@ -333,6 +350,8 @@ class PProductDetailFormModel extends AdminBaseFormModel
             array('ppid, finance_name, project_name, parent_finance_name, money_use, payment_source, risk_control, project_city,
             project_address, project_address_img, project_address_explain, project_summary, project_detail, manager, team_leader,
             project_manager, trustee, project_type, department, risk_level, legal_structure, publishing_organization',  'safe'),
+
+            array('finance_name, manager, team_leader, project_manager, trustee, project_type, department', 'required', 'on' => array(self::PPRODUCT_DETAIL_NEW, self::PPRODUCT_DETAIL_EDIT))
         );
     }
 

@@ -239,6 +239,11 @@ class ProductFormModel extends AdminBaseFormModel
         $data = $this->attributes;
         $data['expected_income_rate_E6'] = $this->expected_income_rate_E6 * LConstService::E4;
 
+        $data['total_count'] = $this->total_count * LConstService::E4;
+        $data['per_user_by_limit'] = $this->per_user_by_limit * LConstService::E4;
+        $data['max_buy'] = $this->max_buy * LConstService::E4;
+        $data['min_buy'] = $this->min_buy * LConstService::E4;
+
         return $this->trimData($data);
     }
 

@@ -16,6 +16,7 @@ Yii::app()->clientScript->registerScript("deletePProduct", 'window.deletePProduc
 Yii::app()->clientScript->registerScript("subCreate", 'window.subCreate="'.Yii::app()->createUrl("product/add").'";', CClientScript::POS_END);
 Yii::app()->clientScript->registerScript("subShow", 'window.subShow="'.Yii::app()->createUrl('product/list').'";', CClientScript::POS_END);
 Yii::app()->clientScript->registerScript("checkScale", 'window.checkScale="'.Yii::app()->createUrl('PProduct/checkHasScale').'";', CClientScript::POS_END);
+Yii::app()->clientScript->registerScript("createAccount", 'window.createAccount="'.Yii::app()->createUrl('account/add').'";', CClientScript::POS_END);
 
 //列表页按钮权限
 Yii::app()->clientScript->registerScript("delPProductPermission", 'window.delPProductPermission="'.LAPermissionService::selectMenuPermission($this->menuId, 2001107).'";', CClientScript::POS_END);
@@ -83,7 +84,7 @@ Yii::app()->clientScript->registerScript("copyPProductPermission", 'window.copyP
                         <td><?= $pproduct['fund_code'] ?></td>
                         <td><?= $pproduct['name'] ?></td>
                         <td><?= isset(LAPProductModel::$arrType[$pproduct['type']]) ? LAPProductModel::$arrType[$pproduct['type']] : ''?></td>
-                        <td><?= $pproduct['scale'] ?></td>
+                        <td><?= $pproduct['scale'] / LConstService::E4 ?></td>
                         <td><?= date('Y-m-d',$pproduct['expected_date']) ?></td>
                         <td><?= isset(LAPProductModel::$arrMode[$pproduct['mode']]) ? LAPProductModel::$arrMode[$pproduct['mode']] : '' ?></td>
                         <td><?= isset(LAPProductModel::$arrStatus[$pproduct['status']]) ? LAPProductModel::$arrStatus[$pproduct['status']] : '' ?></td>

@@ -160,23 +160,23 @@ class QuotientController extends AdminBaseController
         $pid = Yii::app()->request->getParam('pid');
         $product = LAProductService::getById($pid);
         $total = LAQuotientService::getTotalAmountByPid($pid);
-        if($product->total_count < $total+intval($_POST['amount']))
+        if($product->total_count < $total + (intval($_POST['amount']) * LConstService::E4))
         {
             $this->ajaxReturn(LError::INTERNAL_ERROR, "创建客户份额失败！已达子产品限购额度上限");
         }
         if($product->per_user_by_limit)
         {
             $total_amount = LAQuotientService::getUsersTotalAmountByIDCard($_POST['id_content']);
-            if($product->per_user_by_limit < ($total_amount + intval($_POST['amount'])))
+            if($product->per_user_by_limit < ($total_amount + (intval($_POST['amount'])  * LConstService::E4)))
             {
                 $this->ajaxReturn(LError::INTERNAL_ERROR, "创建客户份额失败！已达单用户限购额度");
             }
         }
-        if($product->max_buy && ( intval($_POST['amount']) > $product->max_buy))
+        if($product->max_buy && ( (intval($_POST['amount'])  * LConstService::E4) > $product->max_buy))
         {
             $this->ajaxReturn(LError::INTERNAL_ERROR, "创建客户份额失败！已达单笔最大金额");
         }
-        if($product->min_buy && ( intval($_POST['amount']) < $product->min_buy ))
+        if($product->min_buy && ( (intval($_POST['amount'])  * LConstService::E4 ) < $product->min_buy ))
         {
             $this->ajaxReturn(LError::INTERNAL_ERROR, "创建客户份额失败！已达单笔最小金额");
         }
@@ -258,6 +258,8 @@ class QuotientEditFormModel extends AdminBaseFormModel
     public function getData()
     {
         $data = $this->attributes;
+
+        $data['amount'] = $data['amount'] * LConstService::E4;
 
         return $this->trimData($data);
     }

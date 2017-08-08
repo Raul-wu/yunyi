@@ -20,6 +20,7 @@ Yii::app()->clientScript->registerScript("saveUrl", 'window.saveUrl="/account/sa
         <form id="spvForm" class="pure-form" action="<?= Yii::app()->createUrl("account/save") ?>" method="post"">
         <input type="hidden" name="id" id="id" value="<?= isset($id) ? $id : ''?>">
         <input type="hidden" name="opType" id="opType" value="<?= $opType ?>">
+        <input type="hidden" name="ppid" id="ppid" value="<?= $ppid ?>">
         <input type="hidden" id="tkName" tkName="<?= Yii::app()->request->csrfTokenName ?>" value="<?= Yii::app()->request->csrfToken ?>">
 
         <div class="editor_box">
@@ -27,7 +28,7 @@ Yii::app()->clientScript->registerScript("saveUrl", 'window.saveUrl="/account/sa
             <div class="editor_form">
                 <div class="pure-g">
                     <div class="pure-u-1"><label>基金代码</label>
-                        <input type="text" class="pure-input-2-3 submit" name="type" id="fund_code"  maxlength="255" value="<?= isset($fund_code) ? $fund_code : ''; ?>" /> *
+                        <input type="text" class="pure-input-2-3 submit" name="type" id="fund_code" disabled maxlength="255" value="<?= isset($fund_code) ? $fund_code : ''; ?>" /> *
                     </div>
 
                     <div class="pure-u-1"><label>账户性质</label>

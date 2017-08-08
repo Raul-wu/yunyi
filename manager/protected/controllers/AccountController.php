@@ -36,9 +36,14 @@ class AccountController extends AdminBaseController
 
         $this->setJsMain('accountEdit');
 
+        $ppid = Yii::app()->request->getParam('ppid','');
+        $pproduct = LAPProductService::getById($ppid);
+
         $this->render('edit',array(
             'opType'            => 'add',
             'chk_state'         => 'checked',
+            'fund_code' => $pproduct->fund_code,
+            'ppid' => $ppid,
         ));
     }
 
@@ -51,6 +56,8 @@ class AccountController extends AdminBaseController
         $id = trim(Yii::app()->request->getParam('id',''));
         $objAccount = LAAccountService::getByID($id);
 
+        $pproduct = LAPProductService::getById($objAccount->ppid);
+
         $this->render('edit',array(
             'opType'    => 'edit',
             'id'     => $id,
@@ -61,6 +68,7 @@ class AccountController extends AdminBaseController
             'bank_address'  => $objAccount->bank_address,
             'handler'   => $objAccount->handler,
             'status'      => $objAccount->status,
+            'ppid'   => $pproduct->ppid,
         ));
     }
 
@@ -72,10 +80,15 @@ class AccountController extends AdminBaseController
             Yii::app()->end();
         }
 
+        $ppid = Yii::app()->request->getParam('ppid','');
         $id   = Yii::app()->request->getParam('id','');
         $opType = Yii::app()->request->getParam('opType','');
+
+        $pproduct = LAPProductService::getById($ppid);
+
         $arrData = array(
-            'fund_code'          => trim(Yii::app()->request->getParam('fund_code','')),
+            'ppid'              => $ppid,
+            'fund_code'          => $pproduct->fund_code,
             'type'          => trim(Yii::app()->request->getParam('type','')),
             'name'          => trim(Yii::app()->request->getParam('name','')),
             'bank_account'       => trim(Yii::app()->request->getParam('bank_account','')),
@@ -142,6 +155,7 @@ class AccountEditFormModel extends AdminBaseFormModel
     const ACCOUNT_EDIT          = 'account_edit';
 
     public $id;
+    public $ppid;
     public $fund_code;
     public $type;
     public $name;
@@ -153,7 +167,7 @@ class AccountEditFormModel extends AdminBaseFormModel
     public function rules()
     {
         return array(
-            array('fund_code, type, name, bank_account, bank_address, handler, status, create_time, update_time', 'safe'),
+            array('ppid, fund_code, type, name, bank_account, bank_address, handler, status, create_time, update_time', 'safe'),
 
             array('type, name, bank_account, bank_address, handler, status', 'required', 'on' => array(self::ACCOUNT_NEW, self::ACCOUNT_EDIT)),
         );

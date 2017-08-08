@@ -142,4 +142,16 @@ class LAProductService
         }
         return $pids;
     }
+
+    public static function getProductForQuotientList($pids, $order = 'pid desc')
+    {
+        $criteria = new CDbCriteria();
+        $criteria->addInCondition('t.pid ', $pids);
+        $criteria->addCondition('t.status != ' . LAProductModel::STATUS_DELETE);
+        $criteria->order = $order ;
+
+        $product = LAProductModel::model()->with('pproduct')->findAll($criteria);
+
+        return array('productAll' => $product,);
+    }
 }

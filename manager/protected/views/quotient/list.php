@@ -60,7 +60,7 @@ Yii::app()->clientScript->registerScript("editUrl", 'window.editUrl="'.Yii::app(
                     <th><input type="checkbox" id="selectAll"></th>
                     <th>子产品名称</th>
                     <th>投资人姓名</th>
-                    <th>交易金额（元）</th>
+                    <th>交易金额（万元）</th>
                     <th>投资类型</th>
                     <th>证件类别</th>
                     <th>证件号码</th>
@@ -79,7 +79,7 @@ Yii::app()->clientScript->registerScript("editUrl", 'window.editUrl="'.Yii::app(
                             <td><input type="checkbox" value="<?= $quotient['qid'] ?>" class="check" data-id="<?= $quotient['qid'] ?>"/></td>
                             <td class="tc"><?= $quotient['product']['name'] ?></td>
                             <td class="tc"><?= $quotient['name'] ?></td>
-                            <td class="tc"><?= $quotient['amount'] ?></td>
+                            <td class="tc"><?= $quotient['amount'] / LConstService::E4 ?></td>
                             <td class="tc"><?= isset(LAQuotientModel::$arrType[$quotient['type']]) ? LAQuotientModel::$arrType[$quotient['type']] : '' ?></td>
                             <td class="tc"><?= isset(LAQuotientModel::$arrIdType[$quotient['id_type']]) ? LAQuotientModel::$arrIdType[$quotient['id_type']] : '' ?></td>
                             <td class="tc"><?= $quotient['id_content'] ?></td>

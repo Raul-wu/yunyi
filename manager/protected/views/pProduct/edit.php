@@ -76,11 +76,11 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                         </div>
 
                         <div class="pure-u-1"><label>募集规模</label>
-                            <input type="text" class="pure-input-2-3 submit" name="scale" value="<?= isset($pproduct['scale'])  ? $pproduct['scale'] : ' '?>">
+                            <input type="text" class="pure-input-2-3 submit" name="scale" value="<?= isset($pproduct['scale'])  ? $pproduct['scale']  / LConstService::E4 : ' '?>"> 万元
                         </div>
 
                         <div class="pure-u-md-1-2"><label>剩余额度</label>
-                            <input type="text" class="pure-input-2-3 submit" name="remain" disabled value="<?= isset($remain) && ($pproduct['scale'] - $remain) > 0 ? $pproduct['scale'] - $remain : 0?>">
+                            <input type="text" class="pure-input-2-3 submit" name="remain" disabled value="<?= isset($remain) && ($pproduct['scale'] - $remain) / LConstService::E4 > 0 ? ($pproduct['scale'] - $remain) / LConstService::E4 : 0?>"> 万元
                         </div>
 
                         <div class="pure-u-md-1-2"><label>收益率</label>
@@ -91,7 +91,11 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                             <input type="text" class="pure-input-2-3 submit" name="buy_rate_E6" value="<?= isset($pproduct['buy_rate_E6']) ? $pproduct['buy_rate_E6'] / LConstService::E4 : ''?>"> %
                         </div>
 
-                        <div class="pure-u-md-1-2"><label>批次成立日</label>
+                        <div class="pure-u-md-1-2"><label>批次</label>
+                            <input type="text" class="pure-input-2-3 submit" name="batch" value="<?= isset($pproduct['batch']) ? $pproduct['batch'] : ''?>">
+                        </div>
+
+                        <div class="pure-u-md-1-2"><label>成立日</label>
                             <input type="text" class="pure-input-2-3 submit" name="establish" datepicker="datepicker" value="<?= isset($pproduct['establish']) ? date('Y-m-d', $pproduct['establish']) : ''?>">
                         </div>
 
@@ -166,7 +170,7 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                     <div class="pure-g">
 
                         <div class="pure-u-1"><label>融资方名称</label>
-                            <input type="text" class="pure-input-2-3 submit" name="finance_name" value="<?= isset($pproduct['finance_name']) ? $pproduct['finance_name'] : ''?>">
+                            <input type="text" class="pure-input-2-3 submit" name="finance_name" placeholder="必填" value="<?= isset($pproduct['finance_name']) ? $pproduct['finance_name'] : ''?>"> *
                         </div>
 
                         <div class="pure-u-1"><label>项目名称</label>
@@ -231,27 +235,27 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                     <div class="pure-g">
 
                         <div class="pure-u-md-1-2"><label>管理人</label>
-                            <input type="text" class="pure-input-2-3 submit" name="manager" value="<?= isset($pproduct['manager']) ? $pproduct['manager'] : ''?>">
+                            <input type="text" class="pure-input-2-3 submit" name="manager" placeholder="必填" value="<?= isset($pproduct['manager']) ? $pproduct['manager'] : ''?>"> *
                         </div>
 
                         <div class="pure-u-md-1-2"><label>团队负责人</label>
-                            <input type="text" class="pure-input-2-3 submit" name="team_leader" value="<?= isset($pproduct['team_leader']) ? $pproduct['team_leader'] : ''?>">
+                            <input type="text" class="pure-input-2-3 submit" name="team_leader" placeholder="必填" value="<?= isset($pproduct['team_leader']) ? $pproduct['team_leader'] : ''?>"> *
                         </div>
 
                         <div class="pure-u-md-1-2"><label>项目经理</label>
-                            <input type="text" class="pure-input-2-3 submit" name="project_manager" value="<?= isset($pproduct['project_manager']) ? $pproduct['project_manager'] : ''?>">
+                            <input type="text" class="pure-input-2-3 submit" name="project_manager" placeholder="必填" value="<?= isset($pproduct['project_manager']) ? $pproduct['project_manager'] : ''?>"> *
                         </div>
 
                         <div class="pure-u-md-1-2"><label>托管人</label>
-                            <input type="text" class="pure-input-2-3 submit" name="trustee" value="<?= isset($pproduct['trustee']) ? $pproduct['trustee'] : ''?>">
+                            <input type="text" class="pure-input-2-3 submit" name="trustee" placeholder="必填" value="<?= isset($pproduct['trustee']) ? $pproduct['trustee'] : ''?>"> *
                         </div>
 
                         <div class="pure-u-md-1-2"><label>项目类型</label>
-                            <input type="text" class="pure-input-2-3 submit" name="project_type" value="<?= isset($pproduct['project_type']) ? $pproduct['project_type'] : ''?>">
+                            <input type="text" class="pure-input-2-3 submit" name="project_type" placeholder="必填" value="<?= isset($pproduct['project_type']) ? $pproduct['project_type'] : ''?>"> *
                         </div>
 
                         <div class="pure-u-md-1-2"><label>部门</label>
-                            <input type="text" class="pure-input-2-3 submit" name="department" value="<?= isset($pproduct['department']) ? $pproduct['department'] : ''?>">
+                            <input type="text" class="pure-input-2-3 submit" name="department" placeholder="必填" value="<?= isset($pproduct['department']) ? $pproduct['department'] : ''?>"> *
                         </div>
 
                         <div class="pure-u-1"><label>风险等级</label>

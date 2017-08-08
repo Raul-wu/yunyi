@@ -36,15 +36,7 @@ Yii::app()->clientScript->registerScript("listSpvPermission", 'window.listSpvPer
 
     <div class="quick_action fix_panel">
         <div class="action_mod">
-            <?php
-            if(LAPermissionService::selectMenuPermission($this->menuId, 2006102))
-            {
-                ?>
-                <a type="submit" class="pure-button pure-button-primary" id="buttonHolder"
-                   href="<?= Yii::app()->createUrl("account/add") ?>">新增</a>
-                <?php
-            }
-            ?>
+            <a type="submit" id="buttonHolder"></a>
         </div>
     </div>
 

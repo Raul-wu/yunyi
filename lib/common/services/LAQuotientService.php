@@ -10,6 +10,24 @@ class LAQuotientService
 {
     const LOG_PREFIX = 'admin.services.LAQuotientService.';
 
+    public static function getListForQuotientList($arrCondition = array(), $order = 'qid desc ')
+    {
+        $criteria = new CDbCriteria();
+
+        if(isset($arrCondition['name']) && !empty($arrCondition['name']))
+        {
+            $criteria->compare('name', $arrCondition['name'], false);
+        }
+
+        if(isset($arrCondition['id_content']) && !empty($arrCondition['id_content']))
+        {
+            $criteria->compare('id_content', $arrCondition['id_content'], false);
+        }
+
+        $criteria->order = $order;
+        return LAQuotientModel::model()->findAll($criteria);
+    }
+
     public static function getAll($arrCondition = array(), $page = 1, $perPage = 10, $order = '')
     {
         $criteria = new CDbCriteria();
@@ -174,7 +192,7 @@ class LAQuotientService
         {
             foreach($arr as $value)
             {
-                if($product->total_count < $total+$value[2])
+                if($product->total_count < $total + ($value[2] * LConstService::E4))
                 {
                     $err_msg_detail .= "序号:{$value[0]} 姓名:{$value[1]}; ";
                     continue;
@@ -183,27 +201,27 @@ class LAQuotientService
                 if($product->per_user_by_limit)
                 {
                     $total_amount = self::getUsersTotalAmountByIDCard($value[5]);
-                    if($product->per_user_by_limit < ($total_amount+$value[2]))
+                    if($product->per_user_by_limit < ($total_amount + ($value[2]* LConstService::E4)))
                     {
                         $err_msg_detail .= "序号:{$value[1]} 姓名:{$value[1]}; ";
                         continue;
                     }
                 }
 
-                if($product->max_buy && ($value[2] > $product->max_buy))
+                if($product->max_buy && (($value[2]* LConstService::E4) > $product->max_buy))
                 {
                     $err_msg_detail .= "序号:{$value[0]} 姓名:{$value[1]}; ";
                     continue;
                 }
 
-                if($product->min_buy && ($value[2] < $product->min_buy ))
+                if($product->min_buy && (($value[2] * LConstService::E4) < $product->min_buy ))
                 {
                     $err_msg_detail .= "序号:{$value[0]} 姓名:{$value[1]}; ";
                     continue;
                 }
 
                 $name = isset($value[1]) && !empty($value[1]) ? $value[1] : '';
-                $amount = isset($value[2]) && !empty($value[2]) ? $value[2] : '';
+                $amount = isset($value[2]) && !empty($value[2]) ? $value[2] * LConstService::E4 : '';
                 $type = isset(LAQuotientModel::$arrTypeReversal[$value[3]]) ? LAQuotientModel::$arrTypeReversal[$value[3]] : LAQuotientModel::TYPE_SELF;
                 $id_type = isset(LAQuotientModel::$arrIdTypeReversal[$value[4]]) ? LAQuotientModel::$arrIdTypeReversal[$value[4]] : LAQuotientModel::ID_TYPE_SELF;
                 $id_content = isset($value[5]) && !empty($value[5]) ? $value[5] : '';

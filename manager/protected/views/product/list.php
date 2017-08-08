@@ -70,7 +70,7 @@ Yii::app()->clientScript->registerScript("addQuotient", 'window.addQuotient="'.Y
                     <th>产品ID</th>
                     <th>基金代码</th>
                     <th>产品名称</th>
-                    <th>额度</th>
+                    <th>额度(万元)</th>
                     <th>预期收益率</th>
                     <th>起息日</th>
                     <th>到期日</th>
@@ -88,7 +88,7 @@ Yii::app()->clientScript->registerScript("addQuotient", 'window.addQuotient="'.Y
                         <td><?= $product['pproduct']['ppid'] ?></td>
                         <td><?= $product['pproduct']['fund_code'] ?></td>
                         <td><?= $product['pproduct']['name'] ?></td>
-                        <td><?= $product['total_count']?></td>
+                        <td><?= $product['total_count'] / LConstService::E4 ?></td>
                         <td><?= $product['expected_income_rate_E6'] / LConstService::E4 ?></td>
                         <td><?= date('Y-m-d',$product['pproduct']['value_date']) ?></td>
                         <td><?= date('Y-m-d',$product['pproduct']['expected_date']) ?></td>
