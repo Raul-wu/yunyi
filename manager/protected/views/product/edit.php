@@ -30,7 +30,7 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                     <input  name="ppid" type="hidden" value="<?= $ppid ?>">
                     <input type="hidden" key=''token" class="submit" name="<?= Yii::app()->request->csrfTokenName ?>" value="<?= Yii::app()->request->csrfToken ?>" csrfInput/>
 
-                    <div class="pure-u-1"><label>项目名称</label>
+                    <div class="pure-u-1"><label>基金名称</label>
                         <input type="text" class="pure-input-1-2  submit" disabled value="<?= isset($pproduct->name) ? $pproduct->name : ''?>">
                     </div>
 

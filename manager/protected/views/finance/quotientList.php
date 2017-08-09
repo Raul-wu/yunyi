@@ -86,21 +86,29 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                     <th>序号</th>
                     <th>产品名称</th>
                     <th>预计到期日</th>
-                    <th>类型</th>
-                    <th>经办人姓名</th>
+                    <th>金额(万元)</th>
+                    <th>状态</th>
+                    <th>基金代码</th>
+                    <th>银行账号</th>
+                    <th>银行户名</th>
+                    <th>开行名称</th>
                 </tr>
                 </thead>
                 <tbody>
                 <?php
-                foreach ($quotients as $key => $quotient)
+                foreach ($products as $key => $product)
                 {
                     ?>
                     <tr class="<?= $key % 2 ? "" : "pure-table-odd"?>  pure-table-tr" id="tr<?= $quotient['qid'] ?>">
                         <td><?= $key + 1 ?></td>
-                        <td><?= $quotient['name'] ?></td>
-                        <td><?= $quotient['id_content'] ?></td>
-                        <td><?= isset(LAQuotientModel::$arrType[$quotient['type']]) ? LAQuotientModel::$arrType[$quotient['type']] : '' ?></td>
-                        <td><?= $quotient['handler_name']?></td>
+                        <td><?= $product['name'] ?></td>
+                        <td><?= $product['expected_date'] ?></td>
+                        <td><?= $product['amount'] ?></td>
+                        <td><?= $product['status'] ?></td>
+                        <td><?= $product['fund_code'] ?></td>
+                        <td><?= $product['bank_account'] ?></td>
+                        <td><?= $product['bank_name'] ?></td>
+                        <td><?= $product['bank_address'] ?></td>
                     </tr>
                     <?php
                 }

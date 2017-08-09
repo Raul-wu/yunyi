@@ -44,28 +44,37 @@ class FinanceController extends AdminBaseController
         $pids = array();
         foreach($quotientAll as $quotient)
         {
-            $pids[] = $quotient['pid'];
+            $pids[] = array(
+                'qid' => $quotient['qid'],
+                'pid' => $quotient['pid']
+            )
+            ;
         }
 
         $products = array();
-        foreach($pids as $key => $pid)
+        foreach($pids as $key => $value)
         {
-            $product = LAProductService::getById($pid);
+            $quotient = LAQuotientService::getByID($value['qid']);
+            $product = LAProductService::getById($value['pid']);
             $pproduct = LAPProductService::getById($product->ppid);
 
             $products[$key] = array(
                 'name' => $product->name,
                 'expected_date' => date('Y-m-d', $pproduct->expected_date),
-
+                'amount' => $quotient->amount / LConstService::E4,
+                'status' => LAProductModel::$arrStatus[$product->status],
+                'fund_code' => $pproduct->fund_code,
+                'bank_account' =>$quotient->bank_account,
+                'bank_name' => $quotient->bank_name,
+                'bank_address' => $quotient->bank_address
             );
         }
-
 
         $this->render('quotientList', array(
             'quotients'  => $quotientAll,
             'name'     => $conditions['name'],
             'id_content'     => $conditions['id_content'],
-            'products' => $product
+            'products' => $products
         ));
     }
 
