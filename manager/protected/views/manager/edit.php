@@ -5,19 +5,19 @@
  * Date: 14-9-19
  * Time: 下午1:20
  */
-
 $this->setBodyClass('jqui');
 
 Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/js/lib/jquery-ui-1.11.0.custom/jquery-ui.structure.min.css?v=" . STATIC_VER);
 Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/js/lib/jquery-ui-1.11.0.custom/jquery-ui.theme.min.css?v=" . STATIC_VER);
 Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/js/lib/jquery-ui-timepicker.css?v=" . STATIC_VER);
-Yii::app()->clientScript->registerScriptFile("/assets/src/js/lib/ckeditor/ckeditor.js", CClientScript::POS_BEGIN);
+Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/combo.select.css?v=" . STATIC_VER);
+Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tip-twitter.css?v=" . STATIC_VER);
+Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/js/lib/art_dialog/skins/black.css?v=" . STATIC_VER);
+Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/js/lib/art_dialog/jquery.artDialog.source.js?v=" . STATIC_VER);
+Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables.css?v=" . STATIC_VER);
 
 Yii::app()->clientScript->registerScript("roleUrl", "window.roleUrl='" . Yii::app()->createUrl('/manager/index') . "';", CClientScript::POS_END);
-
-
 ?>
-
 <div id="main">
     <div class="content">
 
@@ -77,13 +77,24 @@ Yii::app()->clientScript->registerScript("roleUrl", "window.roleUrl='" . Yii::ap
                                 ?>
                             </div>
                         </div>
-                        <div class="pure-u-1"><label>姓名</label> <input format="number_scientific" id="name" name="name" value="<?= $manager["name"] ?>" type="text" class="pure-input-1-3"> *</div>
+                        <div class="pure-u-1"><label>姓名</label>
+                            <input format="number_scientific" id="name" name="name" value="<?= $manager["name"] ?>" type="text" class="pure-input-1-3"> *</div>
                         <?php
                         }
                         ?>
 
-                        <div class="pure-u-1"><label>超级管理员</label><input type="radio" name="is_admin" id="admin_true" <?= (!empty($manager) && $manager['isAdmin'] == 1) ? 'checked' : ''; ?> value="1"/><label for="admin_true" style="width:20px;">是</label>&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" <?= (!empty($manager) && $manager['isAdmin'] == 2) ? 'checked' : (empty($manager['isAdmin']) ?  'checked' : ''); ?> name="is_admin" id="admin_false"  value="2"/><label  style="width:20px;" for="admin_false">否</label></div>
-                        <div class="pure-u-1"><label>ip白命单</label><textarea  placeholder="可不填写,多个请用英文,分隔" name="whiteIp"  style="margin: 0px; width: 378px; height: 189px;"><?= !empty($manager["whiteIp"]) ? $manager["whiteIp"] : "" ?></textarea> </div>
+                        <div class="pure-u-1"><label>超级管理员</label>
+                            <input type="radio" name="is_admin" id="admin_true" <?= (!empty($manager) && $manager['isAdmin'] == 1) ? 'checked' : ''; ?> value="1"/>
+                            <label for="admin_true" style="width:20px;">是</label>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="radio" <?= (!empty($manager) && $manager['isAdmin'] == 2) ? 'checked' : (empty($manager['isAdmin']) ?  'checked' : ''); ?> name="is_admin" id="admin_false"  value="2"/>
+                            <label  style="width:20px;" for="admin_false">否</label>
+                        </div>
+                        <div class="pure-u-1"><label>ip白命单</label>
+                            <textarea  placeholder="可不填写,多个请用英文,分隔" name="whiteIp" style="margin: 0px; width: 378px; height: 189px;">
+                                <?= !empty($manager["whiteIp"]) ? $manager["whiteIp"] : "" ?>
+                            </textarea>
+                        </div>
                     </div>
 
                 </div>

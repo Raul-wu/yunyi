@@ -1,7 +1,8 @@
 require([
     'jquery',
     'art-dialog',
-], function ($, dialog) {
+    'widgets/ConfirmBtn',
+], function($, placeholder) {
     var isSubmit = false;
     var globalAjaxData = {
         'ajax': '1'

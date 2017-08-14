@@ -14,7 +14,7 @@ define([
                 }
             },
             {
-                name: "创建子产品",
+                name: "创建产品",
                 click: function(ppid) {
                     checkHasScale(ppid);
                 },
@@ -26,7 +26,7 @@ define([
                 // }
             },
             {
-                name: "查看子产品",
+                name: "查看产品",
                 click: function(ppid) {
                     url = subShow + '?ppid=' + ppid;
                     window.location.href = url;

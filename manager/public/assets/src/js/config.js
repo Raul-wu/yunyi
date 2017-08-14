@@ -6,9 +6,6 @@ require.config({
     waitSeconds: 0,
     baseUrl: "/assets/src/js/",
     shim: {
-        'ckeditor-config': {
-        //'deps': ['ckeditor']
-        },
         'jquery-ui': {
             deps: ['jquery']
         },
@@ -85,9 +82,7 @@ require.config({
         'jquery-org': '../../bower_components/jquery/dist/jquery.min',
         'jquery': 'jquery',
         'jquery-form': '../../bower_components/jquery-form/jquery.form',
-
         'art-dialog': 'lib/art_dialog/jquery.artDialog.source',
-
         'jquery-ui': 'lib/jquery-ui-1.11.0.custom/jquery-ui.min',
         'jquery-number' : '../../bower_components/jquery-number/jquery.number.min',
         'jquery-autosize': '../../bower_components/jquery-autosize/jquery.autosize',
