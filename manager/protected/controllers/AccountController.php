@@ -145,6 +145,88 @@ class AccountController extends AdminBaseController
 
         $this->ajaxReturn($code, $msg, array("url" => Yii::app()->createUrl("account/list")));
     }
+
+    public function actionImport()
+    {
+        $conditions['fund_code'] = trim(Yii::app()->request->getParam('fund_code',''));
+        $conditions['name'] = trim(Yii::app()->request->getParam('name',''));
+        $arrAccount = LAAccountService::getAll($conditions, 0);
+
+        Yii::$enableIncludePath = false;
+        Yii::import('extensions.PHPExcelSuite.*', true);
+        $objPhpExcel = new PHPExcel();
+        //设值
+        $objPhpExcel->getProperties()->setCreator("")
+            ->setLastModifiedBy("")
+            ->setTitle('资金账户列表')
+            ->setSubject("")
+            ->setDescription("")
+            ->setKeywords("")
+            ->setCategory("");
+        //设置表格头部加粗居中
+        $objPhpExcel->getActiveSheet()->getStyle('A1:U1')->applyFromArray(
+            array(
+                'font' => array (
+                    'bold' => true
+                ),
+                'alignment' => array(
+                    'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER
+                )
+            )
+        );
+        //设置工作簿的名称
+        $objPhpExcel->getActiveSheet()->setTitle('资金账户列表');
+        //设置表格头部
+        $objPhpExcel->getActiveSheet()->setCellValue('A1', '基金代码');
+        $objPhpExcel->getActiveSheet()->setCellValue('B1', '账户性质');
+        $objPhpExcel->getActiveSheet()->setCellValue('C1', '户名');
+        $objPhpExcel->getActiveSheet()->setCellValue('D1', '银行账号');
+        $objPhpExcel->getActiveSheet()->setCellValue('E1', '开户行');
+        $objPhpExcel->getActiveSheet()->setCellValue('F1', '经办人');
+        $objPhpExcel->getActiveSheet()->setCellValue('G1', '状态');
+
+        //设置列宽
+        $objPhpExcel->getActiveSheet()->getColumnDimension('A')->setWidth(15);
+        $objPhpExcel->getActiveSheet()->getColumnDimension('B')->setWidth(20);
+        $objPhpExcel->getActiveSheet()->getColumnDimension('C')->setWidth(20);
+        $objPhpExcel->getActiveSheet()->getColumnDimension('D')->setWidth(20);
+        $objPhpExcel->getActiveSheet()->getColumnDimension('E')->setWidth(20);
+        $objPhpExcel->getActiveSheet()->getColumnDimension('F')->setWidth(20);
+        $objPhpExcel->getActiveSheet()->getColumnDimension('G')->setWidth(20);
+
+        $i = 1;
+        foreach ($arrAccount['accountAll'] as $account) {
+            $i++;
+            $objPhpExcel->getActiveSheet()->getStyle("A$i:P$i")->applyFromArray(
+                array(
+                    'alignment' => array(
+                        'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER
+                    )
+                )
+            );
+
+            $objPhpExcel->getActiveSheet()->setCellValueExplicit('A' . $i, $account['fund_code'], PHPExcel_Cell_DataType::TYPE_STRING);
+            $objPhpExcel->getActiveSheet()->setCellValueExplicit('B' . $i, $account['type'], PHPExcel_Cell_DataType::TYPE_STRING);
+            $objPhpExcel->getActiveSheet()->setCellValueExplicit('C' . $i, $account['name'], PHPExcel_Cell_DataType::TYPE_STRING);
+            $objPhpExcel->getActiveSheet()->setCellValueExplicit('D' . $i, $account['bank_account'], PHPExcel_Cell_DataType::TYPE_STRING);
+            $objPhpExcel->getActiveSheet()->setCellValueExplicit('E' . $i, $account['bank_address'], PHPExcel_Cell_DataType::TYPE_STRING);
+            $objPhpExcel->getActiveSheet()->setCellValueExplicit('F' . $i, $account['handler'], PHPExcel_Cell_DataType::TYPE_STRING);
+            $objPhpExcel->getActiveSheet()->setCellValueExplicit('G' . $i, $account['status'] == LAAccountModel::STATUS_OPEN ? '正常' : '停用', PHPExcel_Cell_DataType::TYPE_STRING);
+        }
+
+        $filename = "资金账户列表".date("ymd");
+        $objWriter = PHPExcel_IOFactory::createWriter($objPhpExcel, 'Excel5');
+        header("Pragma: public");
+        header("Expires: 0");
+        header("Cache-Control:must-revalidate, post-check=0, pre-check=0");
+        header("Content-Type:application/force-download");
+        header("Content-Type:application/vnd.ms-execl");
+        header("Content-Type:application/octet-stream");
+        header("Content-Type:application/download");
+        header('Content-Disposition:attachment;filename="'.$filename.'.xls"');
+        header("Content-Transfer-Encoding:binary");
+        $objWriter->save('php://output');
+    }
 }
 
 

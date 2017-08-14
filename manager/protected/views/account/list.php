@@ -15,6 +15,7 @@ Yii::app()->clientScript->registerScript("url", 'window.url='.json_encode($url).
 Yii::app()->clientScript->registerScript("addSpvPermission", 'window.addSpvPermission="'.LAPermissionService::selectMenuPermission($this->menuId, 2006102).'";', CClientScript::POS_END);
 Yii::app()->clientScript->registerScript("changeStateSpvPermission", 'window.changeStateSpvPermission="'.LAPermissionService::selectMenuPermission($this->menuId, 2006101).'";', CClientScript::POS_END);
 Yii::app()->clientScript->registerScript("listSpvPermission", 'window.listSpvPermission="'.LAPermissionService::selectMenuPermission($this->menuId, 9999).'";', CClientScript::POS_END);
+Yii::app()->clientScript->registerScript("importUrl", 'window.importUrl="'.Yii::app()->createUrl('account/import').'";', CClientScript::POS_END);
 ?>
 
 <div id="main">
@@ -28,6 +29,7 @@ Yii::app()->clientScript->registerScript("listSpvPermission", 'window.listSpvPer
                         <input type="text"  placeholder="基金代码" class="pure-input-1-1"  value="<?= $fund_code ?>" name="fund_code" id="fund_code" />
                         <button type="submit" class="pure-button pure-button-primary">筛选</button>
                         <button type="button" id="reset" class="pure-button">重置</button>
+                        <button type="button" id="import" class="pure-button pure-button-primary">导出资金账户</button>
                     </div>
                 </div>
             </form>

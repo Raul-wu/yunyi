@@ -30,9 +30,13 @@ class LAAccountService
         $criteria->order = $order ? $order : 'id desc ';
         $count = LAAccountModel::model()->count($criteria);
 
-        $criteria->limit  = $perPage;
-        $criteria->offset = ($perPage * ($page - 1));
-        $pageBar = LAdminPager::getPages($count, $page, $perPage, $strUrl);
+        $pageBar = "";
+        if($page > 0)
+        {
+            $criteria->limit  = $perPage;
+            $criteria->offset = ($perPage * ($page - 1));
+            $pageBar = LAdminPager::getPages($count, $page, $perPage, $strUrl);
+        }
 
         $objAccount = LAAccountModel::model()->findAll($criteria);
 

@@ -54,9 +54,14 @@ class LAQuotientService
         $criteria->order = $order ? $order : 'qid desc ';
         $count = LAQuotientModel::model()->with('product')->with('pproduct')->count($criteria);
 
-        $criteria->limit  = $perPage;
-        $criteria->offset = ($perPage * ($page - 1));
-        $pageBar = LAdminPager::getPages($count, $page, $perPage, $strUrl);
+        $pageBar = "";
+        if ($page > 0)
+        {
+            $criteria->limit  = $perPage;
+            $criteria->offset = ($perPage * ($page - 1));
+            $pageBar = LAdminPager::getPages($count, $page, $perPage, $strUrl);
+        }
+
 
         $quotient = LAQuotientModel::model()->with('product')->with('pproduct')->findAll($criteria);
 

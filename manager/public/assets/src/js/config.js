@@ -2,7 +2,7 @@
 
 require.config({
 
-    urlArgs: 201706191306111,
+    urlArgs: Date.parse(new Date()),
     waitSeconds: 0,
     baseUrl: "/assets/src/js/",
     shim: {

@@ -114,6 +114,12 @@ require([
             cancel: true
         });
     }
+
+    $('#import').on("click",function(){
+        var name = $("#name").val();
+        var fund_name = $("#fund_name").val();
+        location.href= importUrl + "?name=" + name + "&fund_name=" + fund_name;
+    });
 });
 
 

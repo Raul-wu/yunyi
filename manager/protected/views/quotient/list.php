@@ -12,6 +12,7 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/js/lib/art
 
 Yii::app()->clientScript->registerScript("delQuotient", 'window.delQuotient="'.Yii::app()->createUrl('quotient/delete').'";', CClientScript::POS_END);
 Yii::app()->clientScript->registerScript("editUrl", 'window.editUrl="'.Yii::app()->createUrl('quotient/editOne').'";', CClientScript::POS_END);
+Yii::app()->clientScript->registerScript("importUrl", 'window.importUrl="'.Yii::app()->createUrl('quotient/import').'";', CClientScript::POS_END);
 
 //Yii::app()->clientScript->registerScript("addSpvPermission", 'window.addSpvPermission="'.LAPermissionService::selectMenuPermission($this->menuId, 2006102).'";', CClientScript::POS_END);
 //Yii::app()->clientScript->registerScript("changeStateSpvPermission", 'window.changeStateSpvPermission="'.LAPermissionService::selectMenuPermission($this->menuId, 2006101).'";', CClientScript::POS_END);
@@ -29,6 +30,7 @@ Yii::app()->clientScript->registerScript("editUrl", 'window.editUrl="'.Yii::app(
                         <input type="text"  placeholder="基金名称" class="pure-input-1-1"  value="<?= isset($fund_name) ? $fund_name : '' ?>" name="fund_name" id="fund_name" />
                         <button type="submit" class="pure-button pure-button-primary">筛选</button>
                         <button type="button" id="reset" class="pure-button">重置</button>
+                        <button type="button" id="import" class="pure-button pure-button-primary">导出客户份额</button>
                     </div>
                 </div>
             </form>

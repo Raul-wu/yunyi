@@ -1,6 +1,6 @@
 <?php
 
-defined('STATIC_VER') or define('STATIC_VER', '20170620');
+defined('STATIC_VER') or define('STATIC_VER', time());
 defined('BASE_DOMAIN') or define('BASE_DOMAIN', '.yuyin.com');
 
 return array(
