@@ -23,12 +23,13 @@ class LAPProductService
 
         if(isset($arrCondition['status']) && !empty($arrCondition['status']))
         {
-            $criteria->compare('status', $arrCondition['status'], true);
+//            $criteria->compare('status', $arrCondition['status'], true);
+            $criteria->addInCondition('status', array($arrCondition['status']));
             $strUrl .= "&status={$arrCondition['status']}";
         }
         else
         {
-            $criteria->addCondition('status != ' . LAPProductModel::STATUS_DELETE);
+            $criteria->addNotInCondition('status', array(LAPProductModel::STATUS_DELETE,LAPProductModel::STATUS_WAIT));
         }
 
         $criteria->order = $order ? $order : 'ppid desc ';

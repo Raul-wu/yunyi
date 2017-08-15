@@ -12,6 +12,7 @@ class LAPProductModel extends LActiveRecord
     const STATUS_DURATION = 2;  //存续
     const STATUS_FINISH = 3;    //已结息
     const STATUS_DELETE = 4;    //已废弃
+    const STATUS_WAIT = 5; //待清算
 
     //状态
     public static $arrStatus = array(
