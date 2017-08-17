@@ -9,9 +9,7 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/js/lib/art
 Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/js/lib/art_dialog/jquery.artDialog.source.js?v=" . STATIC_VER);
 Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables.css?v=" . STATIC_VER);
 
-Yii::app()->clientScript->registerScript("add", 'window.add="'.Yii::app()->createUrl('ta/add').'";', CClientScript::POS_END);
-Yii::app()->clientScript->registerScript("exec", 'window.exec="'.Yii::app()->createUrl('ta/exec').'";', CClientScript::POS_END);
-Yii::app()->clientScript->registerScript("editList", 'window.editList="'.Yii::app()->createUrl('ta/editList').'";', CClientScript::POS_END);
+Yii::app()->clientScript->registerScript("detail", 'window.detail="'.Yii::app()->createUrl('history/detail').'";', CClientScript::POS_END);
 
 ?>
 

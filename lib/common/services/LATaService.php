@@ -15,6 +15,15 @@ class LATaService
         return LATaModel::model()->findByPk($ppid);
     }
 
+    public static function getTaListByPPid($ppid)
+    {
+        $criteria = new CDbCriteria();
+
+        $criteria->compare('ppid', $ppid, false);
+
+        return LATaModel::model()->findAll($criteria);
+    }
+
     public static function getTaByPPid($ppid)
     {
         $criteria = new CDbCriteria();
@@ -92,5 +101,44 @@ class LATaService
     public static function deleteTaRecordByPPid($ppid)
     {
         return LATaModel::model()->deleteAll("ppid =:ppid", array(':ppid' => $ppid));
+    }
+
+    public static function getTaList($arrCondition = array(), $page = 1, $perPage = 5, $order = '')
+    {
+        $criteria = new CDbCriteria();
+        $strUrl = '?';
+
+        if(isset($arrCondition['ppid']) && !empty($arrCondition['ppid']))
+        {
+            $criteria->compare('t.ppid', $arrCondition['ppid'], true);
+            $strUrl .= "&ppid={$arrCondition['ppid']}";
+        }
+
+        $criteria->order = $order ? $order : 't.ppid desc ';
+        $count = LATaModel::model()->with('pproduct')->count($criteria);
+
+        $criteria->limit  = $perPage;
+        $criteria->offset = ($perPage * ($page - 1));
+        $pageBar = LAdminPager::getPages($count, $page, $perPage, $strUrl);
+
+        $objTa = LATaModel::model()->with('pproduct')->findAll($criteria);
+
+
+        return array('taAll' => $objTa,'pageBar' => $pageBar,'count' => $count);
+    }
+
+    public static function deleteTa($tids)
+    {
+        $params = array(':tids'=>$tids);
+        if(LATaModel::model()->deleteAll("tid in (:tids)", $params))
+        {
+            Yii::log(sprintf("Delete Ta Succ"),CLogger::LEVEL_TRACE, self::LOG_PREFIX . __FUNCTION__);
+            return true;
+        }
+        else
+        {
+            Yii::log(sprintf("Delete Ta Fail"),CLogger::LEVEL_ERROR, self::LOG_PREFIX . __FUNCTION__);
+            return false;
+        }
     }
 }

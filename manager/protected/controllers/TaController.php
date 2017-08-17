@@ -30,7 +30,45 @@ class TaController extends AdminBaseController
         ));
     }
 
-    public function actionEdit()
+    public function actionEditList()
+    {
+        LAPermissionService::checkMenuPermission($this->menuId, 9999);
+
+        $this->setJsMain('taEditList');
+
+        $conditions['ppid'] = trim(Yii::app()->request->getParam('ppid', ''));
+        $conditions['page'] = trim(Yii::app()->request->getParam('page', 1));
+
+        $infoRes = LATaService::getTaList($conditions, $conditions['page']);
+
+        $this->render('editList', array(
+            'tas' => $infoRes['taAll'],
+            'count' => $infoRes['count'],
+            'pageBar'   => $infoRes['pageBar'],
+        ));
+    }
+
+
+    public function actionDelete()
+    {
+        LAPermissionService::checkMenuPermission($this->menuId, 2001104);
+
+        if (!$tids = Yii::app()->request->getParam('tids'))
+        {
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "缺少必要参数！");
+        }
+
+        if(LATaService::deleteTa($tids))
+        {
+            $this->ajaxReturn(LError::SUCCESS, "删除成功");
+        }
+        else
+        {
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "删除失败");
+        }
+    }
+
+    public function actionAdd()
     {
         LAPermissionService::checkMenuPermission($this->menuId, 2006102);
 
@@ -39,12 +77,29 @@ class TaController extends AdminBaseController
         $ppid = Yii::app()->request->getParam('ppid','');
 
         $pproduct = LAPProductService::getById($ppid);
-        $ta = LATaService::getTaByPPid($ppid);
 
         $this->render('edit',array(
             'ppid' => $ppid,
             'pproduct' => $pproduct,
-            'ta' => $ta
+        ));
+    }
+
+    public function actionEdit()
+    {
+        LAPermissionService::checkMenuPermission($this->menuId, 2006102);
+
+        $this->setJsMain('taModify');
+
+        $tid = Yii::app()->request->getParam('tid','');
+
+        $ta = LATaService::getById($tid);
+        $pproduct = LAPProductService::getById($ta->ppid);
+
+        $this->render('edit',array(
+            'pproduct' => $pproduct,
+            'ta' => $ta,
+            'tid' => $tid,
+            'ppid' => $ta->ppid
         ));
     }
 
@@ -63,28 +118,48 @@ class TaController extends AdminBaseController
             Yii::app()->end();
         }
 
-        if(LATaService::getTaCountByPPid($ppid) > 0)
+        $tid = Yii::app()->request->getParam('tid');
+        if (!$tid)
         {
-            LATaService::deleteTaRecordByPPid($ppid);
-        }
+            $ta = new TaFormModel();
+            $ta->setAttributes($_POST);
+            $ta->setScenario(TaFormModel::TA_NEW);
+            $ta->validate();
+            if ($errors = $ta->getErrors())
+            {
+                $this->ajaxReturn(LError::INTERNAL_ERROR, '数据不能为空');
+            }
 
-        $ta = new TaFormModel();
-        $ta->setAttributes($_POST);
-        $ta->setScenario(TaFormModel::TA_NEW);
-        $ta->validate();
-        if ($errors = $ta->getErrors())
-        {
-            $this->ajaxReturn(LError::INTERNAL_ERROR, '数据不能为空');
-        }
-
-        $taData = $ta->getData();
-        if(LATaService::create($ppid, $taData))
-        {
-            $this->ajaxReturn(LError::SUCCESS, "录入收益分配信息成功！", array("url" => Yii::app()->createUrl("ta/list")));
+            $taData = $ta->getData();
+            if(LATaService::create($ppid, $taData))
+            {
+                $this->ajaxReturn(LError::SUCCESS, "录入收益分配信息成功！", array("url" => Yii::app()->createUrl("ta/list")));
+            }
+            else
+            {
+                $this->ajaxReturn(LError::INTERNAL_ERROR, "录入收益分配信息失败！");
+            }
         }
         else
         {
-            $this->ajaxReturn(LError::INTERNAL_ERROR, "录入收益分配信息失败！");
+            $ta = new TaFormModel();
+            $ta->setAttributes($_POST);
+            $ta->setScenario(TaFormModel::TA_EDIT);
+            $ta->validate();
+            if ($errors = $ta->getErrors())
+            {
+                $this->ajaxReturn(LError::INTERNAL_ERROR, '数据不能为空');
+            }
+
+            $taData = $ta->getData();
+            if(LATaService::update($tid, $taData))
+            {
+                $this->ajaxReturn(LError::SUCCESS, "更新收益分配信息成功！", array("url" => Yii::app()->createUrl("ta/list" )));
+            }
+            else
+            {
+                $this->ajaxReturn(LError::INTERNAL_ERROR, "更新收益分配信息失败！");
+            }
         }
     }
 

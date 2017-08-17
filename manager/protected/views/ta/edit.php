@@ -26,6 +26,7 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                 <h2>项目信息</h2>
                 <div class="pure-g">
                     <input  name="ppid" type="hidden" value="<?= isset($ppid) ?$ppid : '' ?>">
+                    <input  name="tid" type="hidden" value="<?= isset($tid) ?$tid : '' ?>">
                     <input type="hidden" key=''token" class="submit" name="<?= Yii::app()->request->csrfTokenName ?>" value="<?= Yii::app()->request->csrfToken ?>" csrfInput/>
 
                     <div class="pure-u-1"><label>基金代码</label>
@@ -114,6 +115,17 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
 
         <div class="form_action pure-form">
             <button type="submit" class="pure-button pure-button-primary" id="save">提交</button>
+
+            <?php
+            if(isset($tid))
+            {
+                ?>
+                <a href="<?= Yii::app()->createUrl('ta/editList?ppid='.$ppid) ?>" class="pure-button pure-button-primary">返回收益分配列表</a>
+                <?php
+            }
+            ?>
+
+
         </div>
         </form>
 

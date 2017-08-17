@@ -8,23 +8,11 @@ require([
     var widget = new SingleMultiBtn("#buttonHolder", {
         singleBtns: [
             {
-                name: "录入分配信息",
+                name: "查看详情",
                 click: function(id) {
-                    window.location.href= add + '?ppid='+id;
+                    window.location.href= detail + '?ppid='+id;
                 }
-            },
-            {
-                name: "查看分配信息列表",
-                click: function(id) {
-                    window.location.href= editList + '?ppid='+id;
-                }
-            },
-            {
-                name: "执行清算",
-                click: function(id) {
-                    window.location.href= exec + '?ppid='+id;
-                }
-            },
+            }
         ]
     });
 
