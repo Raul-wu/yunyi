@@ -7,12 +7,12 @@ require([
 
     var widget = new SingleMultiBtn("#buttonHolder", {
         singleBtns: [
-            {
-                name: "修改",
-                click: function(id) {
-                    window.location.href= edit + '?tid='+id;
-                }
-            }
+            // {
+            //     name: "修改",
+            //     click: function(id) {
+            //         window.location.href= edit + '?tid='+id;
+            //     }
+            // }
         ],
         commonBtns: [
             {

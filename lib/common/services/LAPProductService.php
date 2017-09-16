@@ -111,7 +111,6 @@ class LAPProductService
         }
     }
 
-
     public static function CreatePProduct($data)
     {
         if(empty($data))
@@ -217,5 +216,13 @@ class LAPProductService
             $total_count += $product->total_count;
         }
         return $total_count;
+    }
+
+    public static function getProductCountByPPid($ppid)
+    {
+        $criteria = new CDbCriteria();
+        $criteria->compare('ppid', $ppid, false);
+        $criteria->addCondition('status != ' . LAProductModel::STATUS_DELETE);
+        return LAProductModel::model()->count($criteria);
     }
 }

@@ -62,7 +62,9 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                     </div>
 
                     <div class="pure-u-1"><label>清算结果</label>
-                        <input type="text" class="pure-input-2-3 submit" disabled >
+
+                        <a href="<?= Yii::app()->createUrl('ta/CmbExcel?tid='.$ta->tid) ?>" class="pure-button pure-button-primary">招商银行版</a>
+                        <a href="<?= Yii::app()->createUrl('ta/SHBankExcel?tid='.$ta->tid) ?>" class="pure-button pure-button-primary">上海银行版</a>
                     </div>
 
                 </div>

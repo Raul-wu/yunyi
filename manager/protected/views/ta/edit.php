@@ -91,7 +91,7 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                     </div>
 
                     <div class="pure-u-1"><label>预计本金</label>
-                        <input type="text" class="pure-input-2-3 submit" disabled value="<?= isset($pproduct->scale) ? $pproduct->scale / LConstService::E4 : ''?>">
+                        <input type="text" class="pure-input-2-3 submit" disabled value="<?= isset($pproduct->scale) ? $pproduct->scale / LConstService::E4 : ''?>"> 万元
                     </div>
 
                     <div class="pure-u-1"><label>到期收益</label>
@@ -99,7 +99,7 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                     </div>
 
                     <div class="pure-u-1"><label>预计收益</label>
-                        <input type="text" class="pure-input-2-3 submit" disabled value="<?= isset($pproduct->project_city) ? $pproduct->project_city : ''?>">
+                        <input type="text" class="pure-input-2-3 submit" disabled value="<?=round((($pproduct->scale / LConstService::E4) * ($pproduct->income_rate_E6 / LConstService::E2) * ((($pproduct->expected_date - $pproduct->value_date) / 86400)) / 365), 2) / LConstService::E4?>"> 万元
                     </div>
 
                     <div class="pure-u-1"><label>实际收益率</label>
@@ -114,7 +114,7 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
         </div>
 
         <div class="form_action pure-form">
-            <button type="submit" class="pure-button pure-button-primary" id="save">提交</button>
+            <button type="submit" class="pure-button pure-button-primary" id="save">预清算</button>
 
             <?php
             if(isset($tid))

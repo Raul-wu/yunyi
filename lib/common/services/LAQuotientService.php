@@ -374,4 +374,12 @@ class LAQuotientService
         }
         return $total_amount;
     }
+
+    public static function getAllByPids($pids)
+    {
+        $criteria = new CDbCriteria();
+        $criteria->addInCondition('pid', explode(',', $pids));
+        $criteria->addNotInCondition('status', array(LAQuotientModel::STATUS_DEL, LAQuotientModel::STATUS_FINISH));
+        return LAQuotientModel::model()->findAll($criteria);
+    }
 }

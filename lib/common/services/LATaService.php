@@ -10,9 +10,9 @@ class LATaService
 {
     const LOG_PREFIX = 'admin.services.LATaService.';
 
-    public static function getById($ppid)
+    public static function getById($tid)
     {
-        return LATaModel::model()->findByPk($ppid);
+        return LATaModel::model()->findByPk($tid);
     }
 
     public static function getTaListByPPid($ppid)
@@ -29,6 +29,7 @@ class LATaService
         $criteria = new CDbCriteria();
 
         $criteria->compare('ppid', $ppid, false);
+        $criteria->order = 'create_time desc';
 
         return LATaModel::model()->find($criteria);
     }
@@ -48,7 +49,7 @@ class LATaService
         $objTa->setAttributes($data, false);
         if ($objTa->save())
         {
-            Yii::log(sprintf("Create ta success, ID[%s]", $objTa->ppid),CLogger::LEVEL_TRACE, self::LOG_PREFIX . __FUNCTION__);
+            Yii::log(sprintf("Create ta success, ID[%s]", $objTa->tid),CLogger::LEVEL_TRACE, self::LOG_PREFIX . __FUNCTION__);
             return  $objTa;
         }
         else
@@ -114,7 +115,7 @@ class LATaService
             $strUrl .= "&ppid={$arrCondition['ppid']}";
         }
 
-        $criteria->order = $order ? $order : 't.ppid desc ';
+        $criteria->order = $order ? $order : 't.create_time desc ';
         $count = LATaModel::model()->with('pproduct')->count($criteria);
 
         $criteria->limit  = $perPage;
@@ -140,5 +141,62 @@ class LATaService
             Yii::log(sprintf("Delete Ta Fail"),CLogger::LEVEL_ERROR, self::LOG_PREFIX . __FUNCTION__);
             return false;
         }
+    }
+
+    public static function generateTaResult($tid)
+    {
+        $objTa = self::getById($tid);
+        $objPProduct = LAPProductService::getById($objTa->ppid);
+        $pids = LAProductService::getPidByPPid($objTa->ppid);
+        $arrQuotients = LAQuotientService::getAllByPids($pids);
+        $objPProductDetail = LAPProductDetailService::getByID($objTa->ppid);
+
+        $shBank = $cmb = array();
+
+        foreach($arrQuotients as $arrQuotient)
+        {
+            $shBank[] = array(
+                'ppid' => $objTa->ppid,
+                'qid'  => $arrQuotient->qid,
+                'pid'  => $arrQuotient->pid,
+                'tid'  => $tid,
+                'manager' => $objPProductDetail->manager,
+                'fund_code'=>$objPProduct->fund_code,
+                'pproduct_name'=>$objPProduct->name,
+                'name' => $arrQuotient->name,
+                'type' => LAQuotientModel::$arrType[$arrQuotient->type],
+                'id_type' => LAQuotientModel::$arrIdType[$arrQuotient->id_type],
+                'id_content' => $arrQuotient->id_content,
+                'bank_account' => $arrQuotient->bank_account,
+                'bank_address' => $arrQuotient->bank_address,
+                'amount' => $arrQuotient->amount  / LConstService::E4,
+                'conformation_date' => $arrQuotient->create_time,
+                'value_date' => date('Y-m-d', $objPProduct->value_date),
+                'expected_date' => date('Y-m-d', $objPProduct->expected_date),
+                'income_rate_E6' => $objPProduct->income_rate_E6 / LConstService::E4 ,
+                'total' => round((($arrQuotient->amount / LConstService::E4) * ($objPProduct->income_rate_E6 / LConstService::E2) * ((($objPProduct->expected_date - $objPProduct->value_date) / 86400)) / 365), 2) / LConstService::E4
+            );
+
+            $cmb[] = array(
+                'ppid' => $objTa->ppid,
+                'qid'  => $arrQuotient->qid,
+                'pid'  => $arrQuotient->pid,
+                'tid'  => $tid,
+                'name' => $arrQuotient->name,
+                'type' => LAQuotientModel::$arrType[$arrQuotient->type],
+                'id_type' => LAQuotientModel::$arrIdType[$arrQuotient->id_type],
+                'id_content' => $arrQuotient->id_content,
+                'conformation_date' => $arrQuotient->create_time,
+                'conformation_amount' => $arrQuotient->amount  / LConstService::E4,
+                'conformation_quotient' => $arrQuotient->amount  / LConstService::E4,
+                'has_quotient' => $arrQuotient->amount  / LConstService::E4,
+                'value_date' => date('Y-m-d', $objPProduct->value_date),
+                'expected_date' => date('Y-m-d', $objTa->fact_end_date),
+                'income_rate_E6' => $objTa->fact_income_rate_E6 / LConstService::E4 ,
+                'total' => round((($arrQuotient->amount / LConstService::E4) * ($objTa->fact_income_rate_E6 / LConstService::E2) * ((($objTa->fact_end_date - $objPProduct->value_date) / 86400)) / 365), 2) / LConstService::E4
+            );
+        }
+
+        return array('shBank' => $shBank, 'cmb' => $cmb);
     }
 }

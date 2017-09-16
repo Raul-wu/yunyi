@@ -87,8 +87,14 @@ class ProductController extends AdminBaseController
         }
 
         $pproduct = LAPProductService::getById($ppid);
+
         $all_product_total_count = LAPProductService::getProductTotalCountByPPid($ppid);
         $product_total_count = $_POST['total_count'];
+
+        if($_POST['expected_income_rate_E6'] > ($pproduct->income_rate_E6 / LConstService::E4))
+        {
+            $this->ajaxReturn(LError::INTERNAL_ERROR, '子产品预期年化收益率不能大于基金收益率');
+        }
 
         if($product_total_count > ($pproduct->scale - $all_product_total_count))
         {
@@ -154,6 +160,12 @@ class ProductController extends AdminBaseController
         {
             $product = LAProductService::getById($pid);
 
+            if($product->status == LAProductModel::STATUS_DURATION)
+            {
+                $failID .= empty($failID) ? $pid : ',' . $pid;
+                continue;
+            }
+
             if (LAProductService::updateProductStatus($product, LAProductModel::STATUS_DELETE))
             {
                 $succID .= empty($succID) ? $pid : ',' . $pid;
@@ -164,7 +176,10 @@ class ProductController extends AdminBaseController
             }
         }
 
-        LAQuotientService::deleteQuotientStatusByPid($succID);
+        if(!empty($succID))
+        {
+            LAQuotientService::deleteQuotientStatusByPid($succID);
+        }
 
         if(!$failID)
         {
@@ -172,7 +187,7 @@ class ProductController extends AdminBaseController
         }
         else
         {
-            $this->ajaxReturn(LError::INTERNAL_ERROR, "子产品ID:{$succID}删除成功;子产品ID:{$failID}删除失败");
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "子产品ID: {$succID}删除成功;子产品ID: {$failID}删除失败(存续状态子产品不可删)");
         }
     }
 

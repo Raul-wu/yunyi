@@ -12,6 +12,13 @@ class TaController extends AdminBaseController
 
     public function actionList()
     {
+//        $arr = LATaService::generateTaResult(16);
+//        LATaRecordsCMBService::create($arr['cmb']);
+//        echo '<pre>';var_dump($arr);echo '</pre>';
+//        exit;
+
+//        LATaRecordsCMBService::generateExcelByTid(16);
+
         LAPermissionService::checkMenuPermission($this->menuId, 9999);
 
         $this->setJsMain('taList');
@@ -131,7 +138,7 @@ class TaController extends AdminBaseController
             }
 
             $taData = $ta->getData();
-            if(LATaService::create($ppid, $taData))
+            if($objta = LATaService::create($ppid, $taData))
             {
                 $this->ajaxReturn(LError::SUCCESS, "录入收益分配信息成功！", array("url" => Yii::app()->createUrl("ta/list")));
             }
@@ -167,7 +174,7 @@ class TaController extends AdminBaseController
     {
         LAPermissionService::checkMenuPermission($this->menuId, 2006102);
 
-        $this->setJsMain('taEdit');
+        $this->setJsMain('taExecEdit');
 
         $ppid = Yii::app()->request->getParam('ppid','');
 
@@ -177,13 +184,48 @@ class TaController extends AdminBaseController
         $this->render('exec',array(
             'ppid' => $ppid,
             'pproduct' => $pproduct,
-            'ta' => $ta
+            'ta' => $ta,
         ));
     }
 
     public function actionDoExec()
     {
+        LAPermissionService::checkMenuPermission($this->menuId, 2006102);
 
+        if (!$ppid = Yii::app()->request->getParam('ppid'))
+        {
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "缺少必要参数！");
+        }
+
+        $pproduct = LAPProductService::getById($ppid);
+        if(LAPProductService::updatePProductStatus($pproduct, LAPProductModel::STATUS_FINISH))
+        {
+            $this->ajaxReturn(LError::SUCCESS, "基金ID:{$ppid}清算成功", array("url" => Yii::app()->createUrl("history/detail?ppid={$ppid}" )));
+        }
+        else
+        {
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "基金ID:{$ppid}清算失败");
+        }
+    }
+
+    public function actionCmbExcel()
+    {
+        if (!$tid = Yii::app()->request->getParam('tid'))
+        {
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "缺少必要参数！");
+        }
+
+        LATaRecordsCMBService::generateExcelByTid($tid);
+    }
+
+    public function actionSHBankExcel()
+    {
+        if (!$tid = Yii::app()->request->getParam('tid'))
+        {
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "缺少必要参数！");
+        }
+
+        LATaRecordsSHBankService::generateExcelByTid($tid);
     }
 }
 

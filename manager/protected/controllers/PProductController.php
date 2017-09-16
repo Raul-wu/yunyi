@@ -156,6 +156,12 @@ class PProductController extends AdminBaseController
         {
             $pproduct = LAPProductService::getById($ppid);
 
+            if(in_array($pproduct->status, array(LAPProductModel::STATUS_DURATION, LAPProductModel::STATUS_FINISH, LAPProductModel::STATUS_WAIT)))
+            {
+                $failID .= empty($failID) ? $ppid : ',' . $ppid;
+                continue;
+            }
+
             if (LAPProductService::updatePProductStatus($pproduct, LAPProductModel::STATUS_DELETE))
             {
                 $succID .= empty($succID) ? $ppid : ',' . $ppid;
@@ -166,7 +172,7 @@ class PProductController extends AdminBaseController
             }
         }
 
-        if(LAProductService::updateProductStatusByPPid($succID, LAProductModel::STATUS_DELETE))
+        if(!empty($succID) && LAProductService::updateProductStatusByPPid($succID, LAProductModel::STATUS_DELETE))
         {
             $pids = LAProductService::getPidByPPid($succID);
             LAQuotientService::deleteQuotientStatusByPid($pids);
@@ -178,7 +184,7 @@ class PProductController extends AdminBaseController
         }
         else
         {
-            $this->ajaxReturn(LError::INTERNAL_ERROR, "基金ID:{$succID}删除成功;基金ID:{$failID}删除失败");
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "基金ID: {$succID}删除成功;基金ID: {$failID}删除失败(非成立状态基金不可删)");
         }
     }
 
@@ -197,6 +203,12 @@ class PProductController extends AdminBaseController
         {
             $pproduct = LAPProductService::getById($ppid);
 
+            if(LAPProductService::getProductCountByPPid($ppid) < 1)
+            {
+                $failID .= empty($failID) ? $ppid : ',' . $ppid;
+                continue;
+            }
+
             if (LAPProductService::updatePProductStatus($pproduct, LAPProductModel::STATUS_DURATION))
             {
                 $succID .= empty($succID) ? $ppid : ',' . $ppid;
@@ -207,7 +219,10 @@ class PProductController extends AdminBaseController
             }
         }
 
-        LAProductService::updateProductStatusByPPid($succID, LAProductModel::STATUS_DURATION);
+        if(!empty($succID))
+        {
+            LAProductService::updateProductStatusByPPid($succID, LAProductModel::STATUS_DURATION);
+        }
 
         if(!$failID)
         {
@@ -215,7 +230,7 @@ class PProductController extends AdminBaseController
         }
         else
         {
-            $this->ajaxReturn(LError::INTERNAL_ERROR, "基金ID:{$succID}转存续成功;基金ID:{$failID}转存续失败");
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "基金ID: {$succID}转存续成功;基金ID: {$failID}转存续失败(没有子产品的情况下基金不可转存续)");
         }
     }
 
