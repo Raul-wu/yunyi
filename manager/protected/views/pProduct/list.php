@@ -17,6 +17,8 @@ Yii::app()->clientScript->registerScript("subCreate", 'window.subCreate="'.Yii::
 Yii::app()->clientScript->registerScript("subShow", 'window.subShow="'.Yii::app()->createUrl('product/list').'";', CClientScript::POS_END);
 Yii::app()->clientScript->registerScript("checkScale", 'window.checkScale="'.Yii::app()->createUrl('PProduct/checkHasScale').'";', CClientScript::POS_END);
 Yii::app()->clientScript->registerScript("createAccount", 'window.createAccount="'.Yii::app()->createUrl('account/add').'";', CClientScript::POS_END);
+Yii::app()->clientScript->registerScript("checkActiveAccount", 'window.checkActiveAccount="'.Yii::app()->createUrl('account/checkIsActiveAccount').'";', CClientScript::POS_END);
+Yii::app()->clientScript->registerScript("checkPProductEstablish", 'window.checkPProductEstablish="'.Yii::app()->createUrl('product/checkPProductIsEstablish').'";', CClientScript::POS_END);
 
 //列表页按钮权限
 Yii::app()->clientScript->registerScript("delPProductPermission", 'window.delPProductPermission="'.LAPermissionService::selectMenuPermission($this->menuId, 2001107).'";', CClientScript::POS_END);

@@ -18,6 +18,7 @@ Yii::app()->clientScript->registerScript("quotient", 'window.quotient="'.Yii::ap
 Yii::app()->clientScript->registerScript("quotientList", 'window.quotientList="'.Yii::app()->createUrl('quotient/list').'";', CClientScript::POS_END);
 Yii::app()->clientScript->registerScript("delProduct", 'window.delProduct="'.Yii::app()->createUrl('product/delete').'";', CClientScript::POS_END);
 Yii::app()->clientScript->registerScript("addQuotient", 'window.addQuotient="'.Yii::app()->createUrl('quotient/addOne').'";', CClientScript::POS_END);
+Yii::app()->clientScript->registerScript("checkProductEstablish", 'window.checkProductEstablish="'.Yii::app()->createUrl('product/checkProductIsEstablish').'";', CClientScript::POS_END);
 
 //列表页按钮权限
 //Yii::app()->clientScript->registerScript("delPProductPermission", 'window.delPProductPermission="'.LAPermissionService::selectMenuPermission($this->menuId, 2001107).'";', CClientScript::POS_END);

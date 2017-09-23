@@ -144,6 +144,7 @@ class PProductController extends AdminBaseController
             $this->ajaxReturn(LError::INTERNAL_ERROR, "缺少必要参数！");
         }
 
+        $ppids = trim($ppids, ',');
         $hasPids = LAProductService::getPidByPPid($ppids);
         if($hasPids)
         {
@@ -222,6 +223,8 @@ class PProductController extends AdminBaseController
         if(!empty($succID))
         {
             LAProductService::updateProductStatusByPPid($succID, LAProductModel::STATUS_DURATION);
+
+            LAQuotientService::updateQuotientStatusByPPid($succID, LAQuotientModel::STATUS_DURATION);
         }
 
         if(!$failID)
@@ -243,7 +246,7 @@ class PProductController extends AdminBaseController
             $this->ajaxReturn(LError::INTERNAL_ERROR, "缺少必要参数！");
         }
 
-        $pproduct = LAPProductService::getById($ppid);//echo '<pre>';var_dump($pproduct->scale);echo '</pre>';exit;
+        $pproduct = LAPProductService::getById($ppid);
         if($pproduct->scale <= 0)
         {
             $this->ajaxReturn(LError::INTERNAL_ERROR, "募集规模为0时不可创建子产品");

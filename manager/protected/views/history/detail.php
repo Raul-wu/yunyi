@@ -91,7 +91,10 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                                 <td><?= $ta['create_time'] ?></td>
                                 <td><?= $ta['fact_income'] / LConstService::E4?></td>
                                 <td><?= isset(LATaModel::$arrTerm[$ta['term']]) ? LATaModel::$arrTerm[$ta['term']] : ''?></td>
-                                <td><?= $ta['file_path'] ?></td>
+                                <td>
+                                    <a href="<?= Yii::app()->createUrl('ta/CmbExcel?tid='.$ta['tid']) ?>" class="pure-button pure-button-primary">招商银行版</a>
+                                    <a href="<?= Yii::app()->createUrl('ta/SHBankExcel?tid='.$ta['tid']) ?>" class="pure-button pure-button-primary">上海银行版</a>
+                                </td>
                             </tr>
                             <?php
                         }

@@ -12,6 +12,7 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
 Yii::app()->clientScript->registerScript("add", 'window.add="'.Yii::app()->createUrl('ta/add').'";', CClientScript::POS_END);
 Yii::app()->clientScript->registerScript("exec", 'window.exec="'.Yii::app()->createUrl('ta/exec').'";', CClientScript::POS_END);
 Yii::app()->clientScript->registerScript("editList", 'window.editList="'.Yii::app()->createUrl('ta/editList').'";', CClientScript::POS_END);
+Yii::app()->clientScript->registerScript("checkQuotient", 'window.checkQuotient="'.Yii::app()->createUrl('ta/checkHasQuotient').'";', CClientScript::POS_END);
 
 ?>
 

@@ -115,11 +115,31 @@ require([
         });
     }
 
-    $('#import').on("click",function(){
-        var name = $("#name").val();
-        var fund_name = $("#fund_name").val();
-        location.href= importUrl + "?name=" + name + "&fund_name=" + fund_name;
+    $('#export').on("click",function(){
+        var chk_ids=[];
+        $(":checkbox:checked").each(function(){
+            chk_ids.push($(this).attr('data-id'));
+        });
+
+        var params={};
+        params['qids'] = chk_ids.join(',');
+
+        var pids = GetQueryString("pid");
+
+        if(!params['qids'] && !pids) {
+            msgDialog("请选择需要导出的客户份额");
+            return false;
+        }
+
+        location.href= exportUrl + "?qids=" + params['qids'] + "&pids=" + pids;
     });
+
+    function GetQueryString(name)
+    {
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r!=null)return  unescape(r[2]); return null;
+    }
 });
 
 

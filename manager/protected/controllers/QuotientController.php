@@ -225,46 +225,38 @@ class QuotientController extends AdminBaseController
         }
     }
 
-    public function actionImport()
+    public function actionExport()
     {
-        $conditions['name'] = trim(Yii::app()->request->getParam('name',''));
-        $conditions['fund_name'] = trim(Yii::app()->request->getParam('fund_name', ''));
+        $qids = Yii::app()->request->getParam('qids','');
+        $pids = Yii::app()->request->getParam('pids', '');
+
+        $conditions = array(
+            'qid' => $qids != 'null' ? $qids : "",
+            'pid' => $pids != 'null' ? $pids : "",
+        );
+
         $arrQuotient = LAQuotientService::getAll($conditions, 0);
+
         Yii::$enableIncludePath = false;
         Yii::import('extensions.PHPExcelSuite.*', true);
+
+        $objPhpExcel = null;
         $objPhpExcel = new PHPExcel();
-        //设值
-        $objPhpExcel->getProperties()->setCreator("")
-            ->setLastModifiedBy("")
-            ->setTitle('客户份额列表')
+        $fileName    = '客户份额列表_' . date('YmdHis', time()) . '.xlsx';
+
+        $objPhpExcel->getProperties()->setCreator("TA")
+            ->setLastModifiedBy("TA")
+            ->setTitle('yunyin')
             ->setSubject("")
             ->setDescription("")
             ->setKeywords("")
             ->setCategory("");
-        //设置表格头部加粗居中
-        $objPhpExcel->getActiveSheet()->getStyle('A1:U1')->applyFromArray(
-            array(
-                'font' => array (
-                    'bold' => true
-                ),
-                'alignment' => array(
-                    'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER
-                )
-            )
-        );
-        //设置工作簿的名称
-        $objPhpExcel->getActiveSheet()->setTitle('客户份额列表');
-        //设置表格头部
-        $objPhpExcel->getActiveSheet()->setCellValue('A1', '子产品名称');
-        $objPhpExcel->getActiveSheet()->setCellValue('B1', '投资人姓名');
-        $objPhpExcel->getActiveSheet()->setCellValue('C1', '交易金额（万元）');
-        $objPhpExcel->getActiveSheet()->setCellValue('D1', '投资类型');
-        $objPhpExcel->getActiveSheet()->setCellValue('E1', '证件类别');
-        $objPhpExcel->getActiveSheet()->setCellValue('F1', '证件号码');
-        $objPhpExcel->getActiveSheet()->setCellValue('G1', '经办人姓名');
-        $objPhpExcel->getActiveSheet()->setCellValue('H1', '状态');
 
-        //设置列宽
+        $objActSheet = $objPhpExcel->getActiveSheet();
+        $objStyleA1  = $objActSheet->getStyle('A1');
+        $objAlignA1  = $objStyleA1->getAlignment();
+        $objAlignA1->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
         $objPhpExcel->getActiveSheet()->getColumnDimension('A')->setWidth(15);
         $objPhpExcel->getActiveSheet()->getColumnDimension('B')->setWidth(20);
         $objPhpExcel->getActiveSheet()->getColumnDimension('C')->setWidth(20);
@@ -274,16 +266,20 @@ class QuotientController extends AdminBaseController
         $objPhpExcel->getActiveSheet()->getColumnDimension('G')->setWidth(20);
         $objPhpExcel->getActiveSheet()->getColumnDimension('H')->setWidth(20);
 
+        $objPhpExcel->getActiveSheet()->setTitle('客户份额列表');
+        $objPhpExcel->getActiveSheet()->setCellValue('A1', '子产品名称');
+        $objPhpExcel->getActiveSheet()->setCellValue('B1', '投资人姓名');
+        $objPhpExcel->getActiveSheet()->setCellValue('C1', '交易金额（万元）');
+        $objPhpExcel->getActiveSheet()->setCellValue('D1', '投资类型');
+        $objPhpExcel->getActiveSheet()->setCellValue('E1', '证件类别');
+        $objPhpExcel->getActiveSheet()->setCellValue('F1', '证件号码');
+        $objPhpExcel->getActiveSheet()->setCellValue('G1', '经办人姓名');
+        $objPhpExcel->getActiveSheet()->setCellValue('H1', '状态');
+
         $i = 1;
-        foreach ($arrQuotient['quotientAll'] as $quotient) {
+        foreach ($arrQuotient['quotientAll'] as $quotient)
+        {
             $i++;
-            $objPhpExcel->getActiveSheet()->getStyle("A$i:P$i")->applyFromArray(
-                array(
-                    'alignment' => array(
-                        'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER
-                    )
-                )
-            );
 
             $objPhpExcel->getActiveSheet()->setCellValueExplicit('A' . $i, $quotient['product']['name'], PHPExcel_Cell_DataType::TYPE_STRING);
             $objPhpExcel->getActiveSheet()->setCellValueExplicit('B' . $i, $quotient['name'], PHPExcel_Cell_DataType::TYPE_STRING);
@@ -292,21 +288,21 @@ class QuotientController extends AdminBaseController
             $objPhpExcel->getActiveSheet()->setCellValueExplicit('E' . $i, isset(LAQuotientModel::$arrIdType[$quotient['id_type']]) ? LAQuotientModel::$arrIdType[$quotient['id_type']] : '', PHPExcel_Cell_DataType::TYPE_STRING);
             $objPhpExcel->getActiveSheet()->setCellValueExplicit('F' . $i, $quotient['id_content'], PHPExcel_Cell_DataType::TYPE_STRING);
             $objPhpExcel->getActiveSheet()->setCellValueExplicit('G' . $i, $quotient['handler_name'], PHPExcel_Cell_DataType::TYPE_STRING);
-            $objPhpExcel->getActiveSheet()->setCellValueExplicit('H' . $i, isset(LAQuotientModel::$arrStatus[$quotient['status']]) ? LAQuotientModel::$arrStatus[$quotient['status']] : '', PHPExcel_Cell_DataType::TYPE_STRING);
+            $objPhpExcel->getActiveSheet()->setCellValueExplicit('H' . $i, isset(LAProductModel::$arrStatus[$quotient['product']['status']]) ? LAProductModel::$arrStatus[$quotient['product']['status']] : '', PHPExcel_Cell_DataType::TYPE_STRING);
         }
 
-        $filename = "客户份额列表".date("ymd");
-        $objWriter = PHPExcel_IOFactory::createWriter($objPhpExcel, 'Excel5');
+        $objWriter = PHPExcel_IOFactory::createWriter($objPhpExcel, 'Excel2007');
+
         header("Pragma: public");
         header("Expires: 0");
         header("Cache-Control:must-revalidate, post-check=0, pre-check=0");
         header("Content-Type:application/force-download");
-        header("Content-Type:application/vnd.ms-execl");
+        header("Content-Type: application/vnd.ms-excel;");
         header("Content-Type:application/octet-stream");
         header("Content-Type:application/download");
-        header('Content-Disposition:attachment;filename="'.$filename.'.xls"');
+        header("Content-Disposition:attachment;filename=" . $fileName);
         header("Content-Transfer-Encoding:binary");
-        $objWriter->save('php://output');
+        $objWriter->save("php://output");
     }
 }
 

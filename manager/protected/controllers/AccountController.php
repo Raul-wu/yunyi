@@ -227,6 +227,26 @@ class AccountController extends AdminBaseController
         header("Content-Transfer-Encoding:binary");
         $objWriter->save('php://output');
     }
+
+    public function actionCheckIsActiveAccount()
+    {
+        LAPermissionService::checkMenuPermission($this->menuId, 2006106);
+
+        if (!$ppid = Yii::app()->request->getParam('ppid'))
+        {
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "缺少必要参数！");
+        }
+
+        $account = LAAccountService::getActiveByPPid($ppid);
+        if(count($account) > 0)
+        {
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "每个基金只能有一个启用的资金账户");
+        }
+        else
+        {
+            $this->ajaxReturn(LError::SUCCESS, "");
+        }
+    }
 }
 
 

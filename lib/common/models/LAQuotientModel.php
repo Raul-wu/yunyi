@@ -8,16 +8,16 @@
  */
 class LAQuotientModel extends LActiveRecord
 {
-    const STATUS_OPEN = 1; //启用
+    const STATUS_OPEN = 1; //成立
     const STATUS_DEL = 2; //删除
     const STATUS_DURATION = 3; //存续中
-    const STATUS_FINISH = 4; //已结清
+    const STATUS_FINISH = 4; //已结息
 
     public static $arrStatus = array(
-        self::STATUS_OPEN => '启用',
+        self::STATUS_OPEN => '成立',
         self::STATUS_DEL => '删除',
         self::STATUS_DURATION => '存续中',
-        self::STATUS_FINISH => '已结清',
+        self::STATUS_FINISH => '已结息',
     );
 
     const TYPE_SELF = 1; //投资类型 个人

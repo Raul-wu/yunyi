@@ -130,11 +130,11 @@ class LATaRecordsCMBService
             $objPhpExcel->getActiveSheet()->setCellValue('B' . $i, isset($v['fund_code']) ? $v['fund_code'] : '');
             $objPhpExcel->getActiveSheet()->setCellValue('C' . $i, isset($v['pproduct_name']) ? $v['pproduct_name'] : '');
             $objPhpExcel->getActiveSheet()->setCellValue('D' . $i, isset($v['qid']) ? $v['qid'] : '');
-            $objPhpExcel->getActiveSheet()->setCellValue('E' . $i, isset($v['bank_account']) ? $v['bank_account'] : '');
+            $objPhpExcel->getActiveSheet()->setCellValueExplicit('E' . $i, isset($v['bank_account']) ? $v['bank_account'] : '', PHPExcel_Cell_DataType::TYPE_STRING);
             $objPhpExcel->getActiveSheet()->setCellValue('F' . $i, isset($v['name']) ? $v['name'] : '');
             $objPhpExcel->getActiveSheet()->setCellValue('G' . $i, isset($v['type']) ? $v['type'] : '');
             $objPhpExcel->getActiveSheet()->setCellValue('H' . $i, isset($v['id_type']) ? $v['id_type'] : '');
-            $objPhpExcel->getActiveSheet()->setCellValueExplicit('I' . $i, isset($v['id_content']) ? $v['id_content'] : '' , PHPExcel_Cell_DataType::TYPE_STRING);
+            $objPhpExcel->getActiveSheet()->setCellValueExplicit('I' . $i, isset($v['id_content']) ? $v['id_content'] : '', PHPExcel_Cell_DataType::TYPE_STRING);
             $objPhpExcel->getActiveSheet()->setCellValue('J' . $i, isset($v['conformation_date']) ? $v['conformation_date'] : '');
 //            $objPhpExcel->getActiveSheet()->setCellValue('K' . $i, isset($v['']);
             $objPhpExcel->getActiveSheet()->setCellValue('L' . $i, isset($v['conformation_amount']) ? $v['conformation_amount'] : '');
@@ -147,7 +147,7 @@ class LATaRecordsCMBService
             $objPhpExcel->getActiveSheet()->setCellValue('S' . $i, isset($v['expected_date']) ? $v['expected_date'] : '');
             $objPhpExcel->getActiveSheet()->setCellValue('T' . $i, (strtotime($v['expected_date']) - strtotime($v['value_date'])) / 86400);
             $objPhpExcel->getActiveSheet()->setCellValue('U' . $i, isset($v['income_rate_E6']) ? $v['income_rate_E6'] : '');
-            $objPhpExcel->getActiveSheet()->setCellValue('V' . $i, $v['total'] - $v['amount']);
+            $objPhpExcel->getActiveSheet()->setCellValue('V' . $i, $v['total'] - $v['conformation_amount']);
             $objPhpExcel->getActiveSheet()->setCellValue('W' . $i, isset($v['total']) ? $v['total'] : '');
         }
 

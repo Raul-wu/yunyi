@@ -117,4 +117,13 @@ class LAAccountService
             return  false;
         }
     }
+
+    public static function getActiveByPPid($ppid)
+    {
+        $criteria = new CDbCriteria();
+        $criteria->compare('ppid', $ppid);
+        $criteria->compare('status', LAAccountModel::STATUS_OPEN);
+        $criteria->select = "handler";
+        return LAAccountModel::model()->find($criteria);
+    }
 }

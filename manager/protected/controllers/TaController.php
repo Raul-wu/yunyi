@@ -12,13 +12,6 @@ class TaController extends AdminBaseController
 
     public function actionList()
     {
-//        $arr = LATaService::generateTaResult(16);
-//        LATaRecordsCMBService::create($arr['cmb']);
-//        echo '<pre>';var_dump($arr);echo '</pre>';
-//        exit;
-
-//        LATaRecordsCMBService::generateExcelByTid(16);
-
         LAPermissionService::checkMenuPermission($this->menuId, 9999);
 
         $this->setJsMain('taList');
@@ -185,6 +178,7 @@ class TaController extends AdminBaseController
             'ppid' => $ppid,
             'pproduct' => $pproduct,
             'ta' => $ta,
+            'tid' => isset($ta->tid) ? $ta->tid : 0
         ));
     }
 
@@ -200,6 +194,10 @@ class TaController extends AdminBaseController
         $pproduct = LAPProductService::getById($ppid);
         if(LAPProductService::updatePProductStatus($pproduct, LAPProductModel::STATUS_FINISH))
         {
+            LAProductService::updateProductStatusByPPid($ppid, LAProductModel::STATUS_FINISH);
+
+            LAQuotientService::updateQuotientStatusByPPid($ppid, LAQuotientModel::STATUS_FINISH);
+
             $this->ajaxReturn(LError::SUCCESS, "基金ID:{$ppid}清算成功", array("url" => Yii::app()->createUrl("history/detail?ppid={$ppid}" )));
         }
         else
@@ -215,7 +213,10 @@ class TaController extends AdminBaseController
             $this->ajaxReturn(LError::INTERNAL_ERROR, "缺少必要参数！");
         }
 
-        LATaRecordsCMBService::generateExcelByTid($tid);
+        if(!LATaRecordsCMBService::generateExcelByTid($tid))
+        {
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "不存在客户份额！");
+        }
     }
 
     public function actionSHBankExcel()
@@ -225,7 +226,32 @@ class TaController extends AdminBaseController
             $this->ajaxReturn(LError::INTERNAL_ERROR, "缺少必要参数！");
         }
 
-        LATaRecordsSHBankService::generateExcelByTid($tid);
+        if(!LATaRecordsSHBankService::generateExcelByTid($tid))
+        {
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "不存在客户份额！");
+        }
+    }
+
+    public function actionCheckHasQuotient()
+    {
+        LAPermissionService::checkMenuPermission($this->menuId, 2006102);
+
+        if (!$ppid = Yii::app()->request->getParam('ppid'))
+        {
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "缺少必要参数！");
+        }
+
+        $pids = LAProductService::getPidByPPid($ppid);
+        $quotient = LAQuotientService::getAllByPids($pids);
+
+        if(count($quotient) < 1)
+        {
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "没有客户份额不可以录入分配信息");
+        }
+        else
+        {
+            $this->ajaxReturn(LError::SUCCESS, "");
+        }
     }
 }
 

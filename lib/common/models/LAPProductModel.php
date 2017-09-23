@@ -9,7 +9,7 @@
 class LAPProductModel extends LActiveRecord
 {
     const STATUS_ESTABLISH = 1; //成立
-    const STATUS_DURATION = 2;  //存续
+    const STATUS_DURATION = 2;  //存续中
     const STATUS_FINISH = 3;    //已结息
     const STATUS_DELETE = 4;    //已废弃
     const STATUS_WAIT = 5; //待清算
@@ -17,7 +17,7 @@ class LAPProductModel extends LActiveRecord
     //状态
     public static $arrStatus = array(
         self::STATUS_ESTABLISH => '成立',
-        self::STATUS_DURATION => '存续',
+        self::STATUS_DURATION => '存续中',
         self::STATUS_FINISH => '已结息',
         self::STATUS_DELETE => '已废弃'
     );

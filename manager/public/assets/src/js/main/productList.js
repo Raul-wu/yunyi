@@ -19,13 +19,15 @@ require([
             {
                 name: "导入客户份额",
                 click: function(id) {
-                    window.location.href= quotient + '?pid='+id;
+                    // window.location.href= quotient + '?pid='+id;
+                    checkProductIsEstablish(id, 1);
                 },
             },
             {
                 name: "添加单个客户份额",
                 click: function(id) {
-                    window.location.href= addQuotient + '?pid='+id;
+                    // window.location.href= addQuotient + '?pid='+id;
+                    checkProductIsEstablish(id, 2);
                 },
             }
         ],
@@ -54,6 +56,30 @@ require([
     });
 
     widget.listen();
+
+    function checkProductIsEstablish(pid, type) {
+        var params={};
+        params['pid'] = pid;
+        params[$("#tkName").attr('tkName')] = $("#tkName").val();
+
+        $.ajax({
+            'url': checkProductEstablish,
+            'data': params,
+            'dataType': 'json',
+            'type': 'POST',
+            'success': function (data) {
+                if(data.retCode){
+                    msgDialog(data.retMsg);
+                }else{
+                    if(type == 1){
+                        window.location.href= quotient + '?pid='+pid;
+                    }else if(type == 2){
+                        window.location.href= addQuotient + '?pid='+pid;
+                    }
+                }
+            }
+        });
+    }
 
     function deleteProducts() {
         var chk_ids=[];

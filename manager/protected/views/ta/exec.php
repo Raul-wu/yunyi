@@ -62,9 +62,21 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                     </div>
 
                     <div class="pure-u-1"><label>清算结果</label>
-
-                        <a href="<?= Yii::app()->createUrl('ta/CmbExcel?tid='.$ta->tid) ?>" class="pure-button pure-button-primary">招商银行版</a>
-                        <a href="<?= Yii::app()->createUrl('ta/SHBankExcel?tid='.$ta->tid) ?>" class="pure-button pure-button-primary">上海银行版</a>
+                        <?php
+                        if(empty($tid))
+                        {
+                            ?>
+                            清算前必须添加客户份额
+                            <?php
+                        }
+                        else
+                        {
+                        ?>
+                            <a href="<?= Yii::app()->createUrl('ta/CmbExcel?tid='.$tid) ?>" class="pure-button pure-button-primary">招商银行版</a>
+                            <a href="<?= Yii::app()->createUrl('ta/SHBankExcel?tid='.$tid) ?>" class="pure-button pure-button-primary">上海银行版</a>
+                        <?php
+                        }
+                        ?>
                     </div>
 
                 </div>
@@ -72,7 +84,7 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
         </div>
 
         <div class="form_action pure-form">
-            <button type="submit" class="pure-button pure-button-primary" id="save">执行清算</button>
+            <button type="submit" class="pure-button pure-button-primary" id="save" <?php if(empty($tid)){?> disabled <?php }?> >执行清算</button>
         </div>
         </form>
 

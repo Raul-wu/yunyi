@@ -51,6 +51,12 @@ class LAQuotientService
             $strUrl .= "&pid={$arrCondition['pid']}";
         }
 
+        if(isset($arrCondition['qid']) && !empty($arrCondition['qid']))
+        {
+            $criteria->addInCondition('qid', explode(',', $arrCondition['qid']));
+            $strUrl .= "&qid={$arrCondition['qid']}";
+        }
+
         $criteria->order = $order ? $order : 'qid desc ';
         $count = LAQuotientModel::model()->with('product')->with('pproduct')->count($criteria);
 
@@ -381,5 +387,14 @@ class LAQuotientService
         $criteria->addInCondition('pid', explode(',', $pids));
         $criteria->addNotInCondition('status', array(LAQuotientModel::STATUS_DEL, LAQuotientModel::STATUS_FINISH));
         return LAQuotientModel::model()->findAll($criteria);
+    }
+
+    public static function updateQuotientStatusByPPid($ppid, $status)
+    {
+        $pids = LAProductService::getPidByPPid($ppid);
+
+        return LAQuotientModel::model()->updateAll(array('status'=>$status, 'update_time'=>date('Y-m-d H:i:s')), "pid in ({$pids}) and status != " . LAQuotientModel::STATUS_DEL);
+
+
     }
 }

@@ -113,7 +113,7 @@ class LAProductService
 
     public static function updateProductStatusByPPid($ppid, $status)
     {
-        return LAProductModel::model()->updateAll(array('status'=>$status, 'update_time'=>date('Y-m-d H:i:s')), "ppid = {$ppid} and status != " . LAProductModel::STATUS_DELETE);
+        return LAProductModel::model()->updateAll(array('status'=>$status, 'update_time'=>date('Y-m-d H:i:s')), "ppid in ({$ppid}) and status != " . LAProductModel::STATUS_DELETE);
     }
 
     public static function getById($pid)

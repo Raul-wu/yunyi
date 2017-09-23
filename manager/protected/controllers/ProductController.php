@@ -154,6 +154,7 @@ class ProductController extends AdminBaseController
             $this->ajaxReturn(LError::INTERNAL_ERROR, "缺少必要参数！");
         }
 
+        $pids = trim($pids, ',');
         $arrPids = explode(',', $pids);
         $succID = $failID = '';
         foreach($arrPids as $pid)
@@ -188,6 +189,46 @@ class ProductController extends AdminBaseController
         else
         {
             $this->ajaxReturn(LError::INTERNAL_ERROR, "子产品ID: {$succID}删除成功;子产品ID: {$failID}删除失败(存续状态子产品不可删)");
+        }
+    }
+
+    public function actionCheckPProductIsEstablish()
+    {
+        LAPermissionService::checkMenuPermission($this->menuId, 2001105);
+
+        if (!$ppid = Yii::app()->request->getParam('ppid'))
+        {
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "缺少必要参数！");
+        }
+
+        $pproduct = LAPProductService::getById($ppid);
+        if($pproduct->status != LAPProductModel::STATUS_ESTABLISH)
+        {
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "非成立状态基金不可创建子产品");
+        }
+        else
+        {
+            $this->ajaxReturn(LError::SUCCESS, "");
+        }
+    }
+
+    public function actionCheckProductIsEstablish()
+    {
+        LAPermissionService::checkMenuPermission($this->menuId, 2001106);
+
+        if (!$pid = Yii::app()->request->getParam('pid'))
+        {
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "缺少必要参数！");
+        }
+
+        $product = LAProductService::getById($pid);
+        if($product->status != LAProductModel::STATUS_ESTABLISH)
+        {
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "非成立状态子产品不可添加客户份额");
+        }
+        else
+        {
+            $this->ajaxReturn(LError::SUCCESS, "");
         }
     }
 

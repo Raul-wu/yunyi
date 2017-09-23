@@ -16,7 +16,7 @@ define([
             {
                 name: "创建产品",
                 click: function(ppid) {
-                    checkHasScale(ppid);
+                    checkPProductIsEstablish(ppid);
                 },
                 // canShowFunc: function() {
                 //     if(!createProductPermission)
@@ -38,8 +38,7 @@ define([
             {
                 name: "添加资金账户",
                 click: function(ppid) {
-                    url = createAccount + '?ppid=' + ppid;
-                    window.location.href = url;
+                    checkIsActiveAccount(ppid);
                 },
                 // canShowFunc: function(){
                 //     return listProductPermission;
@@ -85,6 +84,47 @@ define([
         ]
     });
     widget.listen();
+
+    function checkPProductIsEstablish(ppid) {
+        var params={};
+        params['ppid'] = ppid;
+        params[$("#tkName").attr('tkName')] = $("#tkName").val();
+
+        $.ajax({
+            'url': checkPProductEstablish,
+            'data': params,
+            'dataType': 'json',
+            'type': 'POST',
+            'success': function (data) {
+                if(data.retCode){
+                    msgDialog(data.retMsg);
+                }else{
+                    checkHasScale(ppid);
+                }
+            }
+        });
+    }
+
+    function checkIsActiveAccount(ppid) {
+        var params={};
+        params['ppid'] = ppid;
+        params[$("#tkName").attr('tkName')] = $("#tkName").val();
+
+        $.ajax({
+            'url': checkActiveAccount,
+            'data': params,
+            'dataType': 'json',
+            'type': 'POST',
+            'success': function (data) {
+                if(data.retCode){
+                    msgDialog(data.retMsg);
+                }else{
+                    url = createAccount + '?ppid=' + ppid;
+                    window.location.href = url;
+                }
+            }
+        });
+    }
 
     function checkHasScale(ppid) {
         var params={};

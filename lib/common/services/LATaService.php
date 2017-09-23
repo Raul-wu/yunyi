@@ -49,6 +49,10 @@ class LATaService
         $objTa->setAttributes($data, false);
         if ($objTa->save())
         {
+            $arr = LATaService::generateTaResult($objTa->tid);
+            LATaRecordsCMBService::create($arr['cmb']);
+            LATaRecordsSHBankService::create($arr['shBank']);
+
             Yii::log(sprintf("Create ta success, ID[%s]", $objTa->tid),CLogger::LEVEL_TRACE, self::LOG_PREFIX . __FUNCTION__);
             return  $objTa;
         }
@@ -130,9 +134,11 @@ class LATaService
 
     public static function deleteTa($tids)
     {
-        $params = array(':tids'=>$tids);
-        if(LATaModel::model()->deleteAll("tid in (:tids)", $params))
+        if(LATaModel::model()->deleteAll("tid in (" . trim($tids, ',') . ")"))
         {
+            LATaRecordsCMBModel::model()->deleteAll("tid in (" . trim($tids, ',') . ")");
+            LATaRecordsSHBankModel::model()->deleteAll("tid in (" . trim($tids, ',') . ")");
+
             Yii::log(sprintf("Delete Ta Succ"),CLogger::LEVEL_TRACE, self::LOG_PREFIX . __FUNCTION__);
             return true;
         }
@@ -149,7 +155,7 @@ class LATaService
         $objPProduct = LAPProductService::getById($objTa->ppid);
         $pids = LAProductService::getPidByPPid($objTa->ppid);
         $arrQuotients = LAQuotientService::getAllByPids($pids);
-        $objPProductDetail = LAPProductDetailService::getByID($objTa->ppid);
+        $objPProductDetail = LAPProductDetailService::getByPPid($objTa->ppid);
 
         $shBank = $cmb = array();
 
@@ -160,9 +166,6 @@ class LATaService
                 'qid'  => $arrQuotient->qid,
                 'pid'  => $arrQuotient->pid,
                 'tid'  => $tid,
-                'manager' => $objPProductDetail->manager,
-                'fund_code'=>$objPProduct->fund_code,
-                'pproduct_name'=>$objPProduct->name,
                 'name' => $arrQuotient->name,
                 'type' => LAQuotientModel::$arrType[$arrQuotient->type],
                 'id_type' => LAQuotientModel::$arrIdType[$arrQuotient->id_type],
@@ -182,6 +185,10 @@ class LATaService
                 'qid'  => $arrQuotient->qid,
                 'pid'  => $arrQuotient->pid,
                 'tid'  => $tid,
+                'manager' => $objPProductDetail['manager'],
+                'fund_code'=>$objPProduct->fund_code,
+                'pproduct_name'=>$objPProduct->name,
+                'bank_account' => $arrQuotient->bank_account,
                 'name' => $arrQuotient->name,
                 'type' => LAQuotientModel::$arrType[$arrQuotient->type],
                 'id_type' => LAQuotientModel::$arrIdType[$arrQuotient->id_type],

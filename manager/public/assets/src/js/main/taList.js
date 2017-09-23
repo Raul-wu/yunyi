@@ -10,7 +10,7 @@ require([
             {
                 name: "录入分配信息",
                 click: function(id) {
-                    window.location.href= add + '?ppid='+id;
+                    checkHasQuotient(id);
                 }
             },
             {
@@ -33,6 +33,26 @@ require([
     $('#reset').on("click",function(){
         $("#fund_code").val("");
     });
+
+    function checkHasQuotient(ppid) {
+        var params={};
+        params['ppid'] = ppid;
+        params[$("#tkName").attr('tkName')] = $("#tkName").val();
+
+        $.ajax({
+            'url': checkQuotient,
+            'data': params,
+            'dataType': 'json',
+            'type': 'POST',
+            'success': function (data) {
+                if(data.retCode){
+                    msgDialog(data.retMsg);
+                }else{
+                    window.location.href= add + '?ppid='+ppid;
+                }
+            }
+        });
+    }
 
     function msgDialog(content,url)
     {
