@@ -204,6 +204,13 @@ class PProductController extends AdminBaseController
         {
             $pproduct = LAPProductService::getById($ppid);
 
+            $pids = LAProductService::getPidByPPid($ppid);
+            $quotient = LAQuotientService::getAllByPids($pids);
+            if(empty($quotient))
+            {
+                $this->ajaxReturn(LError::INTERNAL_ERROR, "所选基金({$pproduct->name})没有客户额份，不能转存续！");
+            }
+
             if(LAPProductService::getProductCountByPPid($ppid) < 1)
             {
                 $failID .= empty($failID) ? $ppid : ',' . $ppid;

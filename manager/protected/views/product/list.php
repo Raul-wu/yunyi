@@ -86,7 +86,7 @@ Yii::app()->clientScript->registerScript("checkProductEstablish", 'window.checkP
                     ?>
                     <tr class="<?= $key % 2 ? "" : "pure-table-odd"?>  pure-table-tr" id="tr<?= $product['pid'] ?>">
                         <td><input class="check"  type="checkbox" data-id="<?= $product['pid'] ?>"></td>
-                        <td><?= $product['pproduct']['ppid'] ?></td>
+                        <td><?= $product['pid'] ?></td>
                         <td><?= $product['pproduct']['fund_code'] ?></td>
                         <td><?= $product['pproduct']['name'] ?></td>
                         <td><?= $product['total_count'] / LConstService::E4 ?></td>
