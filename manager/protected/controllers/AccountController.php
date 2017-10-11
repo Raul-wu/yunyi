@@ -238,14 +238,14 @@ class AccountController extends AdminBaseController
         }
 
         $account = LAAccountService::getActiveByPPid($ppid);
-        if(count($account) > 0)
-        {
-            $this->ajaxReturn(LError::INTERNAL_ERROR, "每个基金只能有一个启用的资金账户");
-        }
-        else
-        {
+//        if(count($account) > 0)
+//        {
+//            $this->ajaxReturn(LError::INTERNAL_ERROR, "每个基金只能有一个启用的资金账户");
+//        }
+//        else
+//        {
             $this->ajaxReturn(LError::SUCCESS, "");
-        }
+//        }
     }
 }
 

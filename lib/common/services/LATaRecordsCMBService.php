@@ -111,7 +111,7 @@ class LATaRecordsCMBService
         $objPhpExcel->getActiveSheet()->setCellValue('I1', '证件号码');
         $objPhpExcel->getActiveSheet()->setCellValue('J1', '确认日期');
         $objPhpExcel->getActiveSheet()->setCellValue('K1', '业务类型');
-        $objPhpExcel->getActiveSheet()->setCellValue('L1', '确认金额(万元)');
+        $objPhpExcel->getActiveSheet()->setCellValue('L1', '确认金额(元)');
         $objPhpExcel->getActiveSheet()->setCellValue('M1', '确认份额(份)');
         $objPhpExcel->getActiveSheet()->setCellValue('N1', '持有份额(份)');
         $objPhpExcel->getActiveSheet()->setCellValue('O1', '销售渠道');
@@ -121,8 +121,8 @@ class LATaRecordsCMBService
         $objPhpExcel->getActiveSheet()->setCellValue('S1', '截止日');
         $objPhpExcel->getActiveSheet()->setCellValue('T1', '天数');
         $objPhpExcel->getActiveSheet()->setCellValue('U1', '利率%');
-        $objPhpExcel->getActiveSheet()->setCellValue('V1', '利息(万元)');
-        $objPhpExcel->getActiveSheet()->setCellValue('W1', '本息合计(万元)');
+        $objPhpExcel->getActiveSheet()->setCellValue('V1', '利息(元)');
+        $objPhpExcel->getActiveSheet()->setCellValue('W1', '本息合计(元)');
         $i = 1;
         foreach($cmb as $k => $v )
         {
@@ -138,16 +138,16 @@ class LATaRecordsCMBService
             $objPhpExcel->getActiveSheet()->setCellValueExplicit('I' . $i, isset($v['id_content']) ? $v['id_content'] : '', PHPExcel_Cell_DataType::TYPE_STRING);
             $objPhpExcel->getActiveSheet()->setCellValueExplicit('J' . $i, isset($v['conformation_date']) ? date('Y-m-d', strtotime($v['conformation_date'])) : '', PHPExcel_Cell_DataType::TYPE_STRING);
             $objPhpExcel->getActiveSheet()->setCellValueExplicit('K' . $i, '', PHPExcel_Cell_DataType::TYPE_STRING);
-            $objPhpExcel->getActiveSheet()->setCellValueExplicit('L' . $i, isset($v['conformation_amount']) ? $v['conformation_amount'] : '', PHPExcel_Cell_DataType::TYPE_STRING);
-            $objPhpExcel->getActiveSheet()->setCellValueExplicit('M' . $i, $v['conformation_amount'] * LConstService::E4, PHPExcel_Cell_DataType::TYPE_STRING);
-            $objPhpExcel->getActiveSheet()->setCellValueExplicit('N' . $i, $v['has_quotient'] * LConstService::E4, PHPExcel_Cell_DataType::TYPE_STRING);
+            $objPhpExcel->getActiveSheet()->setCellValueExplicit('L' . $i, isset($v['conformation_amount']) ? round($v['conformation_amount'], 2) : '', PHPExcel_Cell_DataType::TYPE_STRING);
+            $objPhpExcel->getActiveSheet()->setCellValueExplicit('M' . $i, $v['conformation_amount'], PHPExcel_Cell_DataType::TYPE_STRING);
+            $objPhpExcel->getActiveSheet()->setCellValueExplicit('N' . $i, $v['has_quotient'], PHPExcel_Cell_DataType::TYPE_STRING);
             $objPhpExcel->getActiveSheet()->setCellValueExplicit('O' . $i, '', PHPExcel_Cell_DataType::TYPE_STRING);
             $objPhpExcel->getActiveSheet()->setCellValueExplicit('P' . $i, '', PHPExcel_Cell_DataType::TYPE_STRING);
             $objPhpExcel->getActiveSheet()->setCellValueExplicit('Q' . $i, '', PHPExcel_Cell_DataType::TYPE_STRING);
             $objPhpExcel->getActiveSheet()->setCellValueExplicit('R' . $i, isset($v['value_date']) ? $v['value_date'] : '', PHPExcel_Cell_DataType::TYPE_STRING);
             $objPhpExcel->getActiveSheet()->setCellValueExplicit('S' . $i, isset($v['expected_date']) ? $v['expected_date'] : '', PHPExcel_Cell_DataType::TYPE_STRING);
             $objPhpExcel->getActiveSheet()->setCellValueExplicit('T' . $i, (strtotime($v['expected_date']) - strtotime($v['value_date'])) / 86400, PHPExcel_Cell_DataType::TYPE_STRING);
-            $objPhpExcel->getActiveSheet()->setCellValueExplicit('U' . $i, isset($v['income_rate_E6']) ? $v['income_rate_E6'] : '', PHPExcel_Cell_DataType::TYPE_STRING);
+            $objPhpExcel->getActiveSheet()->setCellValueExplicit('U' . $i, isset($v['income_rate_E6']) ? $v['income_rate_E6'] . '%' : '', PHPExcel_Cell_DataType::TYPE_STRING);
             $objPhpExcel->getActiveSheet()->setCellValueExplicit('V' . $i, isset($v['total']) ? $v['total'] : '', PHPExcel_Cell_DataType::TYPE_STRING);
             $objPhpExcel->getActiveSheet()->setCellValueExplicit('W' . $i, $v['total'] +  $v['conformation_amount'], PHPExcel_Cell_DataType::TYPE_STRING);
         }

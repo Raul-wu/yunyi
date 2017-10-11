@@ -264,6 +264,60 @@ class PProductController extends AdminBaseController
         }
     }
 
+    public function actionReturnDuration()
+    {
+        LAPermissionService::checkMenuPermission($this->menuId, 2001107);
+
+        if (!$ppids = Yii::app()->request->getParam('ppids'))
+        {
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "缺少必要参数！");
+        }
+
+        $arrPPids = explode(',', $ppids);
+        $succID = $failID = '';
+        foreach($arrPPids as $ppid)
+        {
+            $pproduct = LAPProductService::getById($ppid);
+
+//            $pids = LAProductService::getPidByPPid($ppid);
+//            $quotient = LAQuotientService::getAllByPids($pids);
+//            if(empty($quotient))
+//            {
+//                $this->ajaxReturn(LError::INTERNAL_ERROR, "所选基金({$pproduct->name})没有客户额份，不能转存续！");
+//            }
+
+            if(LAPProductService::getProductCountByPPid($ppid) < 1)
+            {
+                $failID .= empty($failID) ? $ppid : ',' . $ppid;
+                continue;
+            }
+
+            if (LAPProductService::updatePProductStatus($pproduct, LAPProductModel::STATUS_ESTABLISH))
+            {
+                $succID .= empty($succID) ? $ppid : ',' . $ppid;
+            }
+            else
+            {
+                $failID .= empty($failID) ? $ppid : ',' . $ppid;
+            }
+        }
+
+        if(!empty($succID))
+        {
+            LAProductService::updateProductStatusByPPid($succID, LAProductModel::STATUS_ESTABLISH);
+
+            LAQuotientService::updateQuotientStatusByPPid($succID, LAQuotientModel::STATUS_OPEN);
+        }
+
+        if(!$failID)
+        {
+            $this->ajaxReturn(LError::SUCCESS, "基金ID:{$succID}转成立成功");
+        }
+        else
+        {
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "基金ID: {$succID}转成立成功;基金ID: {$failID}转成立失败");
+        }
+    }
 }
 
 class PProductFormModel extends AdminBaseFormModel
@@ -302,7 +356,7 @@ class PProductFormModel extends AdminBaseFormModel
             establish, value_date, duration_data, expected_date, interest_principle, management_E6, trusteeship_E6, epiboly_E6, 
             service_fees_E6, adviser_fees_E6, lending_rate_E6, investment_term, pay_rule, create_time, update_time', 'safe'),
 
-            array('fund_code, name, income_rate_E6, value_date, expected_date', 'required', 'on' => array(self::PPRODUCT_NEW, self::PPRODUCT_EDIT))
+            array('fund_code, name, income_rate_E6, value_date, expected_date, establish, scale, batch, duration_data', 'required', 'on' => array(self::PPRODUCT_NEW, self::PPRODUCT_EDIT))
         );
     }
 

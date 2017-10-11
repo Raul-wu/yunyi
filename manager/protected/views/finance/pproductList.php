@@ -29,6 +29,7 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                             ?>
                         </select>
                         <button type="submit" class="pure-button pure-button-primary">筛选</button>
+                        <a href="<?= Yii::app()->createUrl('finance/PProductListExport?status='.$status) ?>" class="pure-button pure-button-primary">导出</a>
                     </div>
                 </div>
             </form>
@@ -74,8 +75,8 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                         <td><?= $pproduct['fund_code'] ?></td>
                         <td><?= $pproduct['name'] ?></td>
                         <td><?= isset(LAPProductModel::$arrType[$pproduct['type']]) ? LAPProductModel::$arrType[$pproduct['type']] : ''?></td>
-                        <td><?= $pproduct['scale'] ?></td>
-                        <td><?= $pproduct['scale'] - LAPProductService::getProductTotalCountByPPid($pproduct['ppid'])?></td>
+                        <td><?= $pproduct['scale'] / LConstService::E4?></td>
+                        <td><?= ($pproduct['scale'] - LAPProductService::getProductTotalCountByPPid($pproduct['ppid']))  / LConstService::E4?></td>
                         <td><?= date('Y-m-d',$pproduct['expected_date']) ?></td>
                         <td><?= isset(LAPProductModel::$arrMode[$pproduct['mode']]) ? LAPProductModel::$arrMode[$pproduct['mode']] : '' ?></td>
                         <td><?= isset(LAPProductModel::$arrStatus[$pproduct['status']]) ? LAPProductModel::$arrStatus[$pproduct['status']] : '' ?></td>

@@ -57,6 +57,18 @@ class LAQuotientService
             $strUrl .= "&qid={$arrCondition['qid']}";
         }
 
+        if(isset($arrCondition['quotient_name']) && !empty($arrCondition['quotient_name']))
+        {
+            $criteria->compare('t.name', $arrCondition['quotient_name'], true);
+            $strUrl .= "&quotient_name={$arrCondition['quotient_name']}";
+        }
+
+        if(isset($arrCondition['id_card']) && !empty($arrCondition['id_card']))
+        {
+            $criteria->compare('id_content', $arrCondition['id_card'], true);
+            $strUrl .= "&id_card={$arrCondition['id_card']}";
+        }
+
         $criteria->order = $order ? $order : 'qid desc ';
         $count = LAQuotientModel::model()->with('product')->with('pproduct')->count($criteria);
 

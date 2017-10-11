@@ -39,6 +39,18 @@ require([
         });
     });
 
+    $("input[name='fact_income_rate_E6']").focus(function(){
+        var fact_principal = $("input[name='fact_principal']").val();
+        var fact_income = $("input[name='fact_income']").val();
+
+        if(fact_principal == 0 || fact_income == 0) {
+            msgDialog("请输入到期本金和到期收益");
+        } else {
+            var rate = fact_income / fact_principal * 100;
+            $("input[name='fact_income_rate_E6']").val(rate);
+        }
+    });
+
     //消息提示框
     function msgDialog(content,url)
     {

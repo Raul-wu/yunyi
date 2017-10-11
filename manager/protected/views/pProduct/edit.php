@@ -76,7 +76,7 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                         </div>
 
                         <div class="pure-u-1"><label>募集规模</label>
-                            <input type="text" class="pure-input-2-3 submit" name="scale" value="<?= isset($pproduct['scale'])  ? $pproduct['scale']  / LConstService::E4 : ' '?>"> 万元
+                            <input type="text" class="pure-input-2-3 submit" name="scale" value="<?= isset($pproduct['scale'])  ? $pproduct['scale']  / LConstService::E4 : ' '?>"> 万元 *
                         </div>
 
                         <div class="pure-u-md-1-2"><label>剩余额度</label>
@@ -92,11 +92,11 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                         </div>
 
                         <div class="pure-u-md-1-2"><label>批次</label>
-                            <input type="text" class="pure-input-2-3 submit" name="batch" value="<?= isset($pproduct['batch']) ? $pproduct['batch'] : ''?>">
+                            <input type="text" class="pure-input-2-3 submit" name="batch" value="<?= isset($pproduct['batch']) ? $pproduct['batch'] : ''?>"> *
                         </div>
 
                         <div class="pure-u-md-1-2"><label>成立日</label>
-                            <input type="text" class="pure-input-2-3 submit" name="establish" datepicker="datepicker" value="<?= isset($pproduct['establish']) ? date('Y-m-d', $pproduct['establish']) : ''?>">
+                            <input type="text" class="pure-input-2-3 submit" name="establish" datepicker="datepicker" value="<?= isset($pproduct['establish']) ? date('Y-m-d', $pproduct['establish']) : ''?>"> *
                         </div>
 
                         <div class="pure-u-md-1-2"><label>起息日</label>
@@ -104,7 +104,7 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                         </div>
 
                         <div class="pure-u-md-1-2"><label>存续期限</label>
-                            <input type="text" class="pure-input-2-3 submit" name="duration_data" value="<?= isset($pproduct['duration_data']) ? $pproduct['duration_data'] : ''?>">
+                            <input type="text" class="pure-input-2-3 submit" name="duration_data" value="<?= isset($pproduct['duration_data']) ? $pproduct['duration_data'] : ''?>"> *
                         </div>
 
                         <div class="pure-u-md-1-2"><label>预计到期日</label>

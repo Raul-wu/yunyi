@@ -280,11 +280,12 @@ class ProductFormModel extends AdminBaseFormModel
     public $max_buy;
     public $min_buy;
     public $status;
+    public $category;
 
     public function rules()
     {
         return array(
-            array('name, expected_income_rate_E6, total_count, per_user_by_limit, max_buy, min_buy, mode, status, create_time, update_time', 'safe'),
+            array('name, expected_income_rate_E6, total_count, per_user_by_limit, max_buy, min_buy, mode, category, status, create_time, update_time', 'safe'),
 
             array('name, expected_income_rate_E6, total_count', 'required', 'on' => array(self::PRODUCT_NEW, self::PRODUCT_EDIT))
         );

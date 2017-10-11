@@ -100,6 +100,18 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                         <input type="text" class="pure-input-2-3 submit" name="min_buy" value="<?= isset($product->min_buy) ? $product->min_buy / LConstService::E4 : ''?>">
                     </div>
 
+                    <div class="pure-u-1"><label>类别</label>
+                        <select class="pure-input-1-2 "  name="category" >
+                            <?php
+                            foreach (LAProductModel::$arrCategory as $key => $category)
+                            {
+                                ?>
+                                <option value="<?= $key ?>" <?= isset($product['category']) && $product['category'] == $key ? "selected=\"selected\"" : "" ?> ><?= CHtml::encode($category) ?></option>
+                                <?php
+                            }
+                            ?>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>

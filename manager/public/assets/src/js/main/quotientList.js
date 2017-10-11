@@ -73,6 +73,8 @@ require([
     $('#reset').on("click",function(){
         $("#name").val("");
         $("#fund_name").val("");
+        $("#quotient_name").val("");
+        $("#id_card").val("");
     });
 
     function msgDialog(content,url)

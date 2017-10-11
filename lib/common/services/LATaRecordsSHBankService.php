@@ -105,8 +105,8 @@ class LATaRecordsSHBankService
         $objPhpExcel->getActiveSheet()->setCellValue('K1', '截止日');
         $objPhpExcel->getActiveSheet()->setCellValue('L1', '天数');
         $objPhpExcel->getActiveSheet()->setCellValue('M1', '利率%');
-        $objPhpExcel->getActiveSheet()->setCellValue('N1', '利息(万元)');
-        $objPhpExcel->getActiveSheet()->setCellValue('O1', '本息合计(万元)');
+        $objPhpExcel->getActiveSheet()->setCellValue('N1', '利息(元)');
+        $objPhpExcel->getActiveSheet()->setCellValue('O1', '本息合计(元)');
         $i = 1;
         foreach($shanghaiBank as $k => $v )
         {
@@ -118,12 +118,12 @@ class LATaRecordsSHBankService
             $objPhpExcel->getActiveSheet()->setCellValueExplicit('E' . $i, isset($v['bank_account']) ? $v['bank_account'] : '', PHPExcel_Cell_DataType::TYPE_STRING);
             $objPhpExcel->getActiveSheet()->setCellValueExplicit('F' . $i, isset($v['bank_address']) ? $v['bank_address'] : '', PHPExcel_Cell_DataType::TYPE_STRING);
             $objPhpExcel->getActiveSheet()->setCellValueExplicit('G' . $i, '', PHPExcel_Cell_DataType::TYPE_STRING);
-            $objPhpExcel->getActiveSheet()->setCellValueExplicit('H' . $i, isset($v['amount']) ? $v['amount'] * LConstService::E4 : '', PHPExcel_Cell_DataType::TYPE_STRING);
+            $objPhpExcel->getActiveSheet()->setCellValueExplicit('H' . $i, isset($v['amount']) ? $v['amount'] : '', PHPExcel_Cell_DataType::TYPE_STRING);
             $objPhpExcel->getActiveSheet()->setCellValueExplicit('I' . $i, isset($v['conformation_date']) ? date('Y-m-d', strtotime($v['conformation_date'])) : '', PHPExcel_Cell_DataType::TYPE_STRING);
             $objPhpExcel->getActiveSheet()->setCellValueExplicit('J' . $i, isset($v['value_date']) ? $v['value_date'] : '', PHPExcel_Cell_DataType::TYPE_STRING);
             $objPhpExcel->getActiveSheet()->setCellValueExplicit('K' . $i, isset($v['expected_date']) ? $v['expected_date'] : '', PHPExcel_Cell_DataType::TYPE_STRING);
             $objPhpExcel->getActiveSheet()->setCellValueExplicit('L' . $i, (strtotime($v['expected_date']) - strtotime($v['value_date'])) / 86400, PHPExcel_Cell_DataType::TYPE_STRING) ;
-            $objPhpExcel->getActiveSheet()->setCellValueExplicit('M' . $i, isset($v['income_rate_E6']) ? $v['income_rate_E6'] : '', PHPExcel_Cell_DataType::TYPE_STRING);
+            $objPhpExcel->getActiveSheet()->setCellValueExplicit('M' . $i, isset($v['income_rate_E6']) ? $v['income_rate_E6'] . '%' : '', PHPExcel_Cell_DataType::TYPE_STRING);
             $objPhpExcel->getActiveSheet()->setCellValueExplicit('N' . $i, $v['total'], PHPExcel_Cell_DataType::TYPE_STRING);
             $objPhpExcel->getActiveSheet()->setCellValueExplicit('O' . $i, $v['total'] + $v['amount'], PHPExcel_Cell_DataType::TYPE_STRING);
         }

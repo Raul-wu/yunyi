@@ -73,6 +73,12 @@ define([
                 // }
             },
             {
+                name: "转成立",
+                click: function() {
+                    confirm("确定将所选的基金转成立吗？", turnReturnDuration);
+                },
+            },
+            {
                 name: "删除",
                 click: function() {
                     confirm("确定删除所选基金吗？", delPProduct);
@@ -193,6 +199,27 @@ define([
         });
     }
 
+    function turnReturnDuration() {
+        var chk_ids=[];
+        $(":checkbox:checked").each(function(){
+            chk_ids.push($(this).attr('data-id'));
+        });
+
+        var params={};
+        params['ppids'] = chk_ids.join(',');
+        params['g_tk']  = $("#tkName").val();
+
+        $.ajax({
+            'url': returnDurationUrl,
+            'data': params,
+            'dataType': 'json',
+            'type': 'POST',
+            'success': function (data) {
+                msgDialog(data.retMsg, 'reload');
+            }
+        });
+    }
+
     $(".check:checked").trigger('click');
 
 
@@ -225,6 +252,12 @@ define([
         var index = $(this).index('.check');
         this.checked ? $('.pure-table-tr:eq('+ index +')').addClass(' pure-table-selected') :
             $('.pure-table-tr:eq('+ index +')').removeClass(' pure-table-selected');
+
+        if(this.checked) {
+            $("#btnPh2").hide();
+        } else {
+            $("#btnPh2").show();
+        }
     });
 
     $('#reset').on("click",function(){

@@ -172,12 +172,12 @@ class LATaService
                 'id_content' => $arrQuotient->id_content,
                 'bank_account' => $arrQuotient->bank_account,
                 'bank_address' => $arrQuotient->bank_address,
-                'amount' => $arrQuotient->amount  / LConstService::E4,
+                'amount' => $arrQuotient->amount,
                 'conformation_date' => $arrQuotient->create_time,
                 'value_date' => date('Y-m-d', $objPProduct->value_date),
                 'expected_date' => date('Y-m-d', $objPProduct->expected_date),
                 'income_rate_E6' => $objPProduct->income_rate_E6 / LConstService::E4 ,
-                'total' => round((($arrQuotient->amount / LConstService::E4) * ($objPProduct->income_rate_E6 / LConstService::E2) * ((($objPProduct->expected_date - $objPProduct->value_date) / 86400)) / 365), 2) / LConstService::E4
+                'total' => round((($arrQuotient->amount) * ($objPProduct->income_rate_E6 / LConstService::E2) * ((($objPProduct->expected_date - $objPProduct->value_date) / 86400)) / 365), 2)
             );
 
             $cmb[] = array(
@@ -194,13 +194,13 @@ class LATaService
                 'id_type' => LAQuotientModel::$arrIdType[$arrQuotient->id_type],
                 'id_content' => $arrQuotient->id_content,
                 'conformation_date' => $arrQuotient->create_time,
-                'conformation_amount' => $arrQuotient->amount  / LConstService::E4,
-                'conformation_quotient' => $arrQuotient->amount  / LConstService::E4,
-                'has_quotient' => $arrQuotient->amount  / LConstService::E4,
+                'conformation_amount' => $arrQuotient->amount,
+                'conformation_quotient' => $arrQuotient->amount,
+                'has_quotient' => $arrQuotient->amount,
                 'value_date' => date('Y-m-d', $objPProduct->value_date),
                 'expected_date' => date('Y-m-d', $objTa->fact_end_date),
                 'income_rate_E6' => $objTa->fact_income_rate_E6 / LConstService::E4 ,
-                'total' => round((($arrQuotient->amount / LConstService::E4) * ($objTa->fact_income_rate_E6 / LConstService::E2) * ((($objTa->fact_end_date - $objPProduct->value_date) / 86400)) / 365), 2) / LConstService::E4
+                'total' => round((($arrQuotient->amount) * ($objTa->fact_income_rate_E6 / LConstService::E2) * ((($objTa->fact_end_date - $objPProduct->value_date) / 86400)) / 365), 2)
             );
         }
 

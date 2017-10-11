@@ -63,6 +63,7 @@ Yii::app()->clientScript->registerScript("checkProductEstablish", 'window.checkP
                     <col class="w_120" />
                     <col class="w_120" />
                     <col class="w_120" />
+                    <col class="w_120" />
                     <col class="w_60" />
                 </colgroup>
                 <thead>
@@ -70,6 +71,7 @@ Yii::app()->clientScript->registerScript("checkProductEstablish", 'window.checkP
                     <th><input type="checkbox" id="selectAll"></th>
                     <th>产品ID</th>
                     <th>基金代码</th>
+                    <th>基金名称</th>
                     <th>产品名称</th>
                     <th>额度(万元)</th>
                     <th>预期收益率</th>
@@ -89,6 +91,7 @@ Yii::app()->clientScript->registerScript("checkProductEstablish", 'window.checkP
                         <td><?= $product['pid'] ?></td>
                         <td><?= $product['pproduct']['fund_code'] ?></td>
                         <td><?= $product['pproduct']['name'] ?></td>
+                        <td><?= $product['name'] ?></td>
                         <td><?= $product['total_count'] / LConstService::E4 ?></td>
                         <td><?= $product['expected_income_rate_E6'] / LConstService::E4 ?></td>
                         <td><?= date('Y-m-d',$product['pproduct']['value_date']) ?></td>

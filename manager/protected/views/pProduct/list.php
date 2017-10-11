@@ -10,6 +10,7 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/js/lib/art
 Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables.css?v=" . STATIC_VER);
 
 Yii::app()->clientScript->registerScript("durationUrl", 'window.durationUrl="'.Yii::app()->createUrl('/PProduct/duration/').'";', CClientScript::POS_END);
+Yii::app()->clientScript->registerScript("returnDurationUrl", 'window.returnDurationUrl="'.Yii::app()->createUrl('/PProduct/returnDuration/').'";', CClientScript::POS_END);
 Yii::app()->clientScript->registerScript("subCreate", 'window.subCreate="'.Yii::app()->createUrl("p/new").'";', CClientScript::POS_END);
 Yii::app()->clientScript->registerScript("url", 'window.url="'.Yii::app()->createUrl('PProduct/edit').'";', CClientScript::POS_END);
 Yii::app()->clientScript->registerScript("deletePProduct", 'window.deletePProduct="'.Yii::app()->createUrl('PProduct/delete').'";', CClientScript::POS_END);
@@ -45,7 +46,8 @@ Yii::app()->clientScript->registerScript("copyPProductPermission", 'window.copyP
     </div>
     <div class="quick_action fix_panel">
         <div class="action_mod"  >
-            <a id="btnPh" href="<?php echo Yii::app()->createUrl("PProduct/add") ?>" class="pure-button pure-button-primary " style="">创建基金</a>
+            <a id="btnPh2" href="<?php echo Yii::app()->createUrl("PProduct/add") ?>" class="pure-button pure-button-primary " style="">创建基金</a>
+            <a id="btnPh"></a>
 
         </div>
     </div>
@@ -63,6 +65,7 @@ Yii::app()->clientScript->registerScript("copyPProductPermission", 'window.copyP
                     <col class="w_80" />
                     <col class="w_80" />
                     <col class="w_80" />
+                    <col class="w_80" />
                 </colgroup>
                 <thead>
                 <tr>
@@ -71,6 +74,7 @@ Yii::app()->clientScript->registerScript("copyPProductPermission", 'window.copyP
                     <th>基金名称</th>
                     <th>收益类型</th>
                     <th>募集规模（万元）</th>
+                    <th>已规模（万元）</th>
                     <th>预计到期</th>
                     <th>分配方式</th>
                     <th>状态</th>
@@ -87,6 +91,7 @@ Yii::app()->clientScript->registerScript("copyPProductPermission", 'window.copyP
                         <td><?= $pproduct['name'] ?></td>
                         <td><?= isset(LAPProductModel::$arrType[$pproduct['type']]) ? LAPProductModel::$arrType[$pproduct['type']] : ''?></td>
                         <td><?= $pproduct['scale'] / LConstService::E4 ?></td>
+                        <td><?= LAPProductService::getHasScaleByPPid($pproduct['ppid']) / LConstService::E4 ?></td>
                         <td><?= date('Y-m-d',$pproduct['expected_date']) ?></td>
                         <td><?= isset(LAPProductModel::$arrMode[$pproduct['mode']]) ? LAPProductModel::$arrMode[$pproduct['mode']] : '' ?></td>
                         <td><?= isset(LAPProductModel::$arrStatus[$pproduct['status']]) ? LAPProductModel::$arrStatus[$pproduct['status']] : '' ?></td>

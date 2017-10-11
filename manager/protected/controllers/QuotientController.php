@@ -20,6 +20,8 @@ class QuotientController extends AdminBaseController
         $conditions['name'] = trim(Yii::app()->request->getParam('name',''));
         $conditions['page'] = trim(Yii::app()->request->getParam('page', 1));
         $conditions['fund_name'] = trim(Yii::app()->request->getParam('fund_name', ''));
+        $conditions['quotient_name'] = trim(Yii::app()->request->getParam('quotient_name', ''));
+        $conditions['id_card'] = trim(Yii::app()->request->getParam('id_card', ''));
         $arrQuotient = LAQuotientService::getAll($conditions, $conditions['page']);
 
         $this->render('list',array(
@@ -28,6 +30,8 @@ class QuotientController extends AdminBaseController
             'count'     => $arrQuotient['count'],
             'name'     => $conditions['name'],
             'fund_name'     => $conditions['fund_name'],
+            'quotient_name'     => $conditions['quotient_name'],
+            'id_card'     => $conditions['id_card'],
         ));
     }
 

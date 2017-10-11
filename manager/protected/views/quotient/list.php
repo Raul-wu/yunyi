@@ -26,8 +26,10 @@ Yii::app()->clientScript->registerScript("exportUrl", 'window.exportUrl="'.Yii::
                 <input type="hidden" id="tkName" tkName="<?= Yii::app()->request->csrfTokenName ?>" value="<?= Yii::app()->request->csrfToken ?>">
                 <div class="pure-g">
                     <div class="pure-u-2-3">
-                        <input type="text"  placeholder="子产品名称" class="pure-input-1-1"  value="<?= isset($name) ? $name : '' ?>" name="name" id="name" />
-                        <input type="text"  placeholder="基金名称" class="pure-input-1-1"  value="<?= isset($fund_name) ? $fund_name : '' ?>" name="fund_name" id="fund_name" />
+                        <input type="text"  placeholder="子产品名称" class="pure-input-1-1" style="width:130px;"  value="<?= isset($name) ? $name : '' ?>" name="name" id="name" />
+                        <input type="text"  placeholder="基金名称" class="pure-input-1-1"  style="width:130px;" value="<?= isset($fund_name) ? $fund_name : '' ?>" name="fund_name" id="fund_name" />
+                        <input type="text"  placeholder="客户名字" class="pure-input-1-1"  style="width:130px;" value="<?= isset($quotient_name) ? $quotient_name : '' ?>" name="quotient_name" id="quotient_name" />
+                        <input type="text"  placeholder="身份证号" class="pure-input-1-1"  style="width:130px;" value="<?= isset($id_card) ? $id_card : '' ?>" name="id_card" id="id_card" />
                         <button type="submit" class="pure-button pure-button-primary">筛选</button>
                         <button type="button" id="reset" class="pure-button">重置</button>
                         <button type="button" id="export" class="pure-button pure-button-primary">导出客户份额</button>

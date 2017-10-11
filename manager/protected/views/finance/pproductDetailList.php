@@ -29,6 +29,7 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                             ?>
                         </select>
                         <button type="submit" class="pure-button pure-button-primary">筛选</button>
+                        <a href="<?= Yii::app()->createUrl('finance/PProductDetailListExport?status='.$status) ?>" class="pure-button pure-button-primary">导出</a>
                     </div>
                 </div>
             </form>

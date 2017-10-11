@@ -32,6 +32,12 @@ class LAPProductService
             $criteria->addNotInCondition('status', array(LAPProductModel::STATUS_DELETE,LAPProductModel::STATUS_WAIT));
         }
 
+        if(isset($arrCondition['type']) && !empty($arrCondition['type']))
+        {
+            $criteria->compare('type', $arrCondition['type']);
+            $strUrl .= "&type={$arrCondition['type']}";
+        }
+
         $criteria->order = $order ? $order : 'ppid desc ';
         $count = LAPProductModel::model()->count($criteria);
 
@@ -224,5 +230,17 @@ class LAPProductService
         $criteria->compare('ppid', $ppid, false);
         $criteria->addCondition('status != ' . LAProductModel::STATUS_DELETE);
         return LAProductModel::model()->count($criteria);
+    }
+
+    public static function getHasScaleByPPid($ppid)
+    {
+        $total_amount = 0;
+        $pids = LAProductService::getPidByPPid($ppid);
+        $pids = explode(',', $pids);
+        foreach ($pids as $pid)
+        {
+            $total_amount += LAQuotientService::getTotalAmountByPid($pid);
+        }
+        return $total_amount;
     }
 }
