@@ -99,6 +99,26 @@ class FinanceController extends AdminBaseController
         ));
     }
 
+    //有限合伙/公司信息统计表
+    public function actionCooperateList()
+    {
+        $this->menuId = 5005;
+
+        LAPermissionService::checkMenuPermission($this->menuId, 9999);
+
+        $conditions['name'] = trim(Yii::app()->request->getParam('name', ''));
+        $conditions['page'] = trim(Yii::app()->request->getParam('page', 1));
+
+        $infoRes = LACooperateService::getAll($conditions, $conditions['page']);
+
+        $this->render('cooperateList', array(
+            'name' => $conditions['name'],
+            'cooperateAll' => $infoRes['cooperateAll'],
+            'count' => $infoRes['count'],
+            'pageBar'   => $infoRes['pageBar'],
+        ));
+    }
+
     public function actionPProductDetailListExport()
     {
         $this->menuId = 5005;
@@ -177,7 +197,7 @@ class FinanceController extends AdminBaseController
             $objPhpExcel->getActiveSheet()->setCellValueExplicit('I' . $i, LAPProductModel::$arrStatus[$product['status']], PHPExcel_Cell_DataType::TYPE_STRING);
         }
 
-        $filename = "固定收益付息明细".date("ymd");
+        $filename = "固定收益付息明细".date("ymdHis");
         $objWriter = PHPExcel_IOFactory::createWriter($objPhpExcel, 'Excel5');
         header("Pragma: public");
         header("Expires: 0");
@@ -265,7 +285,101 @@ class FinanceController extends AdminBaseController
             $objPhpExcel->getActiveSheet()->setCellValueExplicit('H' . $i, LAPProductModel::$arrStatus[$product['status']] , PHPExcel_Cell_DataType::TYPE_STRING);
         }
 
-        $filename = "契约型基金要素".date("ymd");
+        $filename = "契约型基金要素".date("ymdHis");
+        $objWriter = PHPExcel_IOFactory::createWriter($objPhpExcel, 'Excel5');
+        header("Pragma: public");
+        header("Expires: 0");
+        header("Cache-Control:must-revalidate, post-check=0, pre-check=0");
+        header("Content-Type:application/force-download");
+        header("Content-Type:application/vnd.ms-execl");
+        header("Content-Type:application/octet-stream");
+        header("Content-Type:application/download");
+        header('Content-Disposition:attachment;filename="'.$filename.'.xls"');
+        header("Content-Transfer-Encoding:binary");
+        $objWriter->save('php://output');
+    }
+
+    public function actionCooperateListExport()
+    {
+        $this->menuId = 5007;
+
+        LAPermissionService::checkMenuPermission($this->menuId, 9999);
+
+        $conditions['name'] = trim(Yii::app()->request->getParam('name', ''));
+        $infoRes = LACooperateService::getAll($conditions, 1, 999999999);
+
+        Yii::$enableIncludePath = false;
+        Yii::import('extensions.PHPExcelSuite.*', true);
+        $objPhpExcel = new PHPExcel();
+        //设值
+        $objPhpExcel->getProperties()->setCreator("")
+            ->setLastModifiedBy("")
+            ->setTitle('有限合伙公司信息统计表')
+            ->setSubject("")
+            ->setDescription("")
+            ->setKeywords("")
+            ->setCategory("");
+        //设置表格头部加粗居中
+        $objPhpExcel->getActiveSheet()->getStyle('A1:U1')->applyFromArray(
+            array(
+                'font' => array (
+                    'bold' => true
+                ),
+                'alignment' => array(
+                    'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER
+                )
+            )
+        );
+        //设置工作簿的名称
+        $objPhpExcel->getActiveSheet()->setTitle('有限合伙公司信息统计表');
+        //设置表格头部
+        $objPhpExcel->getActiveSheet()->setCellValue('A1', '名称');
+        $objPhpExcel->getActiveSheet()->setCellValue('B1', '企业性质');
+        $objPhpExcel->getActiveSheet()->setCellValue('C1', '注册地');
+        $objPhpExcel->getActiveSheet()->setCellValue('D1', '委派代表');
+        $objPhpExcel->getActiveSheet()->setCellValue('E1', '项目经理');
+        $objPhpExcel->getActiveSheet()->setCellValue('F1', '部门');
+        $objPhpExcel->getActiveSheet()->setCellValue('G1', '团队负责人');
+        $objPhpExcel->getActiveSheet()->setCellValue('H1', '核税情况');
+        $objPhpExcel->getActiveSheet()->setCellValue('I1', '代理情况');
+        $objPhpExcel->getActiveSheet()->setCellValue('J1', '账户类型');
+
+        //设置列宽
+        $objPhpExcel->getActiveSheet()->getColumnDimension('A')->setWidth(15);
+        $objPhpExcel->getActiveSheet()->getColumnDimension('B')->setWidth(20);
+        $objPhpExcel->getActiveSheet()->getColumnDimension('C')->setWidth(20);
+        $objPhpExcel->getActiveSheet()->getColumnDimension('D')->setWidth(20);
+        $objPhpExcel->getActiveSheet()->getColumnDimension('E')->setWidth(20);
+        $objPhpExcel->getActiveSheet()->getColumnDimension('F')->setWidth(20);
+        $objPhpExcel->getActiveSheet()->getColumnDimension('G')->setWidth(20);
+        $objPhpExcel->getActiveSheet()->getColumnDimension('H')->setWidth(20);
+        $objPhpExcel->getActiveSheet()->getColumnDimension('I')->setWidth(20);
+        $objPhpExcel->getActiveSheet()->getColumnDimension('J')->setWidth(20);
+
+        $i = 1;
+        foreach ($infoRes['cooperateAll'] as $cooperate) {
+            $i++;
+            $objPhpExcel->getActiveSheet()->getStyle("A$i:P$i")->applyFromArray(
+                array(
+                    'alignment' => array(
+                        'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER
+                    )
+                )
+            );
+
+            $objPhpExcel->getActiveSheet()->setCellValueExplicit('A' . $i, $cooperate['name'], PHPExcel_Cell_DataType::TYPE_STRING);
+            $objPhpExcel->getActiveSheet()->setCellValueExplicit('B' . $i, isset(LACooperateModel::$arrNature[$cooperate['nature']]) ? LACooperateModel::$arrNature[$cooperate['nature']] : '', PHPExcel_Cell_DataType::TYPE_STRING);
+            $objPhpExcel->getActiveSheet()->setCellValueExplicit('C' . $i, $cooperate['location'], PHPExcel_Cell_DataType::TYPE_STRING);
+            $objPhpExcel->getActiveSheet()->setCellValueExplicit('D' . $i, $cooperate['delegate'], PHPExcel_Cell_DataType::TYPE_STRING);
+            $objPhpExcel->getActiveSheet()->setCellValueExplicit('E' . $i, $cooperate['project_manager'], PHPExcel_Cell_DataType::TYPE_STRING);
+            $objPhpExcel->getActiveSheet()->setCellValueExplicit('F' . $i, $cooperate['department'], PHPExcel_Cell_DataType::TYPE_STRING);
+            $objPhpExcel->getActiveSheet()->setCellValueExplicit('G' . $i, $cooperate['team_leader'], PHPExcel_Cell_DataType::TYPE_STRING);
+            $objPhpExcel->getActiveSheet()->setCellValueExplicit('H' . $i, isset(LACooperateModel::$arrTax[$cooperate['tax']]) ? LACooperateModel::$arrTax[$cooperate['tax']] : '' , PHPExcel_Cell_DataType::TYPE_STRING);
+            $objPhpExcel->getActiveSheet()->setCellValueExplicit('I' . $i, $cooperate['team_leader'] , PHPExcel_Cell_DataType::TYPE_STRING);
+            $objPhpExcel->getActiveSheet()->setCellValueExplicit('J' . $i, isset(LACooperateModel::$arrAccountType[$cooperate['account_type']]) ? LACooperateModel::$arrAccountType[$cooperate['account_type']] : '' , PHPExcel_Cell_DataType::TYPE_STRING);
+        }
+
+        $filename = "有限合伙公司信息统计表".date("ymdHis");
         $objWriter = PHPExcel_IOFactory::createWriter($objPhpExcel, 'Excel5');
         header("Pragma: public");
         header("Expires: 0");
