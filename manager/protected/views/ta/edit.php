@@ -27,6 +27,7 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                 <div class="pure-g">
                     <input  name="ppid" type="hidden" value="<?= isset($ppid) ?$ppid : '' ?>">
                     <input  name="tid" type="hidden" value="<?= isset($tid) ?$tid : '' ?>">
+                    <input  name="value_date" type="hidden" value="<?= isset($pproduct->value_date) ? $pproduct->value_date : '' ?>">
                     <input type="hidden" key=''token" class="submit" name="<?= Yii::app()->request->csrfTokenName ?>" value="<?= Yii::app()->request->csrfToken ?>" csrfInput/>
 
                     <div class="pure-u-1"><label>基金代码</label>
