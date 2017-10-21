@@ -382,7 +382,7 @@ class LAQuotientService
         $criteria = new CDbCriteria();
         $criteria->select = 'amount';
         $criteria->compare('pid', $pid, false);
-        $criteria->compare('status', LAQuotientModel::STATUS_OPEN);
+        $criteria->addInCondition('status', array(LAQuotientModel::STATUS_OPEN, LAQuotientModel::STATUS_DURATION,LAQuotientModel::STATUS_FINISH));
         $quotients = LAQuotientModel::model()->findAll($criteria);
 
         $total_amount = 0;

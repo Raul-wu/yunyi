@@ -198,7 +198,7 @@ class LATaService
                 'conformation_quotient' => $arrQuotient->amount,
                 'has_quotient' => $arrQuotient->amount,
                 'value_date' => date('Y-m-d', $objPProduct->value_date),
-                'expected_date' => date('Y-m-d', $objTa->fact_end_date),
+                'expected_date' => date('Y-m-d', $objPProduct->expected_date),
                 'income_rate_E6' => $objTa->fact_income_rate_E6 / LConstService::E4 ,
                 'total' => round((($arrQuotient->amount) * ($objTa->fact_income_rate_E6 / LConstService::E2) * ((($objTa->fact_end_date - $objPProduct->value_date) / 86400)) / 365), 2)
             );
