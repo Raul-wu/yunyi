@@ -7,7 +7,7 @@
  */
 class HistoryController extends AdminBaseController
 {
-    public $menuId = 3001;
+    public $menuId = 3003;
 
     public function actionList()
     {

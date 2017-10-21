@@ -10,15 +10,30 @@ class LAProductService
 {
     const LOG_PREFIX = 'admin.services.LAProductService.';
 
-    public static function getAll($arrCondition = array(), $page = 1, $perPage = 5, $order = '')
+    public static function getAll($arrCondition = array(), $page = 1, $perPage = 20, $order = '')
     {
         $criteria = new CDbCriteria();
         $strUrl = '?';
 
         if(isset($arrCondition['fund_code']) && !empty($arrCondition['fund_code']))
         {
-            $criteria->compare('fund_code', $arrCondition['fund_code'], true);
+            $criteria->compare('t.pid', $arrCondition['fund_code'], true, "or");
+            $criteria->compare('pproduct.fund_code', $arrCondition['fund_code'], true, "or");
+            $criteria->compare('pproduct.name', $arrCondition['fund_code'], true, "or");
+            $criteria->compare('t.name', $arrCondition['fund_code'], true, "or");
             $strUrl .= "&fund_code={$arrCondition['fund_code']}";
+        }
+
+        if(isset($arrCondition['mode']) && !empty($arrCondition['mode']))
+        {
+            $criteria->compare('pproduct.mode', $arrCondition['mode'], true);
+            $strUrl .= "&mode={$arrCondition['mode']}";
+        }
+
+        if(isset($arrCondition['status']) && !empty($arrCondition['status']))
+        {
+            $criteria->compare('pproduct.status', $arrCondition['status'], true);
+            $strUrl .= "&status={$arrCondition['status']}";
         }
 
         if(isset($arrCondition['ppid']) && !empty($arrCondition['ppid']))

@@ -8,7 +8,7 @@
  */
 class TaController extends AdminBaseController
 {
-    public $menuId = 3001;
+    public $menuId = 3002;
 
     public function actionList()
     {

@@ -70,8 +70,8 @@ require([
 
     $('#import').on("click",function(){
         var name = $("#name").val();
-        var fund_name = $("#fund_code").val();
-        location.href= importUrl + "?name=" + name + "&fund_name=" + fund_name;
+        var fund_code = $("#fund_code").val();
+        location.href= importUrl + "?name=" + name + "&fund_code=" + fund_code;
     });
 });
 

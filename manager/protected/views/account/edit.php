@@ -28,11 +28,17 @@ Yii::app()->clientScript->registerScript("saveUrl", 'window.saveUrl="/account/sa
             <div class="editor_form">
                 <div class="pure-g">
                     <div class="pure-u-1"><label>基金代码</label>
-                        <input type="text" class="pure-input-2-3 submit" name="type" id="fund_code" disabled maxlength="255" value="<?= isset($fund_code) ? $fund_code : ''; ?>" /> *
+                        <input type="text" class="pure-input-2-3 submit" name="fund_code" id="fund_code" disabled maxlength="255" value="<?= isset($fund_code) ? $fund_code : ''; ?>" /> *
                     </div>
 
                     <div class="pure-u-1"><label>账户性质</label>
-                        <input type="text" class="pure-input-2-3 submit" name="type" id="type" placeholder="必填" maxlength="255" value="<?= isset($type) ? $type : ''; ?>" /> *
+                        <select class="pure-input-2-3 submit" name="type" id="type" id="type" >
+                            <option value="基本户" <?= isset($type) && $type == "基本户" ? "selected=\"selected\"" : "" ?> >基本户</option>
+                            <option value="一般户" <?= isset($type) && $type == "一般户" ? "selected=\"selected\"" : "" ?>>一般户</option>
+                            <option value="募集户" <?= isset($type) && $type == "募集户" ? "selected=\"selected\"" : "" ?>>募集户</option>
+                            <option value="托管户" <?= isset($type) && $type == "托管户" ? "selected=\"selected\"" : "" ?>>托管户</option>
+                        </select>
+                         *
                     </div>
 
                     <div class="pure-u-1"><label>户名</label>

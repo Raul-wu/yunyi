@@ -28,15 +28,27 @@ class LAQuotientService
         return LAQuotientModel::model()->findAll($criteria);
     }
 
-    public static function getAll($arrCondition = array(), $page = 1, $perPage = 10, $order = '')
+    public static function getAll($arrCondition = array(), $page = 1, $perPage = 20, $order = '')
     {
         $criteria = new CDbCriteria();
         $strUrl = '?';
 
         if(isset($arrCondition['name']) && !empty($arrCondition['name']))
         {
-            $criteria->compare('product.name', $arrCondition['name'], true);
+            $criteria->compare('t.name', $arrCondition['name'], true, "or");
+            $criteria->compare('t.id_content', $arrCondition['name'], true, "or");
+            $criteria->compare('t.handler_name', $arrCondition['name'], true, "or");
+            $criteria->compare('product.name', $arrCondition['name'], true, "or");
+            $criteria->compare('product.pid', $arrCondition['name'], true, "or");
+            $criteria->compare('pproduct.name', $arrCondition['name'], true, "or");
+            $criteria->compare('pproduct.fund_code', $arrCondition['name'], true, "or");
             $strUrl .= "&name={$arrCondition['name']}";
+        }
+
+        if(isset($arrCondition['status']) && !empty($arrCondition['status']))
+        {
+            $criteria->compare('pproduct.status', $arrCondition['status'], true);
+            $strUrl .= "&status={$arrCondition['status']}";
         }
 
         if(isset($arrCondition['fund_name']) && !empty($arrCondition['fund_name']))

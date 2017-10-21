@@ -10,14 +10,15 @@ class LAPProductService
 {
     const LOG_PREFIX = 'admin.services.LAPProductService.';
 
-    public static function getAll($arrCondition = array(), $page = 1, $perPage = 5, $order = '')
+    public static function getAll($arrCondition = array(), $page = 1, $perPage = 20, $order = '')
     {
         $criteria = new CDbCriteria();
         $strUrl = '?';
 
         if(isset($arrCondition['fund_code']) && !empty($arrCondition['fund_code']))
         {
-            $criteria->compare('fund_code', $arrCondition['fund_code'], true);
+            $criteria->compare('fund_code', $arrCondition['fund_code'], true, "or");
+            $criteria->addSearchCondition('name', $arrCondition['fund_code'], true, "or");
             $strUrl .= "&fund_code={$arrCondition['fund_code']}";
         }
 
