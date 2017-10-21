@@ -218,7 +218,7 @@ class LAQuotientService
                 if($product->total_count < $total + ($value[2] * LConstService::E4))
                 {
                     $err_msg_detail .= "序号:{$value[0]} 姓名:{$value[1]}; ";
-                    continue;
+                    break;
                 }
 
                 if($product->per_user_by_limit)
@@ -227,22 +227,34 @@ class LAQuotientService
                     if($product->per_user_by_limit < ($total_amount + ($value[2]* LConstService::E4)))
                     {
                         $err_msg_detail .= "序号:{$value[1]} 姓名:{$value[1]}; ";
-                        continue;
+                        break;
                     }
                 }
 
                 if($product->max_buy && (($value[2]* LConstService::E4) > $product->max_buy))
                 {
                     $err_msg_detail .= "序号:{$value[0]} 姓名:{$value[1]}; ";
-                    continue;
+                    break;
                 }
 
                 if($product->min_buy && (($value[2] * LConstService::E4) < $product->min_buy ))
                 {
                     $err_msg_detail .= "序号:{$value[0]} 姓名:{$value[1]}; ";
-                    continue;
+                    break;
                 }
+            }
+        }
 
+        if($err_msg_detail)
+        {
+            $err_msg_detail = "以下用户'交易金额'未通过子产品购买限额校验：" . $err_msg_detail;
+            return array('msg' => "导入客户份额失败" . ", {$err_msg_detail}", 'res' => false);
+        }
+
+        foreach($data as $key => $arr)
+        {
+            foreach($arr as $value)
+            {
                 $name = isset($value[1]) && !empty($value[1]) ? $value[1] : '';
                 $amount = isset($value[2]) && !empty($value[2]) ? $value[2] * LConstService::E4 : '';
                 $type = isset(LAQuotientModel::$arrTypeReversal[$value[3]]) ? LAQuotientModel::$arrTypeReversal[$value[3]] : LAQuotientModel::TYPE_SELF;
@@ -258,11 +270,6 @@ class LAQuotientService
 
                 $sql_insert .= "($pid, '$name',$amount, $type, $id_type, '$id_content', '$handler_name', '$delegate_name', '$bank_account', '$bank_name', '$bank_address', '$bank_province', '$bank_city', '$time', '$time' ),";
             }
-        }
-
-        if($err_msg_detail)
-        {
-            $err_msg_detail = "以下用户'交易金额'未通过子产品购买限额校验：" . $err_msg_detail;
         }
 
         if($sql_insert)
@@ -281,7 +288,7 @@ class LAQuotientService
             {
                 Yii::log("import client quotient success ", CLogger::LEVEL_TRACE, self::LOG_PREFIX . __FUNCTION__);
 
-                return array("msg" => "导入客户份额成功" . ", {$err_msg_detail}", 'res' => true);
+                return array("msg" => "导入客户份额成功", 'res' => true);
             }
             else
             {
