@@ -261,6 +261,7 @@ class TaFormModel extends AdminBaseFormModel
     const TA_EDIT          = 'ta_edit';
 
     public $term;
+    public $ta_value_date;
     public $fact_end_date;
     public $fact_principal;
     public $fact_income;
@@ -270,7 +271,7 @@ class TaFormModel extends AdminBaseFormModel
     public function rules()
     {
         return array(
-            array('term, fact_end_date, fact_principal, fact_income, fact_income_rate_E6, file_path, create_time, update_time', 'safe'),
+            array('term, ta_value_date, fact_end_date, fact_principal, fact_income, fact_income_rate_E6, file_path, create_time, update_time', 'safe'),
 
             array('term, fact_end_date, fact_principal, fact_income, fact_income_rate_E6', 'required', 'on' => array(self::TA_NEW, self::TA_EDIT))
         );
@@ -283,6 +284,7 @@ class TaFormModel extends AdminBaseFormModel
         $data['fact_income'] = $this->fact_income * LConstService::E4;
         $data['fact_income_rate_E6'] = $this->fact_income_rate_E6 * LConstService::E4;
         $data['fact_end_date'] = strtotime($this->fact_end_date);
+        $data['ta_value_date'] = strtotime($this->ta_value_date);
 
         return $this->trimData($data);
     }

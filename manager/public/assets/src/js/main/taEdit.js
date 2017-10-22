@@ -51,8 +51,9 @@ require([
             msgDialog("请输入到期本金和到期收益");
         } else {
             var timestamp2 = Date.parse(new Date(stringTime));
-            var days = (timestamp2 / 1000 - value_date) / 86400;
-            var rate = fact_income / (fact_principal * days / 365);
+            var days = parseInt((timestamp2 / 1000 - value_date) / 86400);
+            var rate = fact_income / (fact_principal * days / 365) * 100;
+
             $("input[name='fact_income_rate_E6']").val(rate.toFixed(2));
         }
     });

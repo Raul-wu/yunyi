@@ -79,6 +79,10 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                         </select>
                     </div>
 
+                    <div class="pure-u-1"><label>起息日</label>
+                        <input type="text" class="pure-input-2-3 submit" name="ta_value_date" datepicker="datepicker" <?php if($pproduct->type == LAPProductModel::TYPE_FI) echo 'disabled'; ?> value="<?= $pproduct->type == LAPProductModel::TYPE_FI ? date('Y-m-d', $pproduct->value_date) :  ''?>">
+                    </div>
+
                     <div class="pure-u-1"><label>实际到期日</label>
                         <input type="text" class="pure-input-2-3 submit" name="fact_end_date" datepicker="datepicker"  value="<?= isset($ta->fact_end_date) ? date('Y-m-d', $ta->fact_end_date) : ''?>">
                     </div>
