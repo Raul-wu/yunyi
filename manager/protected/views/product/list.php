@@ -35,7 +35,31 @@ Yii::app()->clientScript->registerScript("checkProductEstablish", 'window.checkP
             <form class="pure-form">
                 <div class="pure-g">
                     <div class="pure-u-2-3">
-                        <input type="text"   placeholder="基金代码" class="pure-input-1-1"  value="<?=isset($fund_code) ? $fund_code : ''?>" name="fund_code" id="fund_code" >
+                        <input type="text"   placeholder="关键字" class="pure-input-1-1"  value="<?=isset($fund_code) ? $fund_code : ''?>" name="fund_code" id="fund_code" >
+
+                        <select class="pure-input-1-1 " name="mode" id="mode" >
+                            <option value="">分配方式</option>
+                            <?php
+                            foreach (LAPProductModel::$arrMode as $key => $struct)
+                            {
+                                ?>
+                                <option value="<?= $key ?>" <?= isset($mode) && $mode == $key ? "selected=\"selected\"" : "" ?> ><?= CHtml::encode($struct) ?></option>
+                                <?php
+                            }
+                            ?>
+                        </select>
+
+                        <select class="pure-input-1-1 " name="status" id="status" >
+                            <option value="">状态</option>
+                            <?php
+                            foreach (LAPProductModel::$arrStatus as $key => $struct)
+                            {
+                                ?>
+                                <option value="<?= $key ?>" <?= isset($status) && $status == $key ? "selected=\"selected\"" : "" ?> ><?= CHtml::encode($struct) ?></option>
+                                <?php
+                            }
+                            ?>
+                        </select>
                         <button type="submit" class="pure-button pure-button-primary">筛选</button>
                         <button type="button" id="reset" class="pure-button">重置</button>
                     </div>

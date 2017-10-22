@@ -17,6 +17,8 @@ class ProductController extends AdminBaseController
 
         $conditions['ppid'] = Yii::app()->request->getParam('ppid',0);
         $conditions['fund_code'] = trim(Yii::app()->request->getParam('fund_code',''));
+        $conditions['mode'] = trim(Yii::app()->request->getParam('mode',''));
+        $conditions['status'] = trim(Yii::app()->request->getParam('status',''));
         $conditions['page'] = trim(Yii::app()->request->getParam('page', 1));
         $arrProduct = LAProductService::getAll($conditions, $conditions['page']);
 
@@ -25,6 +27,8 @@ class ProductController extends AdminBaseController
             'pageBar'   => $arrProduct['pageBar'],
             'count'     => $arrProduct['count'],
             'fund_code'      => $conditions['fund_code'],
+            'mode'      => $conditions['mode'],
+            'status'      => $conditions['status'],
         ));
     }
 
@@ -280,14 +284,15 @@ class ProductFormModel extends AdminBaseFormModel
     public $max_buy;
     public $min_buy;
     public $status;
+    public $batch;
     public $category;
 
     public function rules()
     {
         return array(
-            array('name, expected_income_rate_E6, total_count, per_user_by_limit, max_buy, min_buy, mode, category, status, create_time, update_time', 'safe'),
+            array('name, expected_income_rate_E6, total_count, per_user_by_limit, batch, max_buy, min_buy, mode, category, status, create_time, update_time', 'safe'),
 
-            array('name, expected_income_rate_E6, total_count', 'required', 'on' => array(self::PRODUCT_NEW, self::PRODUCT_EDIT))
+            array('name, expected_income_rate_E6, total_count, batch', 'required', 'on' => array(self::PRODUCT_NEW, self::PRODUCT_EDIT))
         );
     }
 

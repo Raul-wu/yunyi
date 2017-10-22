@@ -84,6 +84,10 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                         <input type="text" class="pure-input-2-3 submit" name="total_count" placeholder="必填" value="<?= isset($product->total_count) ? $product->total_count / LConstService::E4 : ''?>"> *
                     </div>
 
+                    <div class="pure-u-md-1-2"><label>批次</label>
+                        <input type="text" class="pure-input-2-3 submit" name="batch" value="<?= isset($product->batch) ? $product->batch : ''?>"> *
+                    </div>
+
                     <div class="pure-u-1"><label>实际募集/万元</label>
                         <input type="text" class="pure-input-2-3 submit" disabled value="<?= isset($actually_total) ? $actually_total / LConstService::E4 : ''?>">
                     </div>

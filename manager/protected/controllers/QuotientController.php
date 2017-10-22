@@ -18,6 +18,7 @@ class QuotientController extends AdminBaseController
 
         $conditions['pid'] = trim(Yii::app()->request->getParam('pid',''));
         $conditions['name'] = trim(Yii::app()->request->getParam('name',''));
+        $conditions['status'] = trim(Yii::app()->request->getParam('status',''));
         $conditions['page'] = trim(Yii::app()->request->getParam('page', 1));
         $conditions['fund_name'] = trim(Yii::app()->request->getParam('fund_name', ''));
         $conditions['quotient_name'] = trim(Yii::app()->request->getParam('quotient_name', ''));
@@ -32,6 +33,7 @@ class QuotientController extends AdminBaseController
             'fund_name'     => $conditions['fund_name'],
             'quotient_name'     => $conditions['quotient_name'],
             'id_card'     => $conditions['id_card'],
+            'status'     => $conditions['status'],
         ));
     }
 
@@ -153,6 +155,103 @@ class QuotientController extends AdminBaseController
         ));
     }
 
+    public function actionSelect()
+    {
+        $qid = Yii::app()->request->getParam('qid');
+        $quotient = LAQuotientService::getByID($qid);
+
+
+
+        $quotientChange = LAQuotientService::getAllByChangeId($qid);
+        $this->render('select',array(
+            'qid' =>$qid,
+            'quotient' => $quotient,
+            'quotientChange' => $quotientChange
+        ));
+    }
+
+    public function actionChange()
+    {
+        $this->setJsMain('quotientChange');
+
+        $qid = Yii::app()->request->getParam('qid');
+        $quotient = LAQuotientService::getByID($qid);
+        $this->render('change',array(
+            'qid' =>$qid,
+            'quotient' => $quotient
+        ));
+    }
+
+    public function actionSaveChange()
+    {
+        if(!Yii::app()->request->isAjaxRequest)
+        {
+            throw new CHttpException(404,'非法操作');
+            Yii::app()->end();
+        }
+
+        $pid = Yii::app()->request->getParam('pid');
+        $product = LAProductService::getById($pid);
+        $total = LAQuotientService::getTotalAmountByPid($pid);
+
+
+        if($product->status != LAProductModel::STATUS_DURATION)
+        {
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "您当前变更的客户份额不在存续中,不能变更!");
+        }
+        if($product->per_user_by_limit)
+        {
+            $total_amount = LAQuotientService::getUsersTotalAmountByIDCard($_POST['id_content']);
+            if($product->per_user_by_limit < ($total_amount + (intval($_POST['amount'])  * LConstService::E4)))
+            {
+                $this->ajaxReturn(LError::INTERNAL_ERROR, "创建客户份额失败！已达单用户限购额度");
+            }
+        }
+        if($product->max_buy && ( (intval($_POST['amount'])  * LConstService::E4) > $product->max_buy))
+        {
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "创建客户份额失败！已达单笔最大金额");
+        }
+        if($product->min_buy && ( (intval($_POST['amount'])  * LConstService::E4 ) < $product->min_buy ))
+        {
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "创建客户份额失败！已达单笔最小金额");
+        }
+        if ($qid = Yii::app()->request->getParam('qid'))
+        {
+            $quotient = new QuotientEditFormModel();
+            $quotient->setAttributes($_POST);
+            $quotient->setScenario(QuotientEditFormModel::QUOTIENT_NEW_ONE);
+            $quotient->validate();
+            if ($errors = $quotient->getErrors())
+            {
+                $this->ajaxReturn(LError::INTERNAL_ERROR, '数据不能为空');
+            }
+
+            $quotientData = $quotient->getData();
+            if($ret = LAQuotientService::create($pid, $quotientData))
+            {
+                LAQuotientService::update($qid, array(
+                    "changeQid" => $ret->qid,
+                    "status" => LAQuotientModel::STATUS_DEL,
+                ));
+
+                $criteria = new CDbCriteria();
+                $criteria->compare("changeQid", $qid);
+                $updateOption = array(
+                    "changeQid" => $ret->qid
+                );
+                LAQuotientModel::model()->updateAll($updateOption, $criteria);
+
+                $this->ajaxReturn(LError::SUCCESS, "变更客户份额成功！", array("url" => Yii::app()->createUrl("quotient/list?pid=". $pid)));
+            }
+            else
+            {
+                $this->ajaxReturn(LError::INTERNAL_ERROR, "变更客户份额失败！");
+            }
+        }
+        $this->ajaxReturn(LError::INTERNAL_ERROR, "变更客户份额失败！");
+
+    }
+
     public function actionSaveOne()
     {
         if(!Yii::app()->request->isAjaxRequest)
@@ -164,6 +263,12 @@ class QuotientController extends AdminBaseController
         $pid = Yii::app()->request->getParam('pid');
         $product = LAProductService::getById($pid);
         $total = LAQuotientService::getTotalAmountByPid($pid);
+
+        if($product->status != LAProductModel::STATUS_ESTABLISH)
+        {
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "您当前编辑的客户份额不在成立中,不能编辑!");
+        }
+
         if($product->total_count < $total + (intval($_POST['amount']) * LConstService::E4))
         {
             $this->ajaxReturn(LError::INTERNAL_ERROR, "创建客户份额失败！已达子产品限购额度上限");
@@ -218,6 +323,7 @@ class QuotientController extends AdminBaseController
             }
 
             $quotientData = $quotient->getData();
+            unset($quotientData["status"]);
             if(LAQuotientService::update($qid, $quotientData))
             {
                 $this->ajaxReturn(LError::SUCCESS, "更新客户份额成功！", array("url" => Yii::app()->createUrl("quotient/list?pid=". $pid)));

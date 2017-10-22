@@ -36,7 +36,18 @@ Yii::app()->clientScript->registerScript("copyPProductPermission", 'window.copyP
             <form class="pure-form">
                 <div class="pure-g">
                     <div class="pure-u-2-3">
-                        <input type="text"   placeholder="基金代码" class="pure-input-1-1" id="fund_code" value="<?=isset($fund_code) ? $fund_code : ''?>" name="fund_code" >
+                        <input type="text"   placeholder="关键字" class="pure-input-1-1" id="fund_code" value="<?=isset($fund_code) ? $fund_code : ''?>" name="fund_code" >
+                        <select class="pure-input-1-1 " name="status" id="status" >
+                            <option value="">状态</option>
+                            <?php
+                            foreach (LAPProductModel::$arrStatus as $key => $struct)
+                            {
+                                ?>
+                                <option value="<?= $key ?>" <?= isset($status) && $status == $key ? "selected=\"selected\"" : "" ?> ><?= CHtml::encode($struct) ?></option>
+                                <?php
+                            }
+                            ?>
+                        </select>
                         <button type="submit" class="pure-button pure-button-primary">筛选</button>
                         <button type="button" id="reset" class="pure-button">重置</button>
                     </div>
@@ -74,7 +85,7 @@ Yii::app()->clientScript->registerScript("copyPProductPermission", 'window.copyP
                     <th>基金名称</th>
                     <th>收益类型</th>
                     <th>募集规模（万元）</th>
-                    <th>已规模（万元）</th>
+                    <th>已募集（万元）</th>
                     <th>预计到期</th>
                     <th>分配方式</th>
                     <th>状态</th>

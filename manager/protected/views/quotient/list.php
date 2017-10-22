@@ -12,6 +12,8 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/js/lib/art
 
 Yii::app()->clientScript->registerScript("delQuotient", 'window.delQuotient="'.Yii::app()->createUrl('quotient/delete').'";', CClientScript::POS_END);
 Yii::app()->clientScript->registerScript("editUrl", 'window.editUrl="'.Yii::app()->createUrl('quotient/editOne').'";', CClientScript::POS_END);
+Yii::app()->clientScript->registerScript("changeUrl", 'window.changeUrl="'.Yii::app()->createUrl('quotient/change').'";', CClientScript::POS_END);
+Yii::app()->clientScript->registerScript("selectUrl", 'window.selectUrl="'.Yii::app()->createUrl('quotient/select').'";', CClientScript::POS_END);
 Yii::app()->clientScript->registerScript("exportUrl", 'window.exportUrl="'.Yii::app()->createUrl('quotient/export').'";', CClientScript::POS_END);
 
 //Yii::app()->clientScript->registerScript("addSpvPermission", 'window.addSpvPermission="'.LAPermissionService::selectMenuPermission($this->menuId, 2006102).'";', CClientScript::POS_END);
@@ -26,10 +28,18 @@ Yii::app()->clientScript->registerScript("exportUrl", 'window.exportUrl="'.Yii::
                 <input type="hidden" id="tkName" tkName="<?= Yii::app()->request->csrfTokenName ?>" value="<?= Yii::app()->request->csrfToken ?>">
                 <div class="pure-g">
                     <div class="pure-u-2-3">
-                        <input type="text"  placeholder="子产品名称" class="pure-input-1-1" style="width:130px;"  value="<?= isset($name) ? $name : '' ?>" name="name" id="name" />
-                        <input type="text"  placeholder="基金名称" class="pure-input-1-1"  style="width:130px;" value="<?= isset($fund_name) ? $fund_name : '' ?>" name="fund_name" id="fund_name" />
-                        <input type="text"  placeholder="客户名字" class="pure-input-1-1"  style="width:130px;" value="<?= isset($quotient_name) ? $quotient_name : '' ?>" name="quotient_name" id="quotient_name" />
-                        <input type="text"  placeholder="身份证号" class="pure-input-1-1"  style="width:130px;" value="<?= isset($id_card) ? $id_card : '' ?>" name="id_card" id="id_card" />
+                        <input type="text"  placeholder="关键字" class="pure-input-1-1" style="width:130px;"  value="<?= isset($name) ? $name : '' ?>" name="name" id="name" />
+                        <select class="pure-input-1-1 " name="status" id="status" >
+                            <option value="">状态</option>
+                            <?php
+                            foreach (LAPProductModel::$arrStatus as $key => $struct)
+                            {
+                                ?>
+                                <option value="<?= $key ?>" <?= isset($status) && $status == $key ? "selected=\"selected\"" : "" ?> ><?= CHtml::encode($struct) ?></option>
+                                <?php
+                            }
+                            ?>
+                        </select>
                         <button type="submit" class="pure-button pure-button-primary">筛选</button>
                         <button type="button" id="reset" class="pure-button">重置</button>
                         <button type="button" id="export" class="pure-button pure-button-primary">导出客户份额</button>
@@ -62,7 +72,7 @@ Yii::app()->clientScript->registerScript("exportUrl", 'window.exportUrl="'.Yii::
                 <thead>
                 <tr>
                     <th><input type="checkbox" id="selectAll"></th>
-                    <th>子产品名称</th>
+                    <th>产品名称</th>
                     <th>投资人姓名</th>
                     <th>交易金额（万元）</th>
                     <th>投资类型</th>

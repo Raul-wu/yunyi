@@ -81,6 +81,8 @@ class LAQuotientService
             $strUrl .= "&id_card={$arrCondition['id_card']}";
         }
 
+        $criteria->addNotInCondition('t.status', array(LAQuotientModel::STATUS_DEL));
+
         $criteria->order = $order ? $order : 'qid desc ';
         $count = LAQuotientModel::model()->with('product')->with('pproduct')->count($criteria);
 
@@ -163,7 +165,7 @@ class LAQuotientService
         {
             $data['update_time'] = date('Y-m-d H:i:s', time());
         }
-
+echo "<pre>";print_r($data);die;
         $objQuotient->setAttributes($data, false);
         if ($objQuotient->save())
         {
@@ -418,6 +420,17 @@ class LAQuotientService
         $criteria->addInCondition('pid', explode(',', $pids));
         $criteria->addNotInCondition('status', array(LAQuotientModel::STATUS_DEL, LAQuotientModel::STATUS_FINISH));
         return LAQuotientModel::model()->findAll($criteria);
+    }
+
+    public static function getAllByChangeId($changeId)
+    {
+        $criteria = new CDbCriteria();
+        $criteria->compare('t.changeQid', $changeId);
+        $criteria->compare('t.status', LAQuotientModel::STATUS_DEL);
+        $criteria->order = 't.update_time desc ';
+
+        return LAQuotientModel::model()->with('product')->with('pproduct')->findAll($criteria);
+
     }
 
     public static function updateQuotientStatusByPPid($ppid, $status)

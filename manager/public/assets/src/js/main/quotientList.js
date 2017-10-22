@@ -10,10 +10,22 @@ require([
 
     var widget = new SingleMultiBtn("#buttonHolder", {
         singleBtns: [
+        {
+            name: "查看",
+            click: function(id) {
+                window.location.href= selectUrl + '?qid='+id;
+            }
+        },
          {
             name: "编辑",
             click: function(id) {
                 window.location.href= editUrl + '?qid='+id;
+            }
+        },
+        {
+            name: "变更",
+            click: function(id) {
+                window.location.href= changeUrl + '?qid='+id;
             }
         },
         ],

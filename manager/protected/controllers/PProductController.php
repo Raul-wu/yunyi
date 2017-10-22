@@ -17,6 +17,7 @@ class PProductController extends AdminBaseController
         $this->setJsMain('pproductList');
 
         $conditions['fund_code'] = trim(Yii::app()->request->getParam('fund_code', ''));
+        $conditions['status'] = trim(Yii::app()->request->getParam('status', ''));
         $conditions['page'] = trim(Yii::app()->request->getParam('page', 1));
 
         $infoRes = LAPProductService::getAll($conditions, $conditions['page']);
@@ -26,6 +27,7 @@ class PProductController extends AdminBaseController
             'count' => $infoRes['count'],
             'fund_code' => $conditions['fund_code'],
             'pageBar'   => $infoRes['pageBar'],
+            'status'   => $conditions['status'],
         ));
     }
 
@@ -352,11 +354,11 @@ class PProductFormModel extends AdminBaseFormModel
     public function rules()
     {
         return array(
-            array('fund_code, name, struct, type, mode, scale, remain, income_rate_E6, buy_rate_E6, batch,
+            array('fund_code, name, struct, type, mode, scale, remain, income_rate_E6, buy_rate_E6,
             establish, value_date, duration_data, expected_date, interest_principle, management_E6, trusteeship_E6, epiboly_E6, 
             service_fees_E6, adviser_fees_E6, lending_rate_E6, investment_term, pay_rule, create_time, update_time', 'safe'),
 
-            array('fund_code, name, income_rate_E6, value_date, expected_date, establish, scale, batch, duration_data', 'required', 'on' => array(self::PPRODUCT_NEW, self::PPRODUCT_EDIT))
+            array('fund_code, name, income_rate_E6, value_date, expected_date, establish, scale, duration_data', 'required', 'on' => array(self::PPRODUCT_NEW, self::PPRODUCT_EDIT))
         );
     }
 
