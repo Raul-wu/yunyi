@@ -90,7 +90,14 @@ class QuotientController extends AdminBaseController
             $this->ajaxReturn(LError::SUCCESS, '读取文件失败');
         }
 
-        $result = LAQuotientService::analysisServiceExcel($pid, $filePath);
+        if(empty($_POST['buy_date']))
+        {
+            $this->ajaxReturn(LError::SUCCESS, '请输入购买日');
+        }
+
+        $buy_date = strtotime($_POST['buy_date']);
+
+        $result = LAQuotientService::analysisServiceExcel($pid, $filePath, $buy_date);
         if($result && $result['res'])
         {
             $this->ajaxReturn(LError::SUCCESS,$result['msg'], array("url" => Yii::app()->createUrl("quotient/list?pid=". $pid)));
@@ -435,13 +442,14 @@ class QuotientEditFormModel extends AdminBaseFormModel
     public $bank_province;
     public $bank_city;
     public $status;
+    public $buy_date;
 
     public function rules()
     {
         return array(
-            array('pid, name, amount, type, id_type, id_content, handler_name, delegate_name, bank_account, bank_name, bank_address, bank_province, bank_city, status, create_time, update_time', 'safe'),
+            array('pid, name, amount, type, id_type, id_content, handler_name, delegate_name, bank_account, bank_name, bank_address, bank_province, bank_city, status, buy_date, create_time, update_time', 'safe'),
 
-            array('pid, name, amount, id_content', 'required', 'on' => array(self::QUOTIENT_NEW_ONE, self::QUOTIENT_EDIT_ONE)),
+            array('pid, name, amount, id_content, buy_date', 'required', 'on' => array(self::QUOTIENT_NEW_ONE, self::QUOTIENT_EDIT_ONE)),
         );
     }
 
@@ -450,6 +458,7 @@ class QuotientEditFormModel extends AdminBaseFormModel
         $data = $this->attributes;
 
         $data['amount'] = $data['amount'] * LConstService::E4;
+        $data['buy_date'] = strtotime($this->buy_date);
 
         return $this->trimData($data);
     }

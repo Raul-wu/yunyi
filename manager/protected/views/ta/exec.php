@@ -54,7 +54,7 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                     </div>
 
                     <div class="pure-u-1"><label>分配日期</label>
-                        <input type="text" class="pure-input-2-3 submit" disabled value="<?= isset($ta->create_time)  ? $ta->create_time : ' '?>">
+                        <input type="text" class="pure-input-2-3 submit" disabled value="<?= isset($ta->create_time)  ? date('Y-m-d',strtotime($ta->create_time)) : ' '?>">
                     </div>
 
                     <div class="pure-u-1"><label>分配金额</label>

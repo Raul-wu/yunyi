@@ -211,7 +211,7 @@ echo "<pre>";print_r($data);die;
         return LAQuotientModel::model()->deleteByPk(intval($qid));
     }
 
-    public static function analysisServiceExcel($pid, $filePath)
+    public static function analysisServiceExcel($pid, $filePath, $buy_date)
     {
         $product = LAProductService::getById($pid);
         $total = LAQuotientService::getTotalAmountByPid($pid);
@@ -219,7 +219,7 @@ echo "<pre>";print_r($data);die;
         $data = self::commonExcel($filePath);
         unset($data['head']);
 
-        $sql = "insert into quotient(pid,name,amount,type,id_type,id_content,handler_name,delegate_name,bank_account,bank_name,bank_address,bank_province,bank_city,create_time,update_time) values ";
+        $sql = "insert into quotient(pid,name,amount,type,id_type,id_content,handler_name,delegate_name,bank_account,bank_name,bank_address,bank_province,bank_city,create_time,update_time, buy_date) values ";
 
         $time =  date('Y-m-d H:i:s', time());
 
@@ -282,7 +282,7 @@ echo "<pre>";print_r($data);die;
                 $bank_province = isset($value[11]) && !empty($value[11]) ? $value[11] : '';
                 $bank_city = isset($value[12]) && !empty($value[12]) ? $value[12] : '';
 
-                $sql_insert .= "($pid, '$name',$amount, $type, $id_type, '$id_content', '$handler_name', '$delegate_name', '$bank_account', '$bank_name', '$bank_address', '$bank_province', '$bank_city', '$time', '$time' ),";
+                $sql_insert .= "($pid, '$name',$amount, $type, $id_type, '$id_content', '$handler_name', '$delegate_name', '$bank_account', '$bank_name', '$bank_address', '$bank_province', '$bank_city', '$time', '$time', $buy_date ),";
             }
         }
 

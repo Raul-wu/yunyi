@@ -36,6 +36,10 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                         <input type="text" class="pure-input-2-3 submit" name="amount" id="amount" placeholder="必填" value="<?= isset($quotient->amount) ? $quotient->amount / LConstService::E4 : ''; ?>" /> *
                     </div>
 
+                    <div class="pure-u-1"><label>购买日</label>
+                        <input type="text" class="pure-input-2-3 submit" name="buy_date" id="buy_date" datepicker="datepicker" placeholder="必填" value="<?= isset($quotient->buy_date) ? date('Y-m-d',$quotient->buy_date)  : ''; ?>" /> *
+                    </div>
+
                     <div class="pure-u-1"><label>投资人类型</label>
                         <select class="pure-input-1-2 "  name="type" >
                             <?php

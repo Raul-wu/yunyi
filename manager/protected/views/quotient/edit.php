@@ -37,6 +37,10 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                         <input type="text" class="pure-input-1-2  submit" disabled value="<?= isset($product->name) ? $product->name : ''?>">
                     </div>
 
+                    <div class="pure-u-1"><label>购买日</label>
+                        <input type="text" class="pure-input-2-3 submit" name="buy_date" id="buy_date" datepicker="datepicker" placeholder="必填" value="<?= isset($quotient->buy_date) ? date('Y-m-d',$quotient->buy_date)  : ''; ?>" /> *
+                    </div>
+
                     <div class="pure-u-1"><label>份额表</label>
                         <input id="quotients" type="file" name="quotients" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
                         <span>文件大小不能超过5M</span>

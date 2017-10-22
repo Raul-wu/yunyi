@@ -9,7 +9,8 @@ require([
     'Handlebars',
     'art-dialog',
     'widgets/excelUpload',
-], function($, placeholder,  placeholder, ConfirmBtn, Handlebars,placeholder, ExcelUpload) {
+    'datepicker-config',
+], function($, placeholder,  placeholder, ConfirmBtn, Handlebars,placeholder, ExcelUpload, placeholder) {
 
     var $form = $("#form");
     var saveAction = $form.attr('saveAction');

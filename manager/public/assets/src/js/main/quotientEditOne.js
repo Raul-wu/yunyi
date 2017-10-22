@@ -1,11 +1,16 @@
 require([
     'jquery',
     'jquery-form',
-    'numberTip',
+    'datepicker-config',
     'widgets/ConfirmBtn',
+    'widgets/ImgUpload',
     'Handlebars',
-    'art-dialog'
-], function($, placeholder,  placeholder, ConfirmBtn, Handlebars,placeholder) {
+    'text!templates/mgrTeam.html',
+    'text!templates/durationInfo.html',
+    'text!templates/attachment-item.html',
+    'widgets/jquery.combo.select',
+    'art-dialog',
+], function($, placeholder, placeholder, ConfirmBtn, ImgUpload, Handlebars, mgrTeamTpl, durationInfo, attItem, placeholder) {
 
     var $form = $("#form");
     var saveAction = $form.attr('saveAction');

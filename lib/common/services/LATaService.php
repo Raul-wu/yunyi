@@ -161,14 +161,13 @@ class LATaService
 
         foreach($arrQuotients as $arrQuotient)
         {
-            $objProduct = LAProductService::getById($arrQuotient->pid);
             if($objPProduct->type == LAPProductModel::TYPE_FI)
             {
-                $total = round((($arrQuotient->amount) * ($objProduct->expected_income_rate_E6 / LConstService::E4) * ((($objPProduct->expected_date - $objPProduct->value_date) / 86400)) ), 2);
+                $total = (($arrQuotient->amount) * ($objTa->fact_income_rate_E6 / LConstService::E6) * ((($objTa->fact_end_date - $arrQuotient->buy_date) / 86400)) ) / 365;
             }
             else
             {
-                $total = round((($arrQuotient->amount) * ($objProduct->expected_income_rate_E6 / LConstService::E4) * ((($objTa->fact_end_date - $objTa->ta_value_date) / 86400))), 2);
+                $total = (($arrQuotient->amount) * ($objTa->fact_income_rate_E6 / LConstService::E6) * ((($objTa->fact_end_date - $objTa->ta_value_date) / 86400))) / 365;
             }
 
             $shBank[] = array(
@@ -184,7 +183,7 @@ class LATaService
                 'bank_address' => $arrQuotient->bank_address,
                 'amount' => $arrQuotient->amount,
                 'conformation_date' => $arrQuotient->create_time,
-                'value_date' => $objPProduct->type == LAPProductModel::TYPE_FI ? date('Y-m-d', $objPProduct->value_date) : date('Y-m-d', $objTa->ta_value_date),
+                'value_date' => date('Y-m-d', $arrQuotient->buy_date),
                 'expected_date' => $objPProduct->type == LAPProductModel::TYPE_FI ? date('Y-m-d', $objPProduct->expected_date) : date('Y-m-d', $objTa->fact_end_date),
                 'income_rate_E6' => $objTa->fact_income_rate_E6 / LConstService::E4 ,
                 'total' => $total
@@ -207,7 +206,7 @@ class LATaService
                 'conformation_amount' => $arrQuotient->amount,
                 'conformation_quotient' => $arrQuotient->amount,
                 'has_quotient' => $arrQuotient->amount,
-                'value_date' => $objPProduct->type == LAPProductModel::TYPE_FI ? date('Y-m-d', $objPProduct->value_date) : date('Y-m-d', $objTa->ta_value_date),
+                'value_date' => date('Y-m-d', $arrQuotient->buy_date),
                 'expected_date' => $objPProduct->type == LAPProductModel::TYPE_FI ? date('Y-m-d', $objPProduct->expected_date) : date('Y-m-d', $objTa->fact_end_date),
                 'income_rate_E6' => $objTa->fact_income_rate_E6 / LConstService::E4 ,
                 'total' => $total
