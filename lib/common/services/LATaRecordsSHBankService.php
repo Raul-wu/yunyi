@@ -125,7 +125,8 @@ class LATaRecordsSHBankService
             $objPhpExcel->getActiveSheet()->setCellValueExplicit('L' . $i, (strtotime($v['expected_date']) - strtotime($v['value_date'])) / 86400, PHPExcel_Cell_DataType::TYPE_STRING) ;
             $objPhpExcel->getActiveSheet()->setCellValueExplicit('M' . $i, isset($v['income_rate_E6']) ? $v['income_rate_E6'] . '%' : '', PHPExcel_Cell_DataType::TYPE_STRING);
             $objPhpExcel->getActiveSheet()->setCellValueExplicit('N' . $i, $v['total'], PHPExcel_Cell_DataType::TYPE_STRING);
-            $objPhpExcel->getActiveSheet()->setCellValueExplicit('O' . $i, $v['total'] + $v['amount'], PHPExcel_Cell_DataType::TYPE_STRING);
+            $total_amound = $v['total'] + $v['amount'];
+            $objPhpExcel->getActiveSheet()->setCellValueExplicit('O' . $i, round($total_amound, 2), PHPExcel_Cell_DataType::TYPE_STRING);
         }
 
         $objWriter = PHPExcel_IOFactory::createWriter($objPhpExcel, 'Excel2007');

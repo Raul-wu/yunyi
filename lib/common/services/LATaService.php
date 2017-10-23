@@ -184,9 +184,9 @@ class LATaService
                 'amount' => $arrQuotient->amount,
                 'conformation_date' => $arrQuotient->create_time,
                 'value_date' => date('Y-m-d', $arrQuotient->buy_date),
-                'expected_date' => $objPProduct->type == LAPProductModel::TYPE_FI ? date('Y-m-d', $objPProduct->expected_date) : date('Y-m-d', $objTa->fact_end_date),
+                'expected_date' => date('Y-m-d', $objTa->fact_end_date),
                 'income_rate_E6' => $objTa->fact_income_rate_E6 / LConstService::E4 ,
-                'total' => $total
+                'total' => round($total, 2)
             );
 
             $cmb[] = array(
@@ -207,9 +207,9 @@ class LATaService
                 'conformation_quotient' => $arrQuotient->amount,
                 'has_quotient' => $arrQuotient->amount,
                 'value_date' => date('Y-m-d', $arrQuotient->buy_date),
-                'expected_date' => $objPProduct->type == LAPProductModel::TYPE_FI ? date('Y-m-d', $objPProduct->expected_date) : date('Y-m-d', $objTa->fact_end_date),
+                'expected_date' => date('Y-m-d', $objTa->fact_end_date),
                 'income_rate_E6' => $objTa->fact_income_rate_E6 / LConstService::E4 ,
-                'total' => $total
+                'total' => round($total, 2)
             );
         }
 

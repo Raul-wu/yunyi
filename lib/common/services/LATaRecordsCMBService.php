@@ -149,7 +149,8 @@ class LATaRecordsCMBService
             $objPhpExcel->getActiveSheet()->setCellValueExplicit('T' . $i, (strtotime($v['expected_date']) - strtotime($v['value_date'])) / 86400, PHPExcel_Cell_DataType::TYPE_STRING);
             $objPhpExcel->getActiveSheet()->setCellValueExplicit('U' . $i, isset($v['income_rate_E6']) ? $v['income_rate_E6'] . '%' : '', PHPExcel_Cell_DataType::TYPE_STRING);
             $objPhpExcel->getActiveSheet()->setCellValueExplicit('V' . $i, isset($v['total']) ? $v['total'] : '', PHPExcel_Cell_DataType::TYPE_STRING);
-            $objPhpExcel->getActiveSheet()->setCellValueExplicit('W' . $i, $v['total'] +  $v['conformation_amount'], PHPExcel_Cell_DataType::TYPE_STRING);
+            $total_amount = $v['total'] +  $v['conformation_amount'];
+            $objPhpExcel->getActiveSheet()->setCellValueExplicit('W' . $i, round($total_amount, 2), PHPExcel_Cell_DataType::TYPE_STRING);
         }
 
         $objWriter = PHPExcel_IOFactory::createWriter($objPhpExcel, 'Excel2007');

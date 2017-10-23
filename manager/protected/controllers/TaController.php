@@ -118,6 +118,11 @@ class TaController extends AdminBaseController
             Yii::app()->end();
         }
 
+        if(strtotime($_POST['fact_end_date']) < $_POST['value_date'] )
+        {
+            $this->ajaxReturn(LError::INTERNAL_ERROR, "实际到期日不能小于起息日！");
+        }
+
         $tid = Yii::app()->request->getParam('tid');
         if (!$tid)
         {
