@@ -61,7 +61,6 @@ Yii::app()->clientScript->registerScript("editUrl", 'window.editUrl="'.Yii::app(
                     <th>团队负责人</th>
                     <th>核税情况</th>
                     <th>代理情况</th>
-                    <th>账户类型</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -80,7 +79,6 @@ Yii::app()->clientScript->registerScript("editUrl", 'window.editUrl="'.Yii::app(
                         <td><?= $cooperate['team_leader'] ?></td>
                         <td><?= isset(LACooperateModel::$arrTax[$cooperate['tax']]) ? LACooperateModel::$arrTax[$cooperate['tax']] : '' ?></td>
                         <td><?= $cooperate['team_leader'] ?></td>
-                        <td><?= isset(LACooperateModel::$arrAccountType[$cooperate['account_type']]) ? LACooperateModel::$arrAccountType[$cooperate['account_type']] : '' ?></td>
                     </tr>
                     <?php
                 }

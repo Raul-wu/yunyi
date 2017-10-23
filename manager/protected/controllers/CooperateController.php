@@ -122,14 +122,23 @@ class CooperateFormModel extends AdminBaseFormModel
     public $team_leader;
     public $tax;
     public $agent;
-    public $account_type;
+    public $account_basic_name;
+    public $account_basic_number;
+    public $account_commonly_name;
+    public $account_commonly_number;
+    public $account_raise_name;
+    public $account_raise_number;
+    public $account_trusteeship_name;
+    public $account_trusteeship_number;
     public $id_img;
     public $status;
+    public $case_usage;
+    public $remarks;
 
     public function rules()
     {
         return array(
-            array('cid, name, nature, location, cooperater, limitation_cooperater, delegate, project_manager, department, team_leader, tax, agent, account_type, id_img, status, create_time, update_time', 'safe'),
+            array('cid, name, case_usage, remarks, nature, location, cooperater, limitation_cooperater, delegate, project_manager, department, team_leader, tax, agent, account_basic_name, account_basic_number, account_commonly_name, account_commonly_number, account_raise_name, account_raise_number, account_trusteeship_name, account_trusteeship_number, id_img, status, create_time, update_time', 'safe'),
 
             array('name', 'required', 'on' => array(self::COOPERATE_NEW, self::COOPERATE_EDIT)),
         );

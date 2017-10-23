@@ -46,7 +46,6 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                 </colgroup>
                 <thead>
                 <tr>
-                    <th><input type="checkbox" id="selectAll"></th>
                     <th>名称</th>
                     <th>企业性质</th>
                     <th>注册地</th>
@@ -56,7 +55,6 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                     <th>团队负责人</th>
                     <th>核税情况</th>
                     <th>代理情况</th>
-                    <th>账户类型</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -65,7 +63,6 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                 {
                     ?>
                     <tr class="<?= $key % 2 ? "" : "pure-table-odd"?>  pure-table-tr" id="tr<?= $cooperate['cid'] ?>">
-                        <td><input class="check"  type="checkbox" data-id="<?= $cooperate['cid'] ?>"></td>
                         <td><?= $cooperate['name'] ?></td>
                         <td><?= isset(LACooperateModel::$arrNature[$cooperate['nature']]) ? LACooperateModel::$arrNature[$cooperate['nature']] : '' ?></td>
                         <td><?= $cooperate['location']?></td>
@@ -75,7 +72,6 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                         <td><?= $cooperate['team_leader'] ?></td>
                         <td><?= isset(LACooperateModel::$arrTax[$cooperate['tax']]) ? LACooperateModel::$arrTax[$cooperate['tax']] : '' ?></td>
                         <td><?= $cooperate['team_leader'] ?></td>
-                        <td><?= isset(LACooperateModel::$arrAccountType[$cooperate['account_type']]) ? LACooperateModel::$arrAccountType[$cooperate['account_type']] : '' ?></td>
                     </tr>
                     <?php
                 }
