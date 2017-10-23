@@ -28,7 +28,8 @@ Yii::app()->clientScript->registerScript("exportUrl", 'window.exportUrl="'.Yii::
                 <input type="hidden" id="tkName" tkName="<?= Yii::app()->request->csrfTokenName ?>" value="<?= Yii::app()->request->csrfToken ?>">
                 <div class="pure-g">
                     <div class="pure-u-2-3">
-                        <input type="text"  placeholder="关键字" class="pure-input-1-1" style="width:130px;"  value="<?= isset($name) ? $name : '' ?>" name="name" id="name" />
+                        <input type="text"  placeholder="产品名称" class="pure-input-1-1" style="width:130px;"  value="<?= isset($name) ? $name : '' ?>" name="name" id="name" />
+                        <input type="text"  placeholder="基金名称" class="pure-input-1-1" style="width:130px;"  value="<?= isset($fund_name) ? $fund_name : '' ?>" name="fund_name" id="fund_name" />
                         <select class="pure-input-1-1 " name="status" id="status" >
                             <option value="">状态</option>
                             <?php

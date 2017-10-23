@@ -54,7 +54,6 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                 </colgroup>
                 <thead>
                 <tr>
-                    <th><input type="checkbox" id="selectAll"></th>
                     <th>基金代码</th>
                     <th>基金名称</th>
                     <th>收益类型</th>
@@ -71,7 +70,6 @@ Yii::app()->clientScript->registerCssFile("/assets/{$this->assetsDir}/css/tables
                 {
                     ?>
                     <tr class="<?= $key % 2 ? "" : "pure-table-odd"?>  pure-table-tr" id="tr<?= $pproduct['ppid'] ?>">
-                        <td><input class="check"  type="checkbox" data-id="<?= $pproduct['ppid'] ?>"></td>
                         <td><?= $pproduct['fund_code'] ?></td>
                         <td><?= $pproduct['name'] ?></td>
                         <td><?= isset(LAPProductModel::$arrType[$pproduct['type']]) ? LAPProductModel::$arrType[$pproduct['type']] : ''?></td>

@@ -419,7 +419,16 @@ class FinanceController extends AdminBaseController
         $objPhpExcel->getActiveSheet()->setCellValue('G1', '团队负责人');
         $objPhpExcel->getActiveSheet()->setCellValue('H1', '核税情况');
         $objPhpExcel->getActiveSheet()->setCellValue('I1', '代理情况');
-        $objPhpExcel->getActiveSheet()->setCellValue('J1', '账户类型');
+        $objPhpExcel->getActiveSheet()->setCellValue('J1', '基本户开户行');
+        $objPhpExcel->getActiveSheet()->setCellValue('K1', '基本户账号');
+        $objPhpExcel->getActiveSheet()->setCellValue('L1', '一般户开户行');
+        $objPhpExcel->getActiveSheet()->setCellValue('M1', '一般户账号');
+        $objPhpExcel->getActiveSheet()->setCellValue('N1', '募集户开户行');
+        $objPhpExcel->getActiveSheet()->setCellValue('O1', '募集户账号');
+        $objPhpExcel->getActiveSheet()->setCellValue('P1', '托管户开户行');
+        $objPhpExcel->getActiveSheet()->setCellValue('Q1', '托管户账号');
+        $objPhpExcel->getActiveSheet()->setCellValue('R1', '使用情况');
+        $objPhpExcel->getActiveSheet()->setCellValue('S1', '备注');
 
         //设置列宽
         $objPhpExcel->getActiveSheet()->getColumnDimension('A')->setWidth(15);
@@ -432,6 +441,15 @@ class FinanceController extends AdminBaseController
         $objPhpExcel->getActiveSheet()->getColumnDimension('H')->setWidth(20);
         $objPhpExcel->getActiveSheet()->getColumnDimension('I')->setWidth(20);
         $objPhpExcel->getActiveSheet()->getColumnDimension('J')->setWidth(20);
+        $objPhpExcel->getActiveSheet()->getColumnDimension('K')->setWidth(20);
+        $objPhpExcel->getActiveSheet()->getColumnDimension('L')->setWidth(20);
+        $objPhpExcel->getActiveSheet()->getColumnDimension('M')->setWidth(20);
+        $objPhpExcel->getActiveSheet()->getColumnDimension('N')->setWidth(20);
+        $objPhpExcel->getActiveSheet()->getColumnDimension('O')->setWidth(20);
+        $objPhpExcel->getActiveSheet()->getColumnDimension('P')->setWidth(20);
+        $objPhpExcel->getActiveSheet()->getColumnDimension('Q')->setWidth(20);
+        $objPhpExcel->getActiveSheet()->getColumnDimension('R')->setWidth(20);
+        $objPhpExcel->getActiveSheet()->getColumnDimension('S')->setWidth(20);
 
         $i = 1;
         foreach ($infoRes['cooperateAll'] as $cooperate) {
@@ -453,7 +471,16 @@ class FinanceController extends AdminBaseController
             $objPhpExcel->getActiveSheet()->setCellValueExplicit('G' . $i, $cooperate['team_leader'], PHPExcel_Cell_DataType::TYPE_STRING);
             $objPhpExcel->getActiveSheet()->setCellValueExplicit('H' . $i, isset(LACooperateModel::$arrTax[$cooperate['tax']]) ? LACooperateModel::$arrTax[$cooperate['tax']] : '' , PHPExcel_Cell_DataType::TYPE_STRING);
             $objPhpExcel->getActiveSheet()->setCellValueExplicit('I' . $i, $cooperate['team_leader'] , PHPExcel_Cell_DataType::TYPE_STRING);
-            $objPhpExcel->getActiveSheet()->setCellValueExplicit('J' . $i, isset(LACooperateModel::$arrAccountType[$cooperate['account_type']]) ? LACooperateModel::$arrAccountType[$cooperate['account_type']] : '' , PHPExcel_Cell_DataType::TYPE_STRING);
+            $objPhpExcel->getActiveSheet()->setCellValueExplicit('J' . $i, $cooperate['account_basic_name'] , PHPExcel_Cell_DataType::TYPE_STRING);
+            $objPhpExcel->getActiveSheet()->setCellValueExplicit('K' . $i, $cooperate['account_basic_number'] , PHPExcel_Cell_DataType::TYPE_STRING);
+            $objPhpExcel->getActiveSheet()->setCellValueExplicit('L' . $i, $cooperate['account_commonly_name'] , PHPExcel_Cell_DataType::TYPE_STRING);
+            $objPhpExcel->getActiveSheet()->setCellValueExplicit('M' . $i, $cooperate['account_commonly_number'] , PHPExcel_Cell_DataType::TYPE_STRING);
+            $objPhpExcel->getActiveSheet()->setCellValueExplicit('N' . $i, $cooperate['account_raise_name'] , PHPExcel_Cell_DataType::TYPE_STRING);
+            $objPhpExcel->getActiveSheet()->setCellValueExplicit('O' . $i, $cooperate['account_raise_number'] , PHPExcel_Cell_DataType::TYPE_STRING);
+            $objPhpExcel->getActiveSheet()->setCellValueExplicit('P' . $i, $cooperate['account_trusteeship_name'] , PHPExcel_Cell_DataType::TYPE_STRING);
+            $objPhpExcel->getActiveSheet()->setCellValueExplicit('Q' . $i, $cooperate['account_trusteeship_number'] , PHPExcel_Cell_DataType::TYPE_STRING);
+            $objPhpExcel->getActiveSheet()->setCellValueExplicit('R' . $i, $cooperate['case_usage'] , PHPExcel_Cell_DataType::TYPE_STRING);
+            $objPhpExcel->getActiveSheet()->setCellValueExplicit('S' . $i, $cooperate['remarks'] , PHPExcel_Cell_DataType::TYPE_STRING);
         }
 
         $filename = "有限合伙公司信息统计表".date("ymdHis");
